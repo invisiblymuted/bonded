@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, ArrowRight } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, ArrowRight, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Home() {
