@@ -1,54 +1,102 @@
 import { z } from "zod";
-import { insertChildSchema, children } from "./schema";
+import {
+  insertRelationshipSchema,
+  insertMessageSchema,
+  insertJournalEntrySchema,
+  insertMediaSchema,
+  relationships,
+  messages,
+  journalEntries,
+  media,
+} from "./schema";
 
 export const api = {
-  children: {
+  relationships: {
     list: {
       method: "GET" as const,
-      path: "/api/children",
+      path: "/api/relationships",
       responses: {
-        200: z.array(z.custom<typeof children.$inferSelect>()),
-      },
-    },
-    listMine: {
-      method: "GET" as const,
-      path: "/api/children/mine",
-      responses: {
-        200: z.array(z.custom<typeof children.$inferSelect>()),
+        200: z.array(z.custom<typeof relationships.$inferSelect>()),
         401: z.object({ message: z.string() }),
-      },
-    },
-    get: {
-      method: "GET" as const,
-      path: "/api/children/:id",
-      responses: {
-        200: z.custom<typeof children.$inferSelect>(),
-        404: z.object({ message: z.string() }),
       },
     },
     create: {
       method: "POST" as const,
-      path: "/api/children",
-      input: insertChildSchema.omit({ parentId: true }), // parentId comes from auth
+      path: "/api/relationships",
+      input: insertRelationshipSchema,
       responses: {
-        201: z.custom<typeof children.$inferSelect>(),
+        201: z.custom<typeof relationships.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+      },
+    },
+  },
+  messages: {
+    list: {
+      method: "GET" as const,
+      path: "/api/relationships/:relationshipId/messages",
+      responses: {
+        200: z.array(z.custom<typeof messages.$inferSelect>()),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/relationships/:relationshipId/messages",
+      input: insertMessageSchema.omit({ relationshipId: true, senderId: true }),
+      responses: {
+        201: z.custom<typeof messages.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+      },
+    },
+  },
+  journal: {
+    list: {
+      method: "GET" as const,
+      path: "/api/relationships/:relationshipId/journal",
+      responses: {
+        200: z.array(z.custom<typeof journalEntries.$inferSelect>()),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/relationships/:relationshipId/journal",
+      input: insertJournalEntrySchema.omit({ relationshipId: true, authorId: true }),
+      responses: {
+        201: z.custom<typeof journalEntries.$inferSelect>(),
         401: z.object({ message: z.string() }),
       },
     },
     update: {
       method: "PATCH" as const,
-      path: "/api/children/:id",
-      input: insertChildSchema.partial().omit({ parentId: true }),
+      path: "/api/journal/:entryId",
+      input: insertJournalEntrySchema.partial().omit({ relationshipId: true, authorId: true }),
       responses: {
-        200: z.custom<typeof children.$inferSelect>(),
+        200: z.custom<typeof journalEntries.$inferSelect>(),
         401: z.object({ message: z.string() }),
       },
     },
-    delete: {
-      method: "DELETE" as const,
-      path: "/api/children/:id",
+  },
+  media: {
+    list: {
+      method: "GET" as const,
+      path: "/api/relationships/:relationshipId/media",
       responses: {
-        204: z.void(),
+        200: z.array(z.custom<typeof media.$inferSelect>()),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/relationships/:relationshipId/media",
+      input: z.object({
+        type: z.enum(["photo", "drawing", "video", "audio"]),
+        url: z.string(),
+        filename: z.string(),
+        caption: z.string().optional(),
+      }),
+      responses: {
+        201: z.custom<typeof media.$inferSelect>(),
         401: z.object({ message: z.string() }),
       },
     },
