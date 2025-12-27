@@ -1,269 +1,128 @@
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useMyChildren, useCreateChild, useUpdateChild, useDeleteChild } from "@/hooks/use-children";
-import { Navbar } from "@/components/Navbar";
+import { useRelationships } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Edit2, Trash2, Loader2, Search } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { insertChildSchema, type InsertChild, type Child } from "@shared/schema";
-import { z } from "zod";
-import { useState } from "react";
-import { format } from "date-fns";
-import { useLocation } from "wouter";
-
-// --- Components for this page ---
-
-function ChildForm({ 
-  child, 
-  onClose 
-}: { 
-  child?: Child, 
-  onClose: () => void 
-}) {
-  const createMutation = useCreateChild();
-  const updateMutation = useUpdateChild();
-  const isEditing = !!child;
-
-  const formSchema = insertChildSchema.omit({ parentId: true, createdAt: true }).extend({
-    age: z.coerce.number().min(0, "Age must be positive"),
-  });
-
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: child ? {
-      name: child.name,
-      age: child.age,
-      description: child.description,
-      lastSeenLocation: child.lastSeenLocation,
-      photoUrl: child.photoUrl || "",
-      status: child.status || "missing",
-    } : {
-      status: "missing"
-    }
-  });
-
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    if (isEditing && child) {
-      updateMutation.mutate({ id: child.id, ...data }, {
-        onSuccess: onClose
-      });
-    } else {
-      createMutation.mutate(data, {
-        onSuccess: onClose
-      });
-    }
-  };
-
-  const isPending = createMutation.isPending || updateMutation.isPending;
-  const statusValue = watch("status");
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 pt-4">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">Full Name</Label>
-          <Input id="name" {...register("name")} placeholder="Jane Doe" />
-          {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="age">Age</Label>
-          <Input id="age" type="number" {...register("age")} placeholder="10" />
-          {errors.age && <p className="text-xs text-destructive">{errors.age.message}</p>}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="lastSeenLocation">Last Seen Location</Label>
-        <Input id="lastSeenLocation" {...register("lastSeenLocation")} placeholder="City, State, Country" />
-        {errors.lastSeenLocation && <p className="text-xs text-destructive">{errors.lastSeenLocation.message}</p>}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="description">Physical Description & Details</Label>
-        <Textarea 
-          id="description" 
-          {...register("description")} 
-          placeholder="Height, hair color, eye color, clothing worn..." 
-          className="h-24"
-        />
-        {errors.description && <p className="text-xs text-destructive">{errors.description.message}</p>}
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="photoUrl">Photo URL (Optional)</Label>
-        <Input id="photoUrl" {...register("photoUrl")} placeholder="https://example.com/photo.jpg" />
-        <p className="text-xs text-muted-foreground">Link to a publicly accessible image.</p>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="status">Current Status</Label>
-        <Select 
-          onValueChange={(val) => setValue("status", val)} 
-          defaultValue={statusValue || "missing"}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="missing">Missing</SelectItem>
-            <SelectItem value="found">Found (Safe)</SelectItem>
-            <SelectItem value="reunited">Reunited with Family</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="flex justify-end gap-3 pt-4">
-        <Button type="button" variant="outline" onClick={onClose} disabled={isPending}>Cancel</Button>
-        <Button type="submit" disabled={isPending}>
-          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isEditing ? "Save Changes" : "Submit Report"}
-        </Button>
-      </div>
-    </form>
-  );
-}
-
-// --- Main Page Component ---
+import { Link, useLocation } from "wouter";
+import { MessageSquare, BookOpen, Share2, Loader2, Heart, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function Dashboard() {
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
-  const { data: myChildren, isLoading: dataLoading } = useMyChildren();
-  const deleteMutation = useDeleteChild();
-  const [openDialog, setOpenDialog] = useState(false);
-  const [editingChild, setEditingChild] = useState<Child | null>(null);
+  const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
+  const { data: relationships, isLoading } = useRelationships();
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      window.location.href = "/api/login";
+      setLocation("/");
     }
-  }, [authLoading, isAuthenticated]);
+  }, [authLoading, isAuthenticated, setLocation]);
 
-  if (authLoading || dataLoading) {
+  if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 text-primary animate-spin" />
+          <p className="text-muted-foreground">Loading your connections...</p>
+        </div>
       </div>
     );
   }
 
-  if (!isAuthenticated) return null;
-
-  const handleDelete = (id: number) => {
-    if (confirm("Are you sure you want to delete this profile? This cannot be undone.")) {
-      deleteMutation.mutate(id);
-    }
-  };
-
-  const handleEdit = (child: Child) => {
-    setEditingChild(child);
-    setOpenDialog(true);
-  };
-
-  const handleCreate = () => {
-    setEditingChild(null);
-    setOpenDialog(true);
-  };
-
   return (
-    <div className="min-h-screen bg-muted/20">
-      <Navbar />
-      
-      <div className="container mx-auto px-4 py-8 lg:py-12">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-          <div>
-            <h1 className="text-3xl font-bold font-display tracking-tight">Parent Dashboard</h1>
-            <p className="text-muted-foreground mt-1">Manage your reported cases and update statuses.</p>
-          </div>
-          
-          <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-            <DialogTrigger asChild>
-              <Button onClick={handleCreate} className="shadow-lg shadow-primary/20">
-                <Plus className="mr-2 h-4 w-4" /> Report Missing Child
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>{editingChild ? "Edit Profile" : "Create New Report"}</DialogTitle>
-              </DialogHeader>
-              <ChildForm 
-                child={editingChild || undefined} 
-                onClose={() => setOpenDialog(false)} 
-              />
-            </DialogContent>
-          </Dialog>
-        </div>
-
-        {myChildren?.length === 0 ? (
-          <div className="text-center py-24 bg-card rounded-2xl border border-dashed border-border shadow-sm">
-            <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="h-8 w-8 text-primary" />
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <Link href="/">
+            <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+              <Heart className="h-6 w-6 text-primary" />
+              <span className="font-bold text-xl">FamilyConnect</span>
             </div>
-            <h3 className="text-xl font-semibold mb-2">No reports yet</h3>
-            <p className="text-muted-foreground max-w-sm mx-auto mb-6">
-              You haven't reported any missing children yet. If you need to file a report, click the button below.
-            </p>
-            <Button onClick={handleCreate} variant="outline">Create First Report</Button>
+          </Link>
+          <div className="flex items-center gap-4">
+            <div className="text-sm text-muted-foreground">
+              {user?.firstName} {user?.lastName}
+            </div>
+            <a href="/api/logout">
+              <Button variant="ghost" size="sm">
+                Logout
+              </Button>
+            </a>
           </div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12 max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12"
+        >
+          <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.firstName}!</h1>
+          <p className="text-muted-foreground text-lg">
+            Stay connected with your loved ones
+          </p>
+        </motion.div>
+
+        {relationships && relationships.length === 0 ? (
+          <Card className="border-dashed">
+            <CardContent className="pt-12 pb-12 text-center">
+              <Heart className="h-16 w-16 text-primary/30 mx-auto mb-4" />
+              <h3 className="text-2xl font-semibold mb-2">No connections yet</h3>
+              <p className="text-muted-foreground mb-6">
+                Create your first family connection to start sharing moments and memories.
+              </p>
+              <Button className="gap-2">
+                Create Connection <ArrowRight className="h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
         ) : (
-          <div className="grid gap-6">
-            {myChildren?.map((child) => (
-              <Card key={child.id} className="overflow-hidden border-border/60 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex flex-col sm:flex-row">
-                  <div className="w-full sm:w-48 aspect-video sm:aspect-square bg-muted relative">
-                    {child.photoUrl ? (
-                      <img src={child.photoUrl} alt={child.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-4xl">👤</div>
-                    )}
-                    <div className="absolute top-2 left-2">
-                       <Badge variant={child.status === 'missing' ? 'destructive' : 'default'}>
-                         {child.status}
-                       </Badge>
-                    </div>
-                  </div>
-                  
-                  <div className="flex-1 p-6 flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-xl font-bold font-display">{child.name}</h3>
-                        <span className="text-xs text-muted-foreground">Created {format(new Date(child.createdAt!), 'MMM d, yyyy')}</span>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relationships?.map((rel, i) => (
+              <motion.div
+                key={rel.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <Link href={`/connection/${rel.id}`}>
+                  <Card className="h-full hover:shadow-lg transition-all cursor-pointer group">
+                    <CardHeader>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Heart className="h-5 w-5 text-primary" />
+                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                          Connected
+                        </span>
                       </div>
-                      <p className="text-muted-foreground text-sm line-clamp-2 mb-4">{child.description}</p>
-                      <div className="flex gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center"><span className="font-semibold mr-1">Age:</span> {child.age}</div>
-                        <div className="flex items-center"><span className="font-semibold mr-1">Location:</span> {child.lastSeenLocation}</div>
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors">
+                        {rel.childName}
+                      </CardTitle>
+                      <CardDescription>
+                        Connected since {new Date(rel.createdAt).toLocaleDateString()}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <MessageSquare className="h-4 w-4" />
+                          <span>Chat & Messages</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <BookOpen className="h-4 w-4" />
+                          <span>Shared Journal</span>
+                        </div>
+                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                          <Share2 className="h-4 w-4" />
+                          <span>Media Gallery</span>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border/50">
-                      <Button variant="outline" size="sm" onClick={() => setLocation(`/child/${child.id}`)}>
-                        View Public Page
-                      </Button>
-                      <div className="flex-1" />
-                      <Button variant="ghost" size="sm" onClick={() => handleEdit(child)}>
-                        <Edit2 className="h-4 w-4 mr-2" /> Edit
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                        onClick={() => handleDelete(child.id)}
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" /> Delete
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </motion.div>
             ))}
           </div>
         )}

@@ -1,101 +1,137 @@
-import { useState } from "react";
-import { Navbar } from "@/components/Navbar";
-import { useChildren } from "@/hooks/use-children";
-import { ChildCard } from "@/components/ChildCard";
-import { Input } from "@/components/ui/input";
-import { Search, Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "wouter";
+import { Heart, MessageSquare, BookOpen, Share2, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Home() {
-  const { data: children, isLoading, error } = useChildren();
-  const [search, setSearch] = useState("");
-
-  const filteredChildren = children?.filter((child) => 
-    child.name.toLowerCase().includes(search.toLowerCase()) || 
-    child.lastSeenLocation.toLowerCase().includes(search.toLowerCase())
-  );
+  const { isAuthenticated, isLoading } = useAuth();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
+    <div className="min-h-screen bg-background">
+      {/* Navigation */}
+      <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Heart className="h-6 w-6 text-primary" />
+            <span className="font-bold text-xl">FamilyConnect</span>
+          </div>
+          {isLoading ? (
+            <div className="w-20 h-10 bg-muted rounded animate-pulse" />
+          ) : isAuthenticated ? (
+            <div className="flex gap-2">
+              <Link href="/dashboard">
+                <Button variant="outline">Dashboard</Button>
+              </Link>
+              <a href="/api/logout">
+                <Button variant="ghost">Logout</Button>
+              </a>
+            </div>
+          ) : (
+            <a href="/api/login">
+              <Button>Login</Button>
+            </a>
+          )}
+        </div>
+      </nav>
+
       {/* Hero Section */}
-      <div className="relative bg-secondary/20 border-b border-border/50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 flex flex-col items-center text-center">
-          <motion.h1 
+      <div className="relative bg-gradient-to-b from-primary/10 via-transparent to-transparent py-20 px-4">
+        <div className="container mx-auto max-w-4xl text-center">
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-display text-foreground mb-6"
+            className="text-5xl sm:text-6xl font-bold mb-6 text-foreground"
           >
-            Reuniting Families, <span className="text-primary">One at a Time</span>
+            Stay Connected,{" "}
+            <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              Miles Apart
+            </span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-lg sm:text-xl text-muted-foreground max-w-2xl mb-10 text-balance"
+            className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            A secure portal for parents to report missing children and for communities to help bring them home.
+            A secure platform for separated families to share moments, memories, and their lives together.
           </motion.p>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="relative w-full max-w-xl"
-          >
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <Input 
-              className="pl-10 h-14 rounded-2xl border-2 border-border bg-background shadow-lg text-lg focus-visible:ring-primary focus-visible:border-primary"
-              placeholder="Search by name or location..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </motion.div>
+          {!isLoading && !isAuthenticated && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <a href="/api/login">
+                <Button size="lg" className="gap-2">
+                  Get Started <ArrowRight className="h-4 w-4" />
+                </Button>
+              </a>
+            </motion.div>
+          )}
         </div>
-
-        {/* Decorative background element */}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       </div>
 
-      {/* Content Section */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1">
-        <div className="flex justify-between items-center mb-10">
-          <h2 className="text-2xl font-bold font-display">Recent Reports</h2>
+      {/* Features Section */}
+      <div className="container mx-auto px-4 py-20 max-w-5xl">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              icon: MessageSquare,
+              title: "Real-time Messaging",
+              description: "Chat with your loved ones anytime, anywhere",
+            },
+            {
+              icon: BookOpen,
+              title: "Shared Journals",
+              description: "Write together, capture memories, express feelings",
+            },
+            {
+              icon: Share2,
+              title: "Media Sharing",
+              description: "Share photos, artwork, audio, and videos",
+            },
+            {
+              icon: Heart,
+              title: "Secure & Private",
+              description: "End-to-end encrypted, your family data is safe",
+            },
+          ].map((feature, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <Card className="h-full hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <feature.icon className="h-8 w-8 text-primary mb-2" />
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </div>
-
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
-            <p className="text-muted-foreground">Loading cases...</p>
-          </div>
-        ) : error ? (
-          <div className="text-center py-20 bg-destructive/5 rounded-2xl border border-destructive/20">
-            <h3 className="text-lg font-semibold text-destructive mb-2">Unable to load data</h3>
-            <p className="text-muted-foreground">Please try refreshing the page.</p>
-          </div>
-        ) : filteredChildren?.length === 0 ? (
-          <div className="text-center py-20 bg-muted/30 rounded-2xl border border-dashed border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-2">No results found</h3>
-            <p className="text-muted-foreground">Try adjusting your search criteria.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredChildren?.map((child, index) => (
-              <motion.div
-                key={child.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                <ChildCard child={child} />
-              </motion.div>
-            ))}
-          </div>
-        )}
       </div>
+
+      {/* CTA Section */}
+      {!isLoading && !isAuthenticated && (
+        <div className="bg-primary/5 border-y border-border">
+          <div className="container mx-auto px-4 py-16 text-center max-w-3xl">
+            <h2 className="text-3xl font-bold mb-4">Ready to reconnect?</h2>
+            <p className="text-muted-foreground mb-8 text-lg">
+              Sign up now to create a secure connection with your family.
+            </p>
+            <a href="/api/login">
+              <Button size="lg">Start Your Journey</Button>
+            </a>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
