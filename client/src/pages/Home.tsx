@@ -2,7 +2,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
-import { Heart, MessageSquare, BookOpen, Share2, ArrowRight } from "lucide-react";
+import { BondedLogo } from "@/components/BondedLogo";
+import { MessageSquare, BookOpen, Share2, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -14,7 +15,7 @@ export default function Home() {
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Heart className="h-6 w-6 text-primary" />
+            <BondedLogo className="h-6 w-6 text-primary" />
             <span className="font-bold text-xl">Bonded</span>
           </div>
           {isLoading ? (
