@@ -1,38 +1,51 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
-
-// modify the interface with any CRUD methods
-// you might need
+import { users, type User, type UpsertUser } from "@shared/models/auth";
+import { children, type Child, type InsertChild } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc } from "drizzle-orm";
+import { authStorage } from "./replit_integrations/auth/storage";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  upsertUser(user: UpsertUser): Promise<User>;
+
+  getChildren(): Promise<Child[]>;
+  getChild(id: number): Promise<Child | undefined>;
+  getChildrenByParent(parentId: string): Promise<Child[]>;
+  createChild(child: InsertChild): Promise<Child>;
+  updateChild(id: number, child: Partial<InsertChild>): Promise<Child>;
+  deleteChild(id: number): Promise<void>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+export class DatabaseStorage implements IStorage {
+  async getUser(id: string) { return authStorage.getUser(id); }
+  async upsertUser(user: UpsertUser) { return authStorage.upsertUser(user); }
 
-  constructor() {
-    this.users = new Map();
+  async getChildren() {
+    return await db.select().from(children).orderBy(desc(children.createdAt));
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getChild(id: number) {
+    const [child] = await db.select().from(children).where(eq(children.id, id));
+    return child;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+  async getChildrenByParent(parentId: string) {
+    return await db.select().from(children).where(eq(children.parentId, parentId));
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+  async createChild(insertChild: InsertChild) {
+    const [child] = await db.insert(children).values(insertChild).returning();
+    return child;
+  }
+
+  async updateChild(id: number, updates: Partial<InsertChild>) {
+    const [child] = await db.update(children).set(updates).where(eq(children.id, id)).returning();
+    return child;
+  }
+
+  async deleteChild(id: number) {
+    await db.delete(children).where(eq(children.id, id));
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
