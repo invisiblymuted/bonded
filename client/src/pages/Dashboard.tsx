@@ -37,7 +37,7 @@ export default function Dashboard() {
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
               <Heart className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">FamilyConnect</span>
+              <span className="font-bold text-xl">Bonded</span>
             </div>
           </Link>
           <div className="flex items-center gap-4">
