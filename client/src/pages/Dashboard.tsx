@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Dashboard() {
