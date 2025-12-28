@@ -8,6 +8,7 @@ import {
   messages,
   journalEntries,
   media,
+  notifications,
 } from "./schema";
 import { users } from "./models/auth";
 
@@ -122,6 +123,32 @@ export const api = {
     delete: {
       method: "DELETE" as const,
       path: "/api/relationships/:relationshipId/media/:mediaId",
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        401: z.object({ message: z.string() }),
+      },
+    },
+  },
+  notifications: {
+    list: {
+      method: "GET" as const,
+      path: "/api/notifications",
+      responses: {
+        200: z.array(z.custom<typeof notifications.$inferSelect>()),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    markRead: {
+      method: "PATCH" as const,
+      path: "/api/notifications/:notificationId/read",
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    markAllRead: {
+      method: "PATCH" as const,
+      path: "/api/notifications/read-all",
       responses: {
         200: z.object({ success: z.boolean() }),
         401: z.object({ message: z.string() }),

@@ -41,9 +41,20 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
   app.post(api.relationships.create.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
+    const currentUserId = (req.user as any).claims.sub;
+    const currentUser = await storage.getUser(currentUserId);
     try {
       const data = insertRelationshipSchema.parse(req.body);
       const rel = await storage.createRelationship(data);
+      // Notify the other user
+      await storage.createNotification({
+        userId: data.childId,
+        type: "connection",
+        title: "New Connection",
+        message: `${currentUser?.firstName || "Someone"} wants to connect with you!`,
+        relationshipId: rel.id,
+        read: false,
+      });
       res.status(201).json(rel);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -74,13 +85,29 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   app.post(api.messages.create.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     const userId = (req.user as any).claims.sub;
+    const currentUser = await storage.getUser(userId);
+    const relationshipId = Number(req.params.relationshipId);
     try {
       const data = insertMessageSchema.omit({ relationshipId: true, senderId: true }).parse(req.body);
       const msg = await storage.createMessage({
         ...data,
-        relationshipId: Number(req.params.relationshipId),
+        relationshipId,
         senderId: userId,
       });
+      // Notify the other user
+      const rels = await storage.getRelationships(userId);
+      const rel = rels.find(r => r.id === relationshipId);
+      if (rel) {
+        const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
+        await storage.createNotification({
+          userId: otherUserId,
+          type: "message",
+          title: "New Message",
+          message: `${currentUser?.firstName || "Someone"} sent you a message`,
+          relationshipId,
+          read: false,
+        });
+      }
       res.status(201).json(msg);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -101,13 +128,29 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   app.post(api.journal.create.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     const userId = (req.user as any).claims.sub;
+    const currentUser = await storage.getUser(userId);
+    const relationshipId = Number(req.params.relationshipId);
     try {
       const data = insertJournalEntrySchema.omit({ relationshipId: true, authorId: true }).parse(req.body);
       const entry = await storage.createJournalEntry({
         ...data,
-        relationshipId: Number(req.params.relationshipId),
+        relationshipId,
         authorId: userId,
       });
+      // Notify the other user
+      const rels = await storage.getRelationships(userId);
+      const rel = rels.find(r => r.id === relationshipId);
+      if (rel) {
+        const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
+        await storage.createNotification({
+          userId: otherUserId,
+          type: "journal",
+          title: "New Journal Entry",
+          message: `${currentUser?.firstName || "Someone"} wrote: "${data.title}"`,
+          relationshipId,
+          read: false,
+        });
+      }
       res.status(201).json(entry);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -143,13 +186,29 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
   app.post(api.media.create.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     const userId = (req.user as any).claims.sub;
+    const currentUser = await storage.getUser(userId);
+    const relationshipId = Number(req.params.relationshipId);
     try {
       const data = api.media.create.input.parse(req.body);
       const m = await storage.createMedia({
         ...data,
-        relationshipId: Number(req.params.relationshipId),
+        relationshipId,
         uploaderId: userId,
       });
+      // Notify the other user
+      const rels = await storage.getRelationships(userId);
+      const rel = rels.find(r => r.id === relationshipId);
+      if (rel) {
+        const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
+        await storage.createNotification({
+          userId: otherUserId,
+          type: "media",
+          title: "New Media",
+          message: `${currentUser?.firstName || "Someone"} shared a ${data.type}`,
+          relationshipId,
+          read: false,
+        });
+      }
       res.status(201).json(m);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -165,6 +224,35 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     try {
       const success = await storage.deleteMedia(Number(req.params.mediaId));
       res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+
+  // Notifications
+  app.get(api.notifications.list.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    const notifs = await storage.getNotifications(userId);
+    res.json(notifs);
+  });
+
+  app.patch(api.notifications.markRead.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    try {
+      await storage.markNotificationRead(Number(req.params.notificationId));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+
+  app.patch(api.notifications.markAllRead.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    try {
+      await storage.markAllNotificationsRead(userId);
+      res.json({ success: true });
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });
     }

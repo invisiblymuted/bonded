@@ -4,6 +4,7 @@ import {
   messages,
   journalEntries,
   media,
+  notifications,
   type Relationship,
   type InsertRelationship,
   type Message,
@@ -12,6 +13,8 @@ import {
   type InsertJournalEntry,
   type Media,
   type InsertMedia,
+  type Notification,
+  type InsertNotification,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, like, or } from "drizzle-orm";
@@ -36,6 +39,11 @@ export interface IStorage {
   getMedia(relationshipId: number): Promise<Media[]>;
   createMedia(m: InsertMedia): Promise<Media>;
   deleteMedia(mediaId: number): Promise<boolean>;
+
+  getNotifications(userId: string): Promise<Notification[]>;
+  createNotification(notification: InsertNotification): Promise<Notification>;
+  markNotificationRead(id: number): Promise<void>;
+  markAllNotificationsRead(userId: string): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -132,6 +140,27 @@ export class DatabaseStorage implements IStorage {
   async deleteMedia(mediaId: number) {
     await db.delete(media).where(eq(media.id, mediaId));
     return true;
+  }
+
+  async getNotifications(userId: string) {
+    return await db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.userId, userId))
+      .orderBy(desc(notifications.createdAt));
+  }
+
+  async createNotification(notification: InsertNotification) {
+    const [created] = await db.insert(notifications).values(notification).returning();
+    return created;
+  }
+
+  async markNotificationRead(id: number) {
+    await db.update(notifications).set({ read: true }).where(eq(notifications.id, id));
+  }
+
+  async markAllNotificationsRead(userId: string) {
+    await db.update(notifications).set({ read: true }).where(eq(notifications.userId, userId));
   }
 }
 
