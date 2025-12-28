@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Relationship, Message, JournalEntry, Media } from "@shared/schema";
 import { api, buildUrl } from "@shared/routes";
+import type { User } from "@shared/models/auth";
 
 export function useRelationships() {
   return useQuery<Relationship[]>({

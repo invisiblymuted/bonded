@@ -130,8 +130,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteMedia(mediaId: number) {
-    const result = await db.delete(media).where(eq(media.id, mediaId));
-    return result.rowCount > 0;
+    await db.delete(media).where(eq(media.id, mediaId));
+    return true;
   }
 }
 
