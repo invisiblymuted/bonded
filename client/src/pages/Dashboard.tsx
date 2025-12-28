@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useRelationships, useCreateRelationship } from "@/hooks/use-relationships";
+import { useRelationships, useSendRequest, useAcceptRequest } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Check, X, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
@@ -15,11 +15,12 @@ export default function Dashboard() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: relationships, isLoading } = useRelationships();
-  const createRelationship = useCreateRelationship();
+  const sendRequest = useSendRequest();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [childName, setChildName] = useState("");
   const [childId, setChildId] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -27,26 +28,30 @@ export default function Dashboard() {
     }
   }, [authLoading, isAuthenticated, setLocation]);
 
-  const handleCreateConnection = () => {
+  const handleSendRequest = () => {
     if (!childName.trim() || !childId.trim()) {
       toast({ title: "Error", description: "Please fill in all fields", variant: "destructive" });
       return;
     }
-    createRelationship.mutate(
-      { parentId: user!.id, childId, childName },
+    sendRequest.mutate(
+      { childId, childName },
       {
         onSuccess: () => {
           setIsOpen(false);
           setChildName("");
           setChildId("");
-          toast({ title: "Success", description: "Connection created!" });
+          setSearchQuery("");
+          toast({ title: "Success", description: "Connection request sent!" });
         },
         onError: () => {
-          toast({ title: "Error", description: "Failed to create connection", variant: "destructive" });
+          toast({ title: "Error", description: "Failed to send request", variant: "destructive" });
         },
       }
     );
   };
+
+  const pendingRequests = relationships?.filter(r => r.status === "pending") || [];
+  const acceptedConnections = relationships?.filter(r => r.status === "accepted") || [];
 
   if (authLoading || isLoading) {
     return (
@@ -88,7 +93,7 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
+          className="mb-8"
         >
           <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.firstName}!</h1>
           <p className="text-muted-foreground text-lg">
@@ -96,7 +101,19 @@ export default function Dashboard() {
           </p>
         </motion.div>
 
-        {relationships && relationships.length === 0 ? (
+        {/* Pending Requests */}
+        {pendingRequests.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-3">Pending Requests</h2>
+            <div className="space-y-2">
+              {pendingRequests.map((req) => (
+                <PendingRequestCard key={req.id} request={req} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {acceptedConnections && acceptedConnections.length === 0 && pendingRequests.length === 0 ? (
           <Card className="border-dashed">
             <CardContent className="pt-12 pb-12 text-center">
               <Heart className="h-16 w-16 text-primary/30 mx-auto mb-4" />

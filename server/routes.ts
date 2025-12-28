@@ -16,10 +16,20 @@ import { users } from "@shared/models/auth";
 import { db } from "./db";
 import { api } from "@shared/routes";
 import { z } from "zod";
+import { eq } from "drizzle-orm";
 
 export async function registerRoutes(httpServer: Server, app: Express): Promise<Server> {
   await setupAuth(app);
   registerAuthRoutes(app);
+
+  // User Search
+  app.get(api.users.search.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const query = req.query.q as string;
+    if (!query) return res.json([]);
+    const results = await storage.searchUsers(query);
+    res.json(results);
+  });
 
   // Relationships
   app.get(api.relationships.list.path, async (req, res) => {
@@ -41,6 +51,16 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       } else {
         res.status(500).json({ message: "Internal Server Error" });
       }
+    }
+  });
+
+  app.patch(api.relationships.accept.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    try {
+      const rel = await storage.acceptRelationship(Number(req.params.id));
+      res.json(rel);
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
     }
   });
 
@@ -137,6 +157,16 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       } else {
         res.status(500).json({ message: "Internal Server Error" });
       }
+    }
+  });
+
+  app.delete(api.media.delete.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    try {
+      const success = await storage.deleteMedia(Number(req.params.mediaId));
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
     }
   });
 

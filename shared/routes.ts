@@ -9,8 +9,19 @@ import {
   journalEntries,
   media,
 } from "./schema";
+import { users } from "./models/auth";
 
 export const api = {
+  users: {
+    search: {
+      method: "GET" as const,
+      path: "/api/users/search",
+      responses: {
+        200: z.array(z.custom<typeof users.$inferSelect>()),
+        401: z.object({ message: z.string() }),
+      },
+    },
+  },
   relationships: {
     list: {
       method: "GET" as const,
@@ -26,6 +37,14 @@ export const api = {
       input: insertRelationshipSchema,
       responses: {
         201: z.custom<typeof relationships.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    accept: {
+      method: "PATCH" as const,
+      path: "/api/relationships/:id/accept",
+      responses: {
+        200: z.custom<typeof relationships.$inferSelect>(),
         401: z.object({ message: z.string() }),
       },
     },
@@ -97,6 +116,14 @@ export const api = {
       }),
       responses: {
         201: z.custom<typeof media.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    delete: {
+      method: "DELETE" as const,
+      path: "/api/relationships/:relationshipId/media/:mediaId",
+      responses: {
+        200: z.object({ success: z.boolean() }),
         401: z.object({ message: z.string() }),
       },
     },

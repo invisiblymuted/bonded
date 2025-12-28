@@ -127,3 +127,66 @@ export function useCreateMedia(relationshipId: number) {
     },
   });
 }
+
+export function useSearchUsers() {
+  return useQuery<User[]>({
+    queryKey: ["user-search"],
+    queryFn: async () => [],
+    enabled: false,
+  });
+}
+
+export function useSendRequest() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { childId: string; childName: string }) => {
+      const res = await fetch(api.relationships.create.path, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ parentId: "", childId: data.childId, childName: data.childName }),
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.relationships.list.path] });
+    },
+  });
+}
+
+export function useAcceptRequest(relationshipId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      const res = await fetch(buildUrl(api.relationships.accept.path, { id: relationshipId }), {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.relationships.list.path] });
+    },
+  });
+}
+
+export function useDeleteMedia(relationshipId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (mediaId: number) => {
+      const url = buildUrl(api.media.delete.path, { relationshipId, mediaId });
+      const res = await fetch(url, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.media.list.path, relationshipId] });
+    },
+  });
+}
