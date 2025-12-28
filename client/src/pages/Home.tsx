@@ -38,7 +38,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-primary/10 via-transparent to-transparent py-20 px-4">
+      <div className="relative bg-gradient-to-b from-primary/10 via-transparent to-transparent py-12 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -75,7 +75,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-20 max-w-5xl">
+      <div className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {

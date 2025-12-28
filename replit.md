@@ -7,6 +7,25 @@ Bonded is a family connection application designed to help parents and children 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Prefers warm, inviting design (peach/orange color palette with blue accents)
+
+## Recent Updates
+
+**Session 3 - Final Features & Launch Ready**
+- Added media upload functionality (photos, drawings, videos, audio)
+- Updated BondedLogo with blue-orange gradient (user request for blue in heart)
+- Tightened home page spacing (reduced py-20 to py-12 between sections)
+- Improved connection creation form with clearer labels and placeholder text
+- Fixed date formatting edge cases across Connection and Dashboard pages
+- All three core features fully functional: messaging, journal, media gallery
+- App ready for publishing/deployment
+
+**Previous Sessions**
+- Implemented connection creation system with modal form
+- Created Dashboard with relationship cards
+- Built Connection page with tabbed interface (Messages, Journal, Gallery)
+- Set up PostgreSQL database with proper relationships
+- Implemented Replit Auth integration
 
 ## System Architecture
 
@@ -36,13 +55,13 @@ Preferred communication style: Simple, everyday language.
 client/           # React frontend
   src/
     components/   # UI components (shadcn/ui)
-    hooks/        # Custom React hooks
-    pages/        # Route components
+    hooks/        # Custom React hooks (use-relationships.ts, use-auth.ts)
+    pages/        # Route components (Home, Dashboard, Connection)
     lib/          # Utilities and query client
 server/           # Express backend
   replit_integrations/auth/  # Replit Auth implementation
 shared/           # Shared types and schemas
-  models/         # Database models
+  models/         # Database models (auth.ts)
   routes.ts       # API route definitions
   schema.ts       # Drizzle schema exports
 ```
@@ -51,7 +70,7 @@ shared/           # Shared types and schemas
 1. **Shared Route Definitions**: API routes are defined in `shared/routes.ts` with Zod schemas, enabling type safety across frontend and backend
 2. **Monorepo Structure**: Single package.json with client/server/shared directories for simplified deployment
 3. **Component Library**: shadcn/ui components installed in `client/src/components/ui/` for consistent styling
-4. **Warm Color Palette**: Custom Tailwind theme with peachy/orange tones defined in CSS variables
+4. **Warm Color Palette**: Custom Tailwind theme with peachy/orange tones (primary: 25 95% 58%) with blue accents in logo
 
 ## External Dependencies
 
@@ -77,3 +96,31 @@ shared/           # Shared types and schemas
 - **Radix UI Primitives**: Accessible component foundations
 - **class-variance-authority**: Variant-based component styling
 - **tailwind-merge**: Safe Tailwind class merging
+
+## API Endpoints
+
+### Relationships
+- `GET /api/relationships` - List all relationships for logged-in user
+- `POST /api/relationships` - Create new relationship
+
+### Messages
+- `GET /api/relationships/:relationshipId/messages` - Get messages for a relationship
+- `POST /api/relationships/:relationshipId/messages` - Send a message
+
+### Journal
+- `GET /api/relationships/:relationshipId/journal` - Get journal entries
+- `POST /api/relationships/:relationshipId/journal` - Create journal entry
+- `PATCH /api/journal/:entryId` - Update journal entry
+
+### Media
+- `GET /api/relationships/:relationshipId/media` - Get media gallery
+- `POST /api/relationships/:relationshipId/media` - Upload media (photo, drawing, video, audio)
+
+## Deployment Status
+✅ **Ready for Publishing** - All core features implemented and tested
+- Home page with feature overview
+- Authentication via Replit Auth
+- Connection management (create and view)
+- Real-time messaging
+- Shared journaling with mood tracking
+- Media gallery with upload (base64 storage)
