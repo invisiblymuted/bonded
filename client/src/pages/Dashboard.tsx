@@ -1,23 +1,52 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useRelationships } from "@/hooks/use-relationships";
+import { useRelationships, useCreateRelationship } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart } from "lucide-react";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: relationships, isLoading } = useRelationships();
+  const createRelationship = useCreateRelationship();
+  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [childName, setChildName] = useState("");
+  const [childId, setChildId] = useState("");
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
       setLocation("/");
     }
   }, [authLoading, isAuthenticated, setLocation]);
+
+  const handleCreateConnection = () => {
+    if (!childName.trim() || !childId.trim()) {
+      toast({ title: "Error", description: "Please fill in all fields", variant: "destructive" });
+      return;
+    }
+    createRelationship.mutate(
+      { parentId: user!.id, childId, childName },
+      {
+        onSuccess: () => {
+          setIsOpen(false);
+          setChildName("");
+          setChildId("");
+          toast({ title: "Success", description: "Connection created!" });
+        },
+        onError: () => {
+          toast({ title: "Error", description: "Failed to create connection", variant: "destructive" });
+        },
+      }
+    );
+  };
 
   if (authLoading || isLoading) {
     return (
@@ -75,9 +104,26 @@ export default function Dashboard() {
               <p className="text-muted-foreground mb-6">
                 Create your first family connection to start sharing moments and memories.
               </p>
-              <Button className="gap-2">
-                Create Connection <ArrowRight className="h-4 w-4" />
-              </Button>
+              <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                <DialogTrigger asChild>
+                  <Button className="gap-2">
+                    Create Connection <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Create a Connection</DialogTitle>
+                    <DialogDescription>Connect with your loved one by entering their information</DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <Input placeholder="Child's ID" value={childId} onChange={(e) => setChildId(e.target.value)} />
+                    <Input placeholder="Child's Name" value={childName} onChange={(e) => setChildName(e.target.value)} />
+                    <Button onClick={handleCreateConnection} disabled={createRelationship.isPending} className="w-full">
+                      {createRelationship.isPending ? "Creating..." : "Create Connection"}
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </CardContent>
           </Card>
         ) : (

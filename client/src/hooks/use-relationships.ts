@@ -88,3 +88,22 @@ export function useCreateJournalEntry(relationshipId: number) {
     },
   });
 }
+
+export function useCreateRelationship() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { parentId: string; childId: string; childName: string }) => {
+      const res = await fetch(api.relationships.create.path, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.relationships.list.path] });
+    },
+  });
+}
