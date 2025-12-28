@@ -116,8 +116,14 @@ export default function Dashboard() {
                     <DialogDescription>Connect with your loved one by entering their information</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
-                    <Input placeholder="Child's ID" value={childId} onChange={(e) => setChildId(e.target.value)} />
-                    <Input placeholder="Child's Name" value={childName} onChange={(e) => setChildName(e.target.value)} />
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Their Name</label>
+                      <Input placeholder="e.g., Emma, Alex, etc." value={childName} onChange={(e) => setChildName(e.target.value)} />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Their User ID</label>
+                      <Input placeholder="Ask them to share their user ID from their profile" value={childId} onChange={(e) => setChildId(e.target.value)} />
+                    </div>
                     <Button onClick={handleCreateConnection} disabled={createRelationship.isPending} className="w-full">
                       {createRelationship.isPending ? "Creating..." : "Create Connection"}
                     </Button>
