@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRoute } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry } from "@/hooks/use-relationships";
+import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry, useCreateMedia } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Loader2, Send, MessageSquare, BookOpen, Share2 } from "lucide-react";
+import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 
@@ -27,6 +27,9 @@ export default function Connection() {
   const [journalTitle, setJournalTitle] = useState("");
   const [journalContent, setJournalContent] = useState("");
   const [journalMood, setJournalMood] = useState("happy");
+  const [mediaCaption, setMediaCaption] = useState("");
+  const [uploadingMedia, setUploadingMedia] = useState(false);
+  const createMedia = useCreateMedia(id);
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -42,6 +45,27 @@ export default function Connection() {
       setJournalContent("");
       setJournalMood("happy");
     }
+  };
+
+  const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    
+    setUploadingMedia(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const url = event.target?.result as string;
+      let type: "photo" | "drawing" | "video" | "audio" = "photo";
+      if (file.type.startsWith("video")) type = "video";
+      else if (file.type.startsWith("audio")) type = "audio";
+      else if (file.type.includes("png") || file.type.includes("jpeg") || file.type.includes("gif")) type = "photo";
+      
+      createMedia.mutate({ type, url, filename: file.name, caption: mediaCaption || undefined });
+      setMediaCaption("");
+      setUploadingMedia(false);
+      e.currentTarget.value = "";
+    };
+    reader.readAsDataURL(file);
   };
 
   const moods = ["happy", "sad", "excited", "thoughtful", "grateful"];
@@ -207,6 +231,35 @@ export default function Connection() {
 
             {/* Media Tab */}
             <TabsContent value="media" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Share Media</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Choose a file</label>
+                    <div className="flex gap-2">
+                      <input
+                        type="file"
+                        accept="image/*,video/*,audio/*"
+                        onChange={handleMediaUpload}
+                        disabled={uploadingMedia}
+                        className="flex-1 file:bg-primary file:text-primary-foreground file:px-4 file:py-2 file:border-0 file:rounded-md file:cursor-pointer file:mr-4 file:font-medium"
+                        data-testid="input-media-file"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">Photos, drawings, videos, or audio files</p>
+                  </div>
+                  <Input
+                    placeholder="Add a caption (optional)"
+                    value={mediaCaption}
+                    onChange={(e) => setMediaCaption(e.target.value)}
+                    disabled={uploadingMedia}
+                    data-testid="input-media-caption"
+                  />
+                </CardContent>
+              </Card>
+
               {mediaLoading ? (
                 <div className="flex justify-center py-8">
                   <Loader2 className="h-6 w-6 animate-spin text-primary" />

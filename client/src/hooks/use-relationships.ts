@@ -107,3 +107,23 @@ export function useCreateRelationship() {
     },
   });
 }
+
+export function useCreateMedia(relationshipId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { type: "photo" | "drawing" | "video" | "audio"; url: string; filename: string; caption?: string }) => {
+      const url = buildUrl(api.media.create.path, { relationshipId });
+      const res = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.media.list.path, relationshipId] });
+    },
+  });
+}
