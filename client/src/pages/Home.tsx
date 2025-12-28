@@ -123,7 +123,7 @@ export default function Home() {
       {!isLoading && !isAuthenticated && (
         <div className="bg-primary/5 border-y border-border">
           <div className="container mx-auto px-4 py-16 text-center max-w-3xl">
-            <h2 className="text-3xl font-bold mb-4">Ready to reconnect?</h2>
+            <h2 className="text-3xl font-bold mb-4">Ready to make new memories?</h2>
             <p className="text-muted-foreground mb-8 text-lg">
               Sign up now to create a secure connection with your family.
             </p>
