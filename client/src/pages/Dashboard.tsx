@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
@@ -20,6 +20,16 @@ export default function Dashboard() {
   const [isOpen, setIsOpen] = useState(false);
   const [childName, setChildName] = useState("");
   const [childId, setChildId] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const copyUserId = () => {
+    if (user?.id) {
+      navigator.clipboard.writeText(user.id);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      toast({ title: "Copied!", description: "Your User ID has been copied to clipboard" });
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -91,9 +101,18 @@ export default function Dashboard() {
           className="mb-8"
         >
           <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.firstName}!</h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-lg mb-4">
             Stay connected with your loved ones
           </p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-sm text-muted-foreground">Your User ID:</span>
+            <code className="bg-muted px-3 py-1 rounded text-sm font-mono" data-testid="text-user-id">{user?.id}</code>
+            <Button variant="ghost" size="sm" onClick={copyUserId} className="gap-1" data-testid="button-copy-user-id">
+              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              {copied ? "Copied" : "Copy"}
+            </Button>
+            <span className="text-xs text-muted-foreground">(Share this with family to connect)</span>
+          </div>
         </motion.div>
 
         {relationships && relationships.length === 0 ? (
