@@ -32,6 +32,8 @@ export const journalEntries = pgTable("journal_entries", {
   title: text("title").notNull(),
   content: text("content").notNull(),
   mood: text("mood"), // happy, sad, excited, thoughtful, etc.
+  mediaUrl: text("media_url"), // optional attached media
+  mediaType: text("media_type"), // photo, drawing, video, audio
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

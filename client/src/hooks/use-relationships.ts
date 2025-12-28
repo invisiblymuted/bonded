@@ -73,7 +73,7 @@ export function useCreateMessage(relationshipId: number) {
 export function useCreateJournalEntry(relationshipId: number) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: { title: string; content: string; mood?: string }) => {
+    mutationFn: async (data: { title: string; content: string; mood?: string; mediaUrl?: string; mediaType?: string }) => {
       const url = buildUrl(api.journal.create.path, { relationshipId });
       const res = await fetch(url, {
         method: "POST",

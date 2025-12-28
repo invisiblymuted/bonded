@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload } from "lucide-react";
+import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 
@@ -27,6 +27,7 @@ export default function Connection() {
   const [journalTitle, setJournalTitle] = useState("");
   const [journalContent, setJournalContent] = useState("");
   const [journalMood, setJournalMood] = useState("happy");
+  const [journalMedia, setJournalMedia] = useState<{ url: string; type: string; filename: string } | null>(null);
   const [mediaCaption, setMediaCaption] = useState("");
   const [uploadingMedia, setUploadingMedia] = useState(false);
   const createMedia = useCreateMedia(id);
@@ -40,11 +41,35 @@ export default function Connection() {
 
   const handleCreateJournal = () => {
     if (journalTitle.trim() && journalContent.trim()) {
-      createJournal.mutate({ title: journalTitle, content: journalContent, mood: journalMood });
+      createJournal.mutate({ 
+        title: journalTitle, 
+        content: journalContent, 
+        mood: journalMood,
+        mediaUrl: journalMedia?.url,
+        mediaType: journalMedia?.type
+      });
       setJournalTitle("");
       setJournalContent("");
       setJournalMood("happy");
+      setJournalMedia(null);
     }
+  };
+
+  const handleJournalMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.currentTarget.files?.[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const url = event.target?.result as string;
+      let type = "photo";
+      if (file.type.startsWith("video")) type = "video";
+      else if (file.type.startsWith("audio")) type = "audio";
+      
+      setJournalMedia({ url, type, filename: file.name });
+    };
+    reader.readAsDataURL(file);
+    e.currentTarget.value = "";
   };
 
   const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,9 +197,9 @@ export default function Connection() {
                     onChange={(e) => setJournalContent(e.target.value)}
                     rows={6}
                   />
-                  <div className="flex gap-2 items-center">
+                  <div className="flex gap-2 items-center flex-wrap">
                     <span className="text-sm text-muted-foreground">How are you feeling?</span>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                       {moods.map((mood) => (
                         <Button
                           key={mood}
@@ -188,6 +213,36 @@ export default function Connection() {
                       ))}
                     </div>
                   </div>
+                  
+                  {/* Media attachment */}
+                  <div className="space-y-2">
+                    <div className="flex gap-2 items-center">
+                      <label className="cursor-pointer">
+                        <input
+                          type="file"
+                          accept="image/*,video/*,audio/*"
+                          onChange={handleJournalMediaUpload}
+                          className="hidden"
+                          data-testid="input-journal-media"
+                        />
+                        <Button type="button" variant="outline" size="sm" className="gap-2" asChild>
+                          <span><ImagePlus className="h-4 w-4" /> Add Photo/Video</span>
+                        </Button>
+                      </label>
+                      {journalMedia && (
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <span>{journalMedia.filename}</span>
+                          <Button variant="ghost" size="icon" onClick={() => setJournalMedia(null)} className="h-6 w-6">
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+                    {journalMedia && journalMedia.type === "photo" && (
+                      <img src={journalMedia.url} alt="Preview" className="max-h-32 rounded-md" />
+                    )}
+                  </div>
+                  
                   <Button onClick={handleCreateJournal} disabled={createJournal.isPending} className="w-full">
                     {createJournal.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                     Post Entry
@@ -217,8 +272,17 @@ export default function Connection() {
                             </div>
                           </div>
                         </CardHeader>
-                        <CardContent>
+                        <CardContent className="space-y-4">
                           <p className="text-muted-foreground whitespace-pre-wrap">{entry.content}</p>
+                          {entry.mediaUrl && entry.mediaType === "photo" && (
+                            <img src={entry.mediaUrl} alt="Journal attachment" className="rounded-md max-h-64 object-cover" />
+                          )}
+                          {entry.mediaUrl && entry.mediaType === "video" && (
+                            <video src={entry.mediaUrl} controls className="rounded-md max-h-64 w-full" />
+                          )}
+                          {entry.mediaUrl && entry.mediaType === "audio" && (
+                            <audio src={entry.mediaUrl} controls className="w-full" />
+                          )}
                         </CardContent>
                       </Card>
                     </motion.div>
