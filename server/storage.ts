@@ -63,7 +63,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(relationships)
-      .where((t) => eq(t.parentId, userId) || eq(t.childId, userId))
+      .where(or(eq(relationships.parentId, userId), eq(relationships.childId, userId)))
       .orderBy(desc(relationships.createdAt));
   }
 
