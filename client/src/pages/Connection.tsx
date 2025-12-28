@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
 import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X } from "lucide-react";
+import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 
@@ -99,11 +100,12 @@ export default function Connection() {
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
           <a href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <BondedLogo className="h-6 w-6 text-primary" />
             <span className="font-bold text-xl">Bonded</span>
           </a>
+          <NotificationBell />
         </div>
       </nav>
 

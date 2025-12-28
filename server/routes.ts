@@ -95,8 +95,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
         senderId: userId,
       });
       // Notify the other user
-      const rels = await storage.getRelationships(userId);
-      const rel = rels.find(r => r.id === relationshipId);
+      const rel = await storage.getRelationshipById(relationshipId);
       if (rel) {
         const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
         await storage.createNotification({
@@ -138,8 +137,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
         authorId: userId,
       });
       // Notify the other user
-      const rels = await storage.getRelationships(userId);
-      const rel = rels.find(r => r.id === relationshipId);
+      const rel = await storage.getRelationshipById(relationshipId);
       if (rel) {
         const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
         await storage.createNotification({
@@ -196,8 +194,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
         uploaderId: userId,
       });
       // Notify the other user
-      const rels = await storage.getRelationships(userId);
-      const rel = rels.find(r => r.id === relationshipId);
+      const rel = await storage.getRelationshipById(relationshipId);
       if (rel) {
         const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
         await storage.createNotification({
@@ -239,11 +236,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
   app.patch(api.notifications.markRead.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
     try {
-      await storage.markNotificationRead(Number(req.params.notificationId));
+      await storage.markNotificationRead(Number(req.params.notificationId), userId);
       res.json({ success: true });
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      res.status(404).json({ message: "Notification not found" });
     }
   });
 

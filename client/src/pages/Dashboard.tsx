@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check } from "lucide-react";
+import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
@@ -81,6 +82,7 @@ export default function Dashboard() {
             </div>
           </Link>
           <div className="flex items-center gap-4">
+            <NotificationBell />
             <div className="text-sm text-muted-foreground">
               {user?.firstName} {user?.lastName}
             </div>

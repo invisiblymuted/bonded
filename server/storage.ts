@@ -26,6 +26,7 @@ export interface IStorage {
   searchUsers(query: string): Promise<User[]>;
 
   getRelationships(userId: string): Promise<Relationship[]>;
+  getRelationshipById(id: number): Promise<Relationship | undefined>;
   createRelationship(rel: InsertRelationship): Promise<Relationship>;
   acceptRelationship(id: number): Promise<Relationship>;
 
@@ -42,7 +43,7 @@ export interface IStorage {
 
   getNotifications(userId: string): Promise<Notification[]>;
   createNotification(notification: InsertNotification): Promise<Notification>;
-  markNotificationRead(id: number): Promise<void>;
+  markNotificationRead(id: number, userId: string): Promise<void>;
   markAllNotificationsRead(userId: string): Promise<void>;
 }
 
@@ -73,6 +74,11 @@ export class DatabaseStorage implements IStorage {
       .from(relationships)
       .where(or(eq(relationships.parentId, userId), eq(relationships.childId, userId)))
       .orderBy(desc(relationships.createdAt));
+  }
+
+  async getRelationshipById(id: number) {
+    const [rel] = await db.select().from(relationships).where(eq(relationships.id, id));
+    return rel;
   }
 
   async createRelationship(rel: InsertRelationship) {
@@ -155,7 +161,11 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async markNotificationRead(id: number) {
+  async markNotificationRead(id: number, userId: string) {
+    const [notification] = await db.select().from(notifications).where(eq(notifications.id, id));
+    if (!notification || notification.userId !== userId) {
+      throw new Error("Notification not found");
+    }
     await db.update(notifications).set({ read: true }).where(eq(notifications.id, id));
   }
 
