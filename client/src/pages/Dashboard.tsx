@@ -148,7 +148,7 @@ export default function Dashboard() {
                         {rel.childName}
                       </CardTitle>
                       <CardDescription>
-                        Connected since {new Date(rel.createdAt).toLocaleDateString()}
+                        Connected since {rel.createdAt ? new Date(rel.createdAt).toLocaleDateString() : "Today"}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>

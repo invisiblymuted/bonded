@@ -105,7 +105,7 @@ export default function Connection() {
                           >
                             <p className="text-sm">{msg.content}</p>
                             <p className="text-xs opacity-70 mt-1">
-                              {format(new Date(msg.createdAt), "HH:mm")}
+                              {msg.createdAt ? format(new Date(msg.createdAt), "HH:mm") : ""}
                             </p>
                           </div>
                         </motion.div>
@@ -187,7 +187,7 @@ export default function Connection() {
                               <div className="flex gap-2 mt-2">
                                 {entry.mood && <Badge variant="outline" className="capitalize">{entry.mood}</Badge>}
                                 <span className="text-sm text-muted-foreground">
-                                  {format(new Date(entry.createdAt), "MMM d, yyyy")}
+                                  {entry.createdAt ? format(new Date(entry.createdAt), "MMM d, yyyy") : ""}
                                 </span>
                               </div>
                             </div>
