@@ -132,16 +132,19 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const userId = (req.user as any).claims.sub;
     try {
       const relId = Number(req.params.id);
+      console.log("Deleting relationship:", relId, "for user:", userId);
       const rel = await storage.getRelationshipById(relId);
-      if (!rel) return res.status(404).json({ message: "Not found" });
+      if (!rel) return res.status(404).json({ message: "Connection not found" });
       // Check user is part of the relationship
       if (rel.parentId !== userId && rel.childId !== userId) {
-        return res.status(403).json({ message: "Not authorized" });
+        return res.status(403).json({ message: "Not authorized to remove this connection" });
       }
-      const success = await storage.deleteRelationship(relId);
-      res.json({ success });
+      await storage.deleteRelationship(relId);
+      console.log("Successfully deleted relationship:", relId);
+      res.json({ success: true });
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      console.error("Delete relationship error:", error);
+      res.status(500).json({ message: "Failed to remove connection" });
     }
   });
 
