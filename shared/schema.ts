@@ -122,6 +122,26 @@ export const insertDashboardPreferencesSchema = createInsertSchema(dashboardPref
   updatedAt: true,
 });
 
+// Notification settings for customizable sounds and vibration
+export const notificationSettings = pgTable("notification_settings", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id).unique(),
+  soundEnabled: boolean("sound_enabled").notNull().default(true),
+  soundType: text("sound_type").notNull().default("chime"), // chime, bell, pop, gentle, none
+  vibrationEnabled: boolean("vibration_enabled").notNull().default(true),
+  vibrationPattern: text("vibration_pattern").notNull().default("short"), // short, long, double, none
+  messageNotifications: boolean("message_notifications").notNull().default(true),
+  eventNotifications: boolean("event_notifications").notNull().default(true),
+  journalNotifications: boolean("journal_notifications").notNull().default(true),
+  mediaNotifications: boolean("media_notifications").notNull().default(true),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertNotificationSettingsSchema = createInsertSchema(notificationSettings).omit({
+  id: true,
+  updatedAt: true,
+});
+
 // Types
 export type DashboardPreferences = typeof dashboardPreferences.$inferSelect;
 export type InsertDashboardPreferences = z.infer<typeof insertDashboardPreferencesSchema>;
@@ -137,3 +157,5 @@ export type Media = typeof media.$inferSelect;
 export type InsertMedia = z.infer<typeof insertMediaSchema>;
 export type Event = typeof events.$inferSelect;
 export type InsertEvent = z.infer<typeof insertEventSchema>;
+export type NotificationSettings = typeof notificationSettings.$inferSelect;
+export type InsertNotificationSettings = z.infer<typeof insertNotificationSettingsSchema>;
