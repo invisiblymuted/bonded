@@ -140,34 +140,16 @@ export default function Connection() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-          <div className="flex items-center gap-4">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="flex items-center gap-3 mb-4">
             <Link href="/dashboard">
               <Button variant="ghost" size="icon" data-testid="button-back-dashboard">
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <div className="flex items-center gap-2">
-              <BondedLogo className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl" data-testid="text-connection-name">{connectionName}</span>
-            </div>
+            <h1 className="text-3xl font-bold" data-testid="text-connection-name">{connectionName}</h1>
           </div>
-          <div className="flex items-center gap-2">
-            <Link href="/dashboard">
-              <Button variant="ghost" size="sm" data-testid="link-dashboard">
-                Dashboard
-              </Button>
-            </Link>
-            <NotificationBell />
-          </div>
-        </div>
-      </nav>
-
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-3xl font-bold mb-2">{connectionName}</h1>
           <p className="text-muted-foreground mb-8">Share moments, memories, and love</p>
 
           <Tabs defaultValue="messages" className="w-full">

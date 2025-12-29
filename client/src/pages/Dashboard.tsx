@@ -465,32 +465,11 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
-      {/* Navigation */}
-      <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-          <Link href="/">
-            <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
-              <BondedLogo className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">Bonded</span>
-            </div>
-          </Link>
-          <div className="flex items-center gap-2">
-            <SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} />
-            <NotificationBell />
-            <div className="text-sm text-muted-foreground hidden sm:block">
-              {user?.firstName} {user?.lastName}
-            </div>
-            <a href="/api/logout">
-              <Button variant="ghost" size="sm">
-                Logout
-              </Button>
-            </a>
-          </div>
-        </div>
-      </nav>
-
       {/* Main Content */}
       <div className={`container mx-auto px-4 max-w-5xl ${containerPadding}`}>
+        <div className="flex justify-end mb-4">
+          <SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} />
+        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
