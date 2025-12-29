@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry, useCreateMedia } from "@/hooks/use-relationships";
+import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry, useCreateMedia, useRelationships } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -18,6 +18,9 @@ export default function Connection() {
   const [match, params] = useRoute("/connection/:id");
   const id = params?.id ? parseInt(params.id) : 0;
   const { user } = useAuth();
+  const { data: relationships } = useRelationships();
+  const currentConnection = relationships?.find(r => r.id === id);
+  const connectionName = (currentConnection as any)?.otherUserName || currentConnection?.childName || "Connection";
   const { data: messages, isLoading: messagesLoading } = useMessages(id);
   const { data: journal, isLoading: journalLoading } = useJournal(id);
   const { data: mediaGallery, isLoading: mediaLoading } = useMediaGallery(id);
@@ -107,10 +110,10 @@ export default function Connection() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="flex items-center gap-2">
               <BondedLogo className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">Bonded</span>
-            </Link>
+              <span className="font-bold text-xl" data-testid="text-connection-name">{connectionName}</span>
+            </div>
           </div>
           <NotificationBell />
         </div>
@@ -118,7 +121,7 @@ export default function Connection() {
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-3xl font-bold mb-2">Connection</h1>
+          <h1 className="text-3xl font-bold mb-2">{connectionName}</h1>
           <p className="text-muted-foreground mb-8">Share moments, memories, and love</p>
 
           <Tabs defaultValue="messages" className="w-full">
