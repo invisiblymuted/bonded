@@ -115,7 +115,14 @@ export default function Connection() {
               <span className="font-bold text-xl" data-testid="text-connection-name">{connectionName}</span>
             </div>
           </div>
-          <NotificationBell />
+          <div className="flex items-center gap-2">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="sm" data-testid="link-dashboard">
+                Dashboard
+              </Button>
+            </Link>
+            <NotificationBell />
+          </div>
         </div>
       </nav>
 
