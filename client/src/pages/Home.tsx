@@ -185,7 +185,7 @@ export default function Home() {
                 <CardContent className="space-y-3">
                   <p className="text-sm text-muted-foreground">{useCase.description}</p>
                   <div className="flex items-baseline gap-2 pt-2 border-t border-border">
-                    <span className="text-2xl font-bold text-primary">{useCase.stat}</span>
+                    <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-primary bg-clip-text text-transparent">{useCase.stat}</span>
                     <span className="text-xs text-muted-foreground">{useCase.statLabel}</span>
                   </div>
                 </CardContent>
