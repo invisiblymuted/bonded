@@ -29,7 +29,7 @@ function Router() {
 
 function Header() {
   const { user, isAuthenticated, logout } = useAuth();
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
   
   // Don't show header on home page (it has its own navigation)
   if (location === "/") return null;
@@ -41,10 +41,14 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2" data-testid="link-logo-home">
+        <button 
+          onClick={() => setLocation("/")} 
+          className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+          data-testid="link-logo-home"
+        >
           <BondedLogo className="h-7 w-7" />
           <span className="font-semibold text-lg">Bonded</span>
-        </Link>
+        </button>
         
         <div className="flex items-center gap-3">
           <NotificationBell />
