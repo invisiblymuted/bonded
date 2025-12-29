@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Switch } from "@/components/ui/switch";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus, Trash2, Users, Bell, Volume2 } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus, Trash2, Users, Bell, Volume2, LogOut, UserCog } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNotificationSettings, type SoundType, type VibrationPattern } from "@/hooks/use-notification-settings";
 import { GradientIcon } from "@/components/GradientIcon";
@@ -628,6 +628,26 @@ export default function Dashboard() {
                   <span><SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} /></span>
                 </TooltipTrigger>
                 <TooltipContent>Dashboard Settings</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href="/api/switch-account">
+                    <Button variant="ghost" size="icon" data-testid="button-switch-account">
+                      <UserCog className="h-4 w-4" />
+                    </Button>
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>Switch Account</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <a href="/api/logout">
+                    <Button variant="ghost" size="icon" data-testid="button-logout">
+                      <LogOut className="h-4 w-4" />
+                    </Button>
+                  </a>
+                </TooltipTrigger>
+                <TooltipContent>Logout</TooltipContent>
               </Tooltip>
             </div>
           </div>

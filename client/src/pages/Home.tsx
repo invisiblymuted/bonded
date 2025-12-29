@@ -59,8 +59,11 @@ export default function Home() {
               <Link href="/dashboard">
                 <Button variant="outline">Dashboard</Button>
               </Link>
+              <a href="/api/switch-account">
+                <Button variant="ghost" data-testid="button-switch-account">Switch Account</Button>
+              </a>
               <a href="/api/logout">
-                <Button variant="ghost">Logout</Button>
+                <Button variant="ghost" data-testid="button-logout">Logout</Button>
               </a>
             </div>
           ) : (
