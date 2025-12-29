@@ -11,6 +11,14 @@ Prefers warm, inviting design (peach/orange color palette with blue accents)
 
 ## Recent Updates
 
+**Session 5 - Customizable Dashboard**
+- Added customizable dashboard with widget system
+- Three widgets: Connections, Recent Messages, Quick Actions
+- Settings panel to show/hide widgets and reorder them
+- Layout density toggle (compact vs spacious)
+- Dashboard preferences stored in database per user
+- Security: Preferences endpoint validates user ownership, prevents tampering
+
 **Session 4 - Notifications System**
 - Added in-app notification system with bell icon and badge count
 - Notifications created automatically for new messages, journal entries, media uploads, and connections
@@ -84,7 +92,7 @@ shared/           # Shared types and schemas
 
 ### Database
 - **PostgreSQL**: Primary data store, connection via `DATABASE_URL` environment variable
-- **Tables**: users, sessions (auth), relationships, messages, journalEntries, media, notifications
+- **Tables**: users, sessions (auth), relationships, messages, journalEntries, media, notifications, dashboardPreferences
 
 ### Authentication
 - **Replit Auth**: OpenID Connect provider for user authentication

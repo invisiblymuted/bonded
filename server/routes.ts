@@ -291,13 +291,37 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     if (!req.isAuthenticated()) return res.sendStatus(401);
     const userId = (req.user as any).claims.sub;
     try {
+      const updateSchema = z.object({
+        widgetOrder: z.string().optional().refine(val => {
+          if (!val) return true;
+          try {
+            const arr = JSON.parse(val);
+            return Array.isArray(arr) && arr.every(w => ["connections", "recentMessages", "quickActions"].includes(w));
+          } catch { return false; }
+        }, "Invalid widget order"),
+        hiddenWidgets: z.string().optional().refine(val => {
+          if (!val) return true;
+          try {
+            const arr = JSON.parse(val);
+            return Array.isArray(arr) && arr.every(w => ["connections", "recentMessages", "quickActions"].includes(w));
+          } catch { return false; }
+        }, "Invalid hidden widgets"),
+        layoutDensity: z.enum(["compact", "spacious"]).optional(),
+      });
+      const validated = updateSchema.parse(req.body);
       const prefs = await storage.upsertDashboardPreferences({
         userId,
-        ...req.body,
+        ...(validated.widgetOrder !== undefined && { widgetOrder: validated.widgetOrder }),
+        ...(validated.hiddenWidgets !== undefined && { hiddenWidgets: validated.hiddenWidgets }),
+        ...(validated.layoutDensity !== undefined && { layoutDensity: validated.layoutDensity }),
       });
       res.json(prefs);
     } catch (error) {
-      res.status(500).json({ message: "Internal Server Error" });
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: error.errors });
+      } else {
+        res.status(500).json({ message: "Internal Server Error" });
+      }
     }
   });
 
