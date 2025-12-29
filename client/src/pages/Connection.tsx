@@ -9,13 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft, Calendar, Trash2, Gift, Phone, Bell, CalendarDays } from "lucide-react";
+import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft, Calendar, Trash2, Gift, Phone, Bell, CalendarDays, Video, PhoneOff } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { JitsiMeeting } from "@jitsi/react-sdk";
 
 export default function Connection() {
   const [match, params] = useRoute("/connection/:id");
@@ -48,6 +49,7 @@ export default function Connection() {
   const [eventDate, setEventDate] = useState("");
   const [eventType, setEventType] = useState("general");
   const [eventReminder, setEventReminder] = useState(true);
+  const [videoCallActive, setVideoCallActive] = useState(false);
 
   const handleCreateEvent = () => {
     if (eventTitle.trim() && eventDate) {
@@ -174,7 +176,7 @@ export default function Connection() {
           <p className="text-muted-foreground mb-8">Share moments, memories, and love</p>
 
           <Tabs defaultValue="messages" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsList className="grid w-full grid-cols-5 mb-8">
               <TabsTrigger value="messages" className="gap-2">
                 <GradientIcon icon={<MessageSquare className="h-4 w-4" />} />
                 Messages
@@ -190,6 +192,10 @@ export default function Connection() {
               <TabsTrigger value="media" className="gap-2">
                 <GradientIcon icon={<Share2 className="h-4 w-4" />} />
                 Gallery
+              </TabsTrigger>
+              <TabsTrigger value="video" className="gap-2" data-testid="tab-video">
+                <GradientIcon icon={<Video className="h-4 w-4" />} />
+                Video
               </TabsTrigger>
             </TabsList>
 
@@ -575,6 +581,70 @@ export default function Connection() {
                 </div>
               ) : (
                 <p className="text-center text-muted-foreground py-8">No media yet. Start sharing!</p>
+              )}
+            </TabsContent>
+
+            {/* Video Call Tab */}
+            <TabsContent value="video" className="space-y-6">
+              {!videoCallActive ? (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <GradientIcon icon={<Video className="h-5 w-5" />} />
+                      Video Call
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground">
+                      Start a video call with {connectionName}. Both of you will need to be on this page at the same time to connect.
+                    </p>
+                    <Button
+                      className="btn-gradient w-full"
+                      onClick={() => setVideoCallActive(true)}
+                      data-testid="button-start-video-call"
+                    >
+                      <Video className="h-4 w-4 mr-2" />
+                      Start Video Call
+                    </Button>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-lg font-semibold">Video Call with {connectionName}</h3>
+                    <Button
+                      variant="destructive"
+                      onClick={() => setVideoCallActive(false)}
+                      data-testid="button-end-video-call"
+                    >
+                      <PhoneOff className="h-4 w-4 mr-2" />
+                      End Call
+                    </Button>
+                  </div>
+                  <div className="rounded-lg overflow-hidden border border-border" style={{ height: "500px" }}>
+                    <JitsiMeeting
+                      domain="meet.jit.si"
+                      roomName={`bonded-family-${id}-${currentConnection?.parentId || 0}`}
+                      configOverwrite={{
+                        startWithAudioMuted: true,
+                        startWithVideoMuted: false,
+                        prejoinPageEnabled: false,
+                      }}
+                      interfaceConfigOverwrite={{
+                        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                        SHOW_JITSI_WATERMARK: false,
+                      }}
+                      userInfo={{
+                        displayName: user?.firstName || "Family Member",
+                        email: user?.email || "",
+                      }}
+                      getIFrameRef={(iframeRef) => {
+                        iframeRef.style.height = "100%";
+                        iframeRef.style.width = "100%";
+                      }}
+                    />
+                  </div>
+                </div>
               )}
             </TabsContent>
           </Tabs>
