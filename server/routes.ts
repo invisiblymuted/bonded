@@ -36,7 +36,21 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     if (!req.isAuthenticated()) return res.sendStatus(401);
     const userId = (req.user as any).claims.sub;
     const rels = await storage.getRelationships(userId);
-    res.json(rels);
+    // Enrich with user info for display
+    const enrichedRels = await Promise.all(
+      rels.map(async (rel) => {
+        const isParent = rel.parentId === userId;
+        const otherUserId = isParent ? rel.childId : rel.parentId;
+        const otherUser = await storage.getUser(otherUserId);
+        return {
+          ...rel,
+          otherUserName: isParent ? rel.childName : (otherUser?.firstName || "Someone"),
+          otherUserImage: otherUser?.profileImageUrl,
+          isParent,
+        };
+      })
+    );
+    res.json(enrichedRels);
   });
 
   app.post(api.relationships.create.path, async (req, res) => {

@@ -172,7 +172,7 @@ export default function Dashboard() {
                         </span>
                       </div>
                       <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                        {rel.childName}
+                        {(rel as any).otherUserName || rel.childName}
                       </CardTitle>
                       <CardDescription>
                         Connected since {rel.createdAt ? new Date(rel.createdAt).toLocaleDateString() : "Today"}
