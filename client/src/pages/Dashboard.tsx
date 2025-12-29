@@ -1,21 +1,376 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useRelationships, useCreateRelationship } from "@/hooks/use-relationships";
+import { useDashboardPreferences, useUpdateDashboardPreferences, type WidgetType } from "@/hooks/use-dashboard-preferences";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Switch } from "@/components/ui/switch";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus } from "lucide-react";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@tanstack/react-query";
+import type { Message, Relationship } from "@shared/schema";
+
+const WIDGET_INFO: Record<WidgetType, { title: string; description: string; icon: typeof Heart }> = {
+  connections: { title: "Connections", description: "Your family connections", icon: Heart },
+  recentMessages: { title: "Recent Messages", description: "Latest messages across connections", icon: MessageSquare },
+  quickActions: { title: "Quick Actions", description: "Frequently used actions", icon: Plus },
+};
+
+function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: { 
+  relationships: Relationship[] | undefined; 
+  isLoading: boolean;
+  user: any;
+  onOpenCreate: () => void;
+}) {
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Heart className="h-5 w-5 text-primary" />
+            Connections
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!relationships || relationships.length === 0) {
+    return (
+      <Card className="border-dashed">
+        <CardContent className="pt-8 pb-8 text-center">
+          <Heart className="h-12 w-12 text-primary/30 mx-auto mb-3" />
+          <h3 className="text-lg font-semibold mb-2">No connections yet</h3>
+          <p className="text-muted-foreground text-sm mb-4">
+            Create your first family connection to start sharing.
+          </p>
+          <Button onClick={onOpenCreate} className="gap-2" size="sm">
+            Create Connection <ArrowRight className="h-4 w-4" />
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {relationships.map((rel, i) => (
+        <motion.div
+          key={rel.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.05 }}
+        >
+          <Link href={`/connection/${rel.id}`}>
+            <Card className="h-full hover:shadow-lg transition-all cursor-pointer group">
+              <CardHeader className="pb-2">
+                <div className="flex items-center gap-2 mb-1">
+                  <Heart className="h-4 w-4 text-primary" />
+                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                    Connected
+                  </span>
+                </div>
+                <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                  {(rel as any).otherUserName || rel.childName}
+                </CardTitle>
+                <CardDescription className="text-xs">
+                  Connected since {rel.createdAt ? new Date(rel.createdAt).toLocaleDateString() : "Today"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-2">
+                <div className="flex gap-4 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <MessageSquare className="h-3 w-3" />
+                    <span>Chat</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <BookOpen className="h-3 w-3" />
+                    <span>Journal</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Share2 className="h-3 w-3" />
+                    <span>Media</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
+function RecentMessagesWidget({ relationships }: { relationships: Relationship[] | undefined }) {
+  const { data: allMessages, isLoading } = useQuery<{ relationshipId: number; messages: Message[]; connectionName: string }[]>({
+    queryKey: ["/api/recent-messages"],
+    queryFn: async () => {
+      if (!relationships || relationships.length === 0) return [];
+      const results = await Promise.all(
+        relationships.slice(0, 5).map(async (rel) => {
+          try {
+            const res = await fetch(`/api/relationships/${rel.id}/messages`);
+            if (!res.ok) return { relationshipId: rel.id, messages: [], connectionName: (rel as any).otherUserName || rel.childName };
+            const msgs = await res.json();
+            return { 
+              relationshipId: rel.id, 
+              messages: msgs.slice(0, 3),
+              connectionName: (rel as any).otherUserName || rel.childName
+            };
+          } catch {
+            return { relationshipId: rel.id, messages: [], connectionName: (rel as any).otherUserName || rel.childName };
+          }
+        })
+      );
+      return results.filter(r => r.messages.length > 0);
+    },
+    enabled: !!relationships && relationships.length > 0,
+  });
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-primary" />
+            Recent Messages
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!allMessages || allMessages.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <MessageSquare className="h-5 w-5 text-primary" />
+            Recent Messages
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-muted-foreground text-sm text-center py-4">
+            No messages yet. Start a conversation with your connections!
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <MessageSquare className="h-5 w-5 text-primary" />
+          Recent Messages
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        {allMessages.map(({ relationshipId, messages, connectionName }) => (
+          <Link key={relationshipId} href={`/connection/${relationshipId}`}>
+            <div className="p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-medium text-sm">{connectionName}</span>
+                <span className="text-xs text-muted-foreground">
+                  {messages[0]?.createdAt ? new Date(messages[0].createdAt).toLocaleDateString() : ""}
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground line-clamp-1">
+                {messages[0]?.content || "No messages"}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function QuickActionsWidget({ relationships, onOpenCreate }: { 
+  relationships: Relationship[] | undefined;
+  onOpenCreate: () => void;
+}) {
+  const hasConnections = relationships && relationships.length > 0;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Plus className="h-5 w-5 text-primary" />
+          Quick Actions
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-2 gap-3">
+          <Button variant="outline" onClick={onOpenCreate} className="flex-col h-auto py-4 gap-2">
+            <Heart className="h-5 w-5 text-primary" />
+            <span className="text-xs">New Connection</span>
+          </Button>
+          {hasConnections && (
+            <>
+              <Link href={`/connection/${relationships[0].id}`}>
+                <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
+                  <MessageSquare className="h-5 w-5 text-primary" />
+                  <span className="text-xs">Send Message</span>
+                </Button>
+              </Link>
+              <Link href={`/connection/${relationships[0].id}`}>
+                <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
+                  <PenLine className="h-5 w-5 text-primary" />
+                  <span className="text-xs">Write Journal</span>
+                </Button>
+              </Link>
+              <Link href={`/connection/${relationships[0].id}`}>
+                <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
+                  <Image className="h-5 w-5 text-primary" />
+                  <span className="text-xs">Share Photo</span>
+                </Button>
+              </Link>
+            </>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function SettingsPanel({ 
+  preferences, 
+  onUpdate 
+}: { 
+  preferences: { widgetOrder: WidgetType[]; hiddenWidgets: WidgetType[]; layoutDensity: "compact" | "spacious" };
+  onUpdate: (prefs: Partial<typeof preferences>) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const moveWidget = (widgetId: WidgetType, direction: "up" | "down") => {
+    const newOrder = [...preferences.widgetOrder];
+    const currentIndex = newOrder.indexOf(widgetId);
+    if (currentIndex === -1) return;
+    
+    const newIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= newOrder.length) return;
+    
+    [newOrder[currentIndex], newOrder[newIndex]] = [newOrder[newIndex], newOrder[currentIndex]];
+    onUpdate({ widgetOrder: newOrder });
+  };
+
+  const toggleWidget = (widgetId: WidgetType) => {
+    const isHidden = preferences.hiddenWidgets.includes(widgetId);
+    if (isHidden) {
+      onUpdate({ hiddenWidgets: preferences.hiddenWidgets.filter(w => w !== widgetId) });
+    } else {
+      onUpdate({ hiddenWidgets: [...preferences.hiddenWidgets, widgetId] });
+    }
+  };
+
+  const toggleDensity = () => {
+    onUpdate({ layoutDensity: preferences.layoutDensity === "compact" ? "spacious" : "compact" });
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" data-testid="button-dashboard-settings">
+          <Settings className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Customize Dashboard</DialogTitle>
+          <DialogDescription>Arrange and toggle widgets to personalize your view</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div>
+            <h4 className="font-medium mb-3">Widget Order</h4>
+            <div className="space-y-2">
+              {preferences.widgetOrder.map((widgetId, index) => {
+                const info = WIDGET_INFO[widgetId];
+                const isHidden = preferences.hiddenWidgets.includes(widgetId);
+                const Icon = info.icon;
+                return (
+                  <div key={widgetId} className="flex items-center justify-between p-3 bg-muted/50 rounded-md">
+                    <div className="flex items-center gap-3">
+                      <Icon className="h-4 w-4 text-primary" />
+                      <div>
+                        <span className="font-medium text-sm">{info.title}</span>
+                        <p className="text-xs text-muted-foreground">{info.description}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Switch 
+                        checked={!isHidden} 
+                        onCheckedChange={() => toggleWidget(widgetId)}
+                        data-testid={`switch-widget-${widgetId}`}
+                      />
+                      <div className="flex flex-col">
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6"
+                          disabled={index === 0}
+                          onClick={() => moveWidget(widgetId, "up")}
+                          data-testid={`button-move-up-${widgetId}`}
+                        >
+                          <ChevronUp className="h-3 w-3" />
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-6 w-6"
+                          disabled={index === preferences.widgetOrder.length - 1}
+                          onClick={() => moveWidget(widgetId, "down")}
+                          data-testid={`button-move-down-${widgetId}`}
+                        >
+                          <ChevronDown className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex items-center justify-between p-3 bg-muted/50 rounded-md">
+            <div>
+              <span className="font-medium text-sm">Compact Layout</span>
+              <p className="text-xs text-muted-foreground">Use tighter spacing between elements</p>
+            </div>
+            <Switch 
+              checked={preferences.layoutDensity === "compact"} 
+              onCheckedChange={toggleDensity}
+              data-testid="switch-layout-density"
+            />
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export default function Dashboard() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const { data: relationships, isLoading } = useRelationships();
+  const { preferences, isLoading: prefsLoading } = useDashboardPreferences();
+  const updatePreferences = useUpdateDashboardPreferences();
   const createRelationship = useCreateRelationship();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +414,11 @@ export default function Dashboard() {
     );
   };
 
-  if (authLoading || isLoading) {
+  const handleUpdatePreferences = (prefs: Partial<typeof preferences>) => {
+    updatePreferences.mutate(prefs);
+  };
+
+  if (authLoading || isLoading || prefsLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
@@ -70,20 +429,54 @@ export default function Dashboard() {
     );
   }
 
+  const isCompact = preferences.layoutDensity === "compact";
+  const spacing = isCompact ? "space-y-4" : "space-y-6";
+  const containerPadding = isCompact ? "py-8" : "py-12";
+
+  const renderWidget = (widgetId: WidgetType) => {
+    if (preferences.hiddenWidgets.includes(widgetId)) return null;
+    
+    switch (widgetId) {
+      case "connections":
+        return (
+          <ConnectionsWidget 
+            key={widgetId}
+            relationships={relationships} 
+            isLoading={isLoading} 
+            user={user}
+            onOpenCreate={() => setIsOpen(true)}
+          />
+        );
+      case "recentMessages":
+        return <RecentMessagesWidget key={widgetId} relationships={relationships} />;
+      case "quickActions":
+        return (
+          <QuickActionsWidget 
+            key={widgetId}
+            relationships={relationships}
+            onOpenCreate={() => setIsOpen(true)}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
               <BondedLogo className="h-6 w-6 text-primary" />
               <span className="font-bold text-xl">Bonded</span>
             </div>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} />
             <NotificationBell />
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground hidden sm:block">
               {user?.firstName} {user?.lastName}
             </div>
             <a href="/api/logout">
@@ -96,14 +489,14 @@ export default function Dashboard() {
       </nav>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
+      <div className={`container mx-auto px-4 max-w-5xl ${containerPadding}`}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className={isCompact ? "mb-6" : "mb-8"}
         >
-          <h1 className="text-4xl font-bold mb-2">Welcome back, {user?.firstName}!</h1>
-          <p className="text-muted-foreground text-lg mb-4">
+          <h1 className={`font-bold mb-2 ${isCompact ? "text-3xl" : "text-4xl"}`}>Welcome back, {user?.firstName}!</h1>
+          <p className={`text-muted-foreground mb-4 ${isCompact ? "text-base" : "text-lg"}`}>
             Stay connected with your loved ones
           </p>
           <div className="flex items-center gap-2 flex-wrap">
@@ -117,90 +510,33 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {relationships && relationships.length === 0 ? (
-          <Card className="border-dashed">
-            <CardContent className="pt-12 pb-12 text-center">
-              <Heart className="h-16 w-16 text-primary/30 mx-auto mb-4" />
-              <h3 className="text-2xl font-semibold mb-2">No connections yet</h3>
-              <p className="text-muted-foreground mb-6">
-                Create your first family connection to start sharing moments and memories.
-              </p>
-              <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogTrigger asChild>
-                  <Button className="gap-2">
-                    Create Connection <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create a Connection</DialogTitle>
-                    <DialogDescription>Connect with your loved one by entering their information</DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Their Name</label>
-                      <Input placeholder="e.g., Emma, Alex, etc." value={childName} onChange={(e) => setChildName(e.target.value)} />
-                    </div>
-                    <div>
-                      <label className="text-sm font-medium mb-2 block">Their User ID</label>
-                      <Input placeholder="Ask them to share their user ID from their profile" value={childId} onChange={(e) => setChildId(e.target.value)} />
-                    </div>
-                    <Button onClick={handleCreateConnection} disabled={createRelationship.isPending} className="w-full" data-testid="button-create-connection">
-                      {createRelationship.isPending ? "Creating..." : "Create Connection"}
-                    </Button>
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {relationships?.map((rel, i) => (
-              <motion.div
-                key={rel.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <Link href={`/connection/${rel.id}`}>
-                  <Card className="h-full hover:shadow-lg transition-all cursor-pointer group">
-                    <CardHeader>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Heart className="h-5 w-5 text-primary" />
-                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                          Connected
-                        </span>
-                      </div>
-                      <CardTitle className="text-xl group-hover:text-primary transition-colors">
-                        {(rel as any).otherUserName || rel.childName}
-                      </CardTitle>
-                      <CardDescription>
-                        Connected since {rel.createdAt ? new Date(rel.createdAt).toLocaleDateString() : "Today"}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <MessageSquare className="h-4 w-4" />
-                          <span>Chat & Messages</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <BookOpen className="h-4 w-4" />
-                          <span>Shared Journal</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                          <Share2 className="h-4 w-4" />
-                          <span>Media Gallery</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        )}
+        <div className={spacing}>
+          {preferences.widgetOrder.map(widgetId => renderWidget(widgetId))}
+        </div>
       </div>
+
+      {/* Create Connection Dialog */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a Connection</DialogTitle>
+            <DialogDescription>Connect with your loved one by entering their information</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Their Name</label>
+              <Input placeholder="e.g., Emma, Alex, etc." value={childName} onChange={(e) => setChildName(e.target.value)} data-testid="input-child-name" />
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-2 block">Their User ID</label>
+              <Input placeholder="Ask them to share their user ID from their profile" value={childId} onChange={(e) => setChildId(e.target.value)} data-testid="input-child-id" />
+            </div>
+            <Button onClick={handleCreateConnection} disabled={createRelationship.isPending} className="w-full" data-testid="button-create-connection">
+              {createRelationship.isPending ? "Creating..." : "Create Connection"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
