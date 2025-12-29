@@ -50,7 +50,7 @@ export default function Home() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
           <div className="flex items-center gap-2">
             <BondedLogo className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl text-blue-700">Bonded</span>
+            <span className="font-bold text-xl text-blue-800">Bonded</span>
           </div>
           {isLoading ? (
             <div className="w-20 h-10 bg-muted rounded animate-pulse" />
@@ -383,7 +383,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <BondedLogo className="h-5 w-5 text-primary" />
-              <span className="font-medium text-blue-700">Bonded</span>
+              <span className="font-medium text-blue-800">Bonded</span>
               <span className="text-sm text-muted-foreground">- Keeping families connected</span>
             </div>
             <div className="flex gap-6 text-sm text-muted-foreground">
