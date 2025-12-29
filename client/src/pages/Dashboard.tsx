@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
-import { useRelationships, useCreateRelationship } from "@/hooks/use-relationships";
+import { useRelationships, useCreateRelationship, useDeleteRelationship } from "@/hooks/use-relationships";
 import { useDashboardPreferences, useUpdateDashboardPreferences, type WidgetType } from "@/hooks/use-dashboard-preferences";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Switch } from "@/components/ui/switch";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus, Trash2, Users } from "lucide-react";
 import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
@@ -366,6 +366,82 @@ function SettingsPanel({
   );
 }
 
+function ManageConnectionsPanel({ 
+  relationships, 
+  onDelete 
+}: { 
+  relationships: Relationship[] | undefined;
+  onDelete: (id: number) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); setConfirmDelete(null); }}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" data-testid="button-manage-connections">
+          <Users className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Manage Connections</DialogTitle>
+          <DialogDescription>View and remove your family connections</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-3 max-h-[400px] overflow-y-auto">
+          {relationships && relationships.length > 0 ? (
+            relationships.map((rel) => (
+              <div key={rel.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-md">
+                <div className="flex items-center gap-3">
+                  <GradientIcon icon={<Heart className="h-4 w-4" />} />
+                  <div>
+                    <span className="font-medium text-sm">{(rel as any).otherUserName || rel.childName}</span>
+                    <p className="text-xs text-muted-foreground">
+                      Connected {rel.createdAt ? new Date(rel.createdAt).toLocaleDateString() : ""}
+                    </p>
+                  </div>
+                </div>
+                {confirmDelete === rel.id ? (
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="destructive" 
+                      size="sm"
+                      onClick={() => { onDelete(rel.id); setConfirmDelete(null); }}
+                      data-testid={`button-confirm-delete-${rel.id}`}
+                    >
+                      Confirm
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setConfirmDelete(null)}
+                      data-testid={`button-cancel-delete-${rel.id}`}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    onClick={() => setConfirmDelete(rel.id)}
+                    className="text-muted-foreground hover:text-destructive"
+                    data-testid={`button-delete-connection-${rel.id}`}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-muted-foreground py-4">No connections yet</p>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function Dashboard() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
@@ -373,6 +449,7 @@ export default function Dashboard() {
   const { preferences, isLoading: prefsLoading } = useDashboardPreferences();
   const updatePreferences = useUpdateDashboardPreferences();
   const createRelationship = useCreateRelationship();
+  const deleteRelationship = useDeleteRelationship();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [childName, setChildName] = useState("");
@@ -417,6 +494,17 @@ export default function Dashboard() {
 
   const handleUpdatePreferences = (prefs: Partial<typeof preferences>) => {
     updatePreferences.mutate(prefs);
+  };
+
+  const handleDeleteConnection = (id: number) => {
+    deleteRelationship.mutate(id, {
+      onSuccess: () => {
+        toast({ title: "Removed", description: "Connection has been removed" });
+      },
+      onError: () => {
+        toast({ title: "Error", description: "Failed to remove connection", variant: "destructive" });
+      },
+    });
   };
 
   if (authLoading || isLoading || prefsLoading) {
@@ -467,7 +555,8 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
       {/* Main Content */}
       <div className={`container mx-auto px-4 max-w-5xl ${containerPadding}`}>
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-4 gap-1">
+          <ManageConnectionsPanel relationships={relationships} onDelete={handleDeleteConnection} />
           <SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} />
         </div>
         <motion.div

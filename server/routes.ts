@@ -91,6 +91,24 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     }
   });
 
+  app.delete(api.relationships.delete.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    try {
+      const relId = Number(req.params.id);
+      const rel = await storage.getRelationshipById(relId);
+      if (!rel) return res.status(404).json({ message: "Not found" });
+      // Check user is part of the relationship
+      if (rel.parentId !== userId && rel.childId !== userId) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+      const success = await storage.deleteRelationship(relId);
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+
   // Messages
   app.get(api.messages.list.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);

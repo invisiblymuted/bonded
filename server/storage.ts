@@ -35,6 +35,7 @@ export interface IStorage {
   getRelationshipById(id: number): Promise<Relationship | undefined>;
   createRelationship(rel: InsertRelationship): Promise<Relationship>;
   acceptRelationship(id: number): Promise<Relationship>;
+  deleteRelationship(id: number): Promise<boolean>;
 
   getMessages(relationshipId: number): Promise<Message[]>;
   createMessage(msg: InsertMessage): Promise<Message>;
@@ -108,6 +109,11 @@ export class DatabaseStorage implements IStorage {
       .where(eq(relationships.id, id))
       .returning();
     return updated;
+  }
+
+  async deleteRelationship(id: number) {
+    const result = await db.delete(relationships).where(eq(relationships.id, id));
+    return true;
   }
 
   async getMessages(relationshipId: number) {

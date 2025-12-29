@@ -109,6 +109,23 @@ export function useCreateRelationship() {
   });
 }
 
+export function useDeleteRelationship() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (relationshipId: number) => {
+      const res = await fetch(buildUrl(api.relationships.delete.path, { id: relationshipId }), {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.relationships.list.path] });
+    },
+  });
+}
+
 export function useCreateMedia(relationshipId: number) {
   const queryClient = useQueryClient();
   return useMutation({

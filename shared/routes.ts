@@ -51,6 +51,15 @@ export const api = {
         401: z.object({ message: z.string() }),
       },
     },
+    delete: {
+      method: "DELETE" as const,
+      path: "/api/relationships/:id",
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        401: z.object({ message: z.string() }),
+        403: z.object({ message: z.string() }),
+      },
+    },
   },
   messages: {
     list: {
