@@ -213,12 +213,13 @@ export default function VideoCall() {
                       </Button>
                     </div>
                   </CardHeader>
-                  <CardContent>
-                    <div className="aspect-video rounded-lg overflow-hidden bg-black">
+                  <CardContent className="p-2 sm:p-6">
+                    <div className="w-full rounded-lg overflow-hidden bg-black" style={{ minHeight: '60vh', height: 'calc(100vh - 280px)' }}>
                       <iframe
                         src={`${roomUrl}?displayName=${encodeURIComponent(user?.firstName || 'Family')}&skipMediaPermissionPrompt`}
                         allow="camera; microphone; fullscreen; display-capture; autoplay; speaker"
                         className="w-full h-full border-0"
+                        style={{ minHeight: '60vh' }}
                         title="Video Call"
                       />
                     </div>
