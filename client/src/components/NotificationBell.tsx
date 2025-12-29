@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bell, MessageCircle, BookOpen, Image, Link } from "lucide-react";
+import { Bell, MessageCircle, BookOpen, Image, Link, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -26,6 +26,8 @@ export function NotificationBell() {
         return <Image className="h-4 w-4 text-purple-500" />;
       case "connection":
         return <Link className="h-4 w-4 text-orange-500" />;
+      case "video":
+        return <Video className="h-4 w-4 text-red-500" />;
       default:
         return <Bell className="h-4 w-4" />;
     }
@@ -35,7 +37,11 @@ export function NotificationBell() {
     markRead(notification.id);
     setOpen(false);
     if (notification.relationshipId) {
-      setLocation(`/connection/${notification.relationshipId}`);
+      if (notification.type === "video") {
+        setLocation(`/video?connection=${notification.relationshipId}`);
+      } else {
+        setLocation(`/connection/${notification.relationshipId}`);
+      }
     }
   };
 

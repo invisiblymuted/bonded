@@ -299,6 +299,36 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     }
   });
 
+  // Video Call Notifications
+  app.post("/api/relationships/:relationshipId/video-call", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    const currentUser = await storage.getUser(userId);
+    const relationshipId = Number(req.params.relationshipId);
+    try {
+      const rel = await storage.getRelationshipById(relationshipId);
+      if (!rel) {
+        return res.status(404).json({ message: "Connection not found" });
+      }
+      // Check user is part of the relationship
+      if (rel.parentId !== userId && rel.childId !== userId) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+      const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
+      await storage.createNotification({
+        userId: otherUserId,
+        type: "video",
+        title: "Video Call Started",
+        message: `${currentUser?.firstName || "Someone"} started a video call - join now!`,
+        relationshipId,
+        read: false,
+      });
+      res.status(201).json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+
   // Notifications
   app.get(api.notifications.list.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);

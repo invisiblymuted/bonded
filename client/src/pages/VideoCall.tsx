@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useRelationships } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,8 @@ import { TutorialPanel } from "@/components/TutorialPanel";
 import { Loader2, Video, Users, PhoneOff, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { JitsiMeeting } from "@jitsi/react-sdk";
+import { useSearch } from "wouter";
+import { apiRequest } from "@/lib/queryClient";
 
 const videoTutorialSteps = [
   {
@@ -38,6 +40,20 @@ export default function VideoCall() {
   const { data: relationships, isLoading: relationshipsLoading } = useRelationships();
   const [selectedConnectionId, setSelectedConnectionId] = useState<number | null>(null);
   const [videoCallActive, setVideoCallActive] = useState(false);
+  const searchString = useSearch();
+
+  // Read connection ID from URL query param
+  useEffect(() => {
+    const params = new URLSearchParams(searchString);
+    const connectionParam = params.get("connection");
+    if (connectionParam && relationships) {
+      const connectionId = parseInt(connectionParam);
+      const exists = relationships.find(r => r.id === connectionId);
+      if (exists) {
+        setSelectedConnectionId(connectionId);
+      }
+    }
+  }, [searchString, relationships]);
 
   const selectedConnection = relationships?.find(r => r.id === selectedConnectionId);
   const connectionName = (selectedConnection as any)?.otherUserName || selectedConnection?.childName || "Connection";
@@ -46,6 +62,16 @@ export default function VideoCall() {
     if (!selectedConnectionId || !user?.id) return "";
     const ids = [user.id, selectedConnectionId.toString()].sort();
     return `bonded-family-${ids.join("-")}`;
+  };
+
+  const startVideoCall = async () => {
+    if (!selectedConnectionId) return;
+    try {
+      await apiRequest("POST", `/api/relationships/${selectedConnectionId}/video-call`);
+    } catch (error) {
+      console.error("Failed to notify about video call:", error);
+    }
+    setVideoCallActive(true);
   };
 
   return (
@@ -120,7 +146,7 @@ export default function VideoCall() {
                         </p>
                       </div>
                       <Button
-                        onClick={() => setVideoCallActive(true)}
+                        onClick={startVideoCall}
                         className="btn-gradient gap-2"
                         size="lg"
                         data-testid="button-start-call"
