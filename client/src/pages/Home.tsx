@@ -111,8 +111,10 @@ export default function Home() {
             >
               <Card className="h-full hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
-                  <feature.icon className="h-8 w-8 text-primary mb-2" />
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  <div className="flex items-center gap-3">
+                    <feature.icon className="h-7 w-7 text-primary" />
+                    <CardTitle className="text-lg">{feature.title}</CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <p className="text-sm text-muted-foreground">{feature.description}</p>
