@@ -43,7 +43,7 @@ export default function Home() {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl sm:text-6xl font-bold mb-4 text-foreground"
+            className="text-5xl sm:text-6xl font-bold mb-6 text-foreground"
           >
             Stay Connected,{" "}
             <span className="bg-gradient-to-r from-blue-500 via-primary to-primary/60 bg-clip-text text-transparent">
