@@ -11,6 +11,14 @@ Prefers warm, inviting design (peach/orange color palette with blue accents)
 
 ## Recent Updates
 
+**Session 4 - Notifications System**
+- Added in-app notification system with bell icon and badge count
+- Notifications created automatically for new messages, journal entries, media uploads, and connections
+- Notification sound plays when new notifications arrive (uses Web Audio API)
+- Click notification to navigate to related connection
+- Mark individual or all notifications as read
+- Security: Notification ownership validated before updates
+
 **Session 3 - Final Features & Launch Ready**
 - Added media upload functionality (photos, drawings, videos, audio)
 - Updated BondedLogo with blue-orange gradient (user request for blue in heart)
@@ -76,7 +84,7 @@ shared/           # Shared types and schemas
 
 ### Database
 - **PostgreSQL**: Primary data store, connection via `DATABASE_URL` environment variable
-- **Tables**: users, sessions (auth), relationships, messages, journalEntries, media
+- **Tables**: users, sessions (auth), relationships, messages, journalEntries, media, notifications
 
 ### Authentication
 - **Replit Auth**: OpenID Connect provider for user authentication
@@ -116,6 +124,11 @@ shared/           # Shared types and schemas
 - `GET /api/relationships/:relationshipId/media` - Get media gallery
 - `POST /api/relationships/:relationshipId/media` - Upload media (photo, drawing, video, audio)
 
+### Notifications
+- `GET /api/notifications` - Get all notifications for logged-in user
+- `PATCH /api/notifications/:notificationId/read` - Mark single notification as read
+- `PATCH /api/notifications/read-all` - Mark all notifications as read
+
 ## Deployment Status
 ✅ **Ready for Publishing** - All core features implemented and tested
 - Home page with feature overview
@@ -124,3 +137,4 @@ shared/           # Shared types and schemas
 - Real-time messaging
 - Shared journaling with mood tracking
 - Media gallery with upload (base64 storage)
+- In-app notifications with sound alerts
