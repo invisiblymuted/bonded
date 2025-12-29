@@ -204,7 +204,8 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <h2 className="text-2xl sm:text-3xl font-bold mb-3">Everything You Need to Stay Close</h2>
+            <span className="text-sm font-medium text-primary uppercase tracking-wide">Features</span>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 mt-1">Everything You Need to Stay Close</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               A complete toolkit designed specifically for maintaining family bonds across any distance.
             </p>
