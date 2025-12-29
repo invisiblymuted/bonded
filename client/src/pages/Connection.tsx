@@ -191,7 +191,7 @@ export default function Connection() {
                       onChange={(e) => setMessageText(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                     />
-                    <Button onClick={handleSendMessage} disabled={createMessage.isPending}>
+                    <Button onClick={handleSendMessage} disabled={createMessage.isPending} className="btn-gradient">
                       {createMessage.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </Button>
                   </div>
@@ -263,7 +263,7 @@ export default function Connection() {
                     )}
                   </div>
                   
-                  <Button onClick={handleCreateJournal} disabled={createJournal.isPending} className="w-full">
+                  <Button onClick={handleCreateJournal} disabled={createJournal.isPending} className="w-full btn-gradient">
                     {createJournal.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                     Post Entry
                   </Button>

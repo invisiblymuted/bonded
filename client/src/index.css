@@ -105,4 +105,14 @@
   .icon-gradient svg {
     stroke: url(#iconGradient);
   }
+
+  .btn-gradient {
+    background: linear-gradient(135deg, #3B82F6 0%, #FB923C 100%);
+    color: white;
+    border: none;
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #EA580C 100%);
+  }
 }

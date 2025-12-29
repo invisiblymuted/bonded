@@ -56,7 +56,7 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
           <p className="text-muted-foreground text-sm mb-4">
             Create your first family connection to start sharing.
           </p>
-          <Button onClick={onOpenCreate} className="gap-2" size="sm">
+          <Button onClick={onOpenCreate} className="gap-2 btn-gradient" size="sm">
             Create Connection <ArrowRight className="h-4 w-4" />
           </Button>
         </CardContent>
@@ -532,7 +532,7 @@ export default function Dashboard() {
               <label className="text-sm font-medium mb-2 block">Their User ID</label>
               <Input placeholder="Ask them to share their user ID from their profile" value={childId} onChange={(e) => setChildId(e.target.value)} data-testid="input-child-id" />
             </div>
-            <Button onClick={handleCreateConnection} disabled={createRelationship.isPending} className="w-full" data-testid="button-create-connection">
+            <Button onClick={handleCreateConnection} disabled={createRelationship.isPending} className="w-full btn-gradient" data-testid="button-create-connection">
               {createRelationship.isPending ? "Creating..." : "Create Connection"}
             </Button>
           </div>

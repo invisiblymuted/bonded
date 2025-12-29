@@ -66,7 +66,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
             >
               <a href="/api/login">
-                <Button size="lg" className="gap-2">
+                <Button size="lg" className="gap-2 btn-gradient">
                   Get Started <ArrowRight className="h-4 w-4" />
                 </Button>
               </a>
@@ -143,7 +143,7 @@ export default function Home() {
               Sign up now to create a secure connection with your family.
             </p>
             <a href="/api/login">
-              <Button size="lg">Start Your Journey</Button>
+              <Button size="lg" className="btn-gradient">Start Your Journey</Button>
             </a>
           </div>
         </div>
