@@ -18,6 +18,8 @@ import Journal from "@/pages/Journal";
 import Gallery from "@/pages/Gallery";
 import Calendar from "@/pages/Calendar";
 import VideoCall from "@/pages/VideoCall";
+import Privacy from "@/pages/Privacy";
+import Terms from "@/pages/Terms";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -32,6 +34,8 @@ function Router() {
       <Route path="/gallery" component={Gallery} />
       <Route path="/calendar" component={Calendar} />
       <Route path="/video" component={VideoCall} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -41,8 +45,8 @@ function Header() {
   const { user, isAuthenticated, logout } = useAuth();
   const [location, setLocation] = useLocation();
   
-  // Don't show header on home page (it has its own navigation)
-  if (location === "/") return null;
+  // Don't show header on pages with their own navigation
+  if (location === "/" || location === "/privacy" || location === "/terms") return null;
   
   if (!isAuthenticated || !user) return null;
   
