@@ -20,6 +20,7 @@ import Calendar from "@/pages/Calendar";
 import VideoCall from "@/pages/VideoCall";
 import Privacy from "@/pages/Privacy";
 import Terms from "@/pages/Terms";
+import Research from "@/pages/Research";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -36,6 +37,7 @@ function Router() {
       <Route path="/video" component={VideoCall} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
+      <Route path="/research" component={Research} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -46,7 +48,7 @@ function Header() {
   const [location, setLocation] = useLocation();
   
   // Don't show header on pages with their own navigation
-  if (location === "/" || location === "/privacy" || location === "/terms") return null;
+  if (location === "/" || location === "/privacy" || location === "/terms" || location === "/research") return null;
   
   if (!isAuthenticated || !user) return null;
   

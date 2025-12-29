@@ -537,14 +537,6 @@ export default function Dashboard() {
             onOpenCreate={() => setIsOpen(true)}
           />
         );
-      case "quickActions":
-        return (
-          <QuickActionsWidget 
-            key={widgetId}
-            relationships={relationships}
-            onOpenCreate={() => setIsOpen(true)}
-          />
-        );
       default:
         return null;
     }

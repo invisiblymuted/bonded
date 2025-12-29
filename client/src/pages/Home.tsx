@@ -393,6 +393,7 @@ export default function Home() {
             <div className="flex gap-6 text-sm text-muted-foreground">
               <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+              <Link href="/research" className="hover:text-foreground transition-colors">Research Sources</Link>
             </div>
           </div>
         </div>
