@@ -430,6 +430,57 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     }
   });
 
+  // Notification Settings
+  app.get("/api/notification-settings", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    const settings = await storage.getNotificationSettings(userId);
+    if (settings) {
+      res.json(settings);
+    } else {
+      res.json({
+        userId,
+        soundEnabled: true,
+        soundType: "chime",
+        vibrationEnabled: true,
+        vibrationPattern: "short",
+        messageNotifications: true,
+        eventNotifications: true,
+        journalNotifications: true,
+        mediaNotifications: true,
+      });
+    }
+  });
+
+  app.patch("/api/notification-settings", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    try {
+      const updateSchema = z.object({
+        soundEnabled: z.boolean().optional(),
+        soundType: z.enum(["chime", "bell", "pop", "gentle", "none"]).optional(),
+        vibrationEnabled: z.boolean().optional(),
+        vibrationPattern: z.enum(["short", "long", "double", "none"]).optional(),
+        messageNotifications: z.boolean().optional(),
+        eventNotifications: z.boolean().optional(),
+        journalNotifications: z.boolean().optional(),
+        mediaNotifications: z.boolean().optional(),
+      });
+      const validated = updateSchema.parse(req.body);
+      const settings = await storage.upsertNotificationSettings({
+        userId,
+        ...validated,
+      });
+      res.json(settings);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: error.errors });
+      } else {
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  });
+
   await seed();
   return httpServer;
 }

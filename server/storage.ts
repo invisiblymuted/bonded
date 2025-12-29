@@ -7,6 +7,7 @@ import {
   notifications,
   dashboardPreferences,
   events,
+  notificationSettings,
   type Relationship,
   type InsertRelationship,
   type Message,
@@ -21,6 +22,8 @@ import {
   type InsertDashboardPreferences,
   type Event,
   type InsertEvent,
+  type NotificationSettings,
+  type InsertNotificationSettings,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, like, or } from "drizzle-orm";
@@ -61,6 +64,9 @@ export interface IStorage {
   createEvent(event: InsertEvent): Promise<Event>;
   updateEvent(id: number, updates: Partial<InsertEvent>): Promise<Event>;
   deleteEvent(id: number): Promise<boolean>;
+
+  getNotificationSettings(userId: string): Promise<NotificationSettings | undefined>;
+  upsertNotificationSettings(settings: InsertNotificationSettings): Promise<NotificationSettings>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -243,6 +249,25 @@ export class DatabaseStorage implements IStorage {
   async deleteEvent(id: number) {
     await db.delete(events).where(eq(events.id, id));
     return true;
+  }
+
+  async getNotificationSettings(userId: string) {
+    const [settings] = await db.select().from(notificationSettings).where(eq(notificationSettings.userId, userId));
+    return settings;
+  }
+
+  async upsertNotificationSettings(settings: InsertNotificationSettings) {
+    const existing = await this.getNotificationSettings(settings.userId);
+    if (existing) {
+      const [updated] = await db
+        .update(notificationSettings)
+        .set({ ...settings, updatedAt: new Date() })
+        .where(eq(notificationSettings.userId, settings.userId))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(notificationSettings).values(settings).returning();
+    return created;
   }
 }
 
