@@ -123,17 +123,23 @@ export async function setupAuth(app: Express) {
     const user = req.user as any;
     const idToken = user?.id_token;
     
+    const doRedirect = () => {
+      const endSessionParams: any = {
+        client_id: process.env.REPL_ID!,
+        post_logout_redirect_uri: `https://${req.hostname}`,
+      };
+      if (idToken) {
+        endSessionParams.id_token_hint = idToken;
+      }
+      res.redirect(client.buildEndSessionUrl(config, endSessionParams).href);
+    };
+    
     req.logout(() => {
-      req.session.destroy((err) => {
-        const endSessionParams: any = {
-          client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `https://${req.hostname}`,
-        };
-        if (idToken) {
-          endSessionParams.id_token_hint = idToken;
-        }
-        res.redirect(client.buildEndSessionUrl(config, endSessionParams).href);
-      });
+      if (req.session) {
+        req.session.destroy(() => doRedirect());
+      } else {
+        doRedirect();
+      }
     });
   });
 
@@ -142,17 +148,23 @@ export async function setupAuth(app: Express) {
     const user = req.user as any;
     const idToken = user?.id_token;
     
+    const doRedirect = () => {
+      const endSessionParams: any = {
+        client_id: process.env.REPL_ID!,
+        post_logout_redirect_uri: `https://${req.hostname}/api/login`,
+      };
+      if (idToken) {
+        endSessionParams.id_token_hint = idToken;
+      }
+      res.redirect(client.buildEndSessionUrl(config, endSessionParams).href);
+    };
+    
     req.logout(() => {
-      req.session.destroy((err) => {
-        const endSessionParams: any = {
-          client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `https://${req.hostname}/api/login`,
-        };
-        if (idToken) {
-          endSessionParams.id_token_hint = idToken;
-        }
-        res.redirect(client.buildEndSessionUrl(config, endSessionParams).href);
-      });
+      if (req.session) {
+        req.session.destroy(() => doRedirect());
+      } else {
+        doRedirect();
+      }
     });
   });
 }
