@@ -8,9 +8,33 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { GradientIcon } from "@/components/GradientIcon";
-import { Loader2, Calendar as CalendarIcon, Users, Trash2, Gift, Phone, Bell, CalendarDays } from "lucide-react";
+import { TutorialPanel } from "@/components/TutorialPanel";
+import { Loader2, Calendar as CalendarIcon, Users, Trash2, Gift, Phone, Bell, CalendarDays, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+
+const calendarTutorialSteps = [
+  {
+    title: "Select a family member",
+    description: "Choose who you want to share calendar events with from the dropdown."
+  },
+  {
+    title: "Create an event",
+    description: "Add a title, date, and time for birthdays, visits, calls, or reminders."
+  },
+  {
+    title: "Choose an event type",
+    description: "Select the type of event (birthday, visit, call, reminder, or general)."
+  },
+  {
+    title: "Enable reminders",
+    description: "Turn on notifications so you never miss an important date."
+  },
+  {
+    title: "Manage your events",
+    description: "View upcoming events and delete old ones when they're no longer needed."
+  }
+];
 
 export default function Calendar() {
   const { data: relationships, isLoading: relationshipsLoading } = useRelationships();
@@ -64,7 +88,14 @@ export default function Calendar() {
             <GradientIcon icon={<CalendarIcon className="h-8 w-8" />} />
             <h1 className="text-3xl font-bold" data-testid="text-page-title">Shared Calendar</h1>
           </div>
-          <p className="text-muted-foreground mb-8">Plan events and never miss important dates</p>
+          <p className="text-muted-foreground mb-6">Plan events and never miss important dates</p>
+
+          <TutorialPanel
+            featureKey="calendar"
+            featureTitle="Shared Calendar"
+            icon={<HelpCircle className="h-5 w-5" />}
+            steps={calendarTutorialSteps}
+          />
 
           <Card className="mb-6">
             <CardHeader>

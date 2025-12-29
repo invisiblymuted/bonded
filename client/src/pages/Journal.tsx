@@ -7,9 +7,33 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GradientIcon } from "@/components/GradientIcon";
-import { Loader2, BookOpen, Users, ImagePlus, X } from "lucide-react";
+import { TutorialPanel } from "@/components/TutorialPanel";
+import { Loader2, BookOpen, Users, ImagePlus, X, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+
+const journalTutorialSteps = [
+  {
+    title: "Select a family member",
+    description: "Choose who you want to share your journal with from the dropdown."
+  },
+  {
+    title: "Write your entry",
+    description: "Add a title and share your thoughts, feelings, or daily experiences."
+  },
+  {
+    title: "Track your mood",
+    description: "Select how you're feeling to help express your emotions."
+  },
+  {
+    title: "Add photos or videos",
+    description: "Attach images or videos to make your entries more meaningful."
+  },
+  {
+    title: "Share and read together",
+    description: "Your family member can read your entries and share their own too!"
+  }
+];
 
 export default function Journal() {
   const { data: relationships, isLoading: relationshipsLoading } = useRelationships();
@@ -69,7 +93,14 @@ export default function Journal() {
             <GradientIcon icon={<BookOpen className="h-8 w-8" />} />
             <h1 className="text-3xl font-bold" data-testid="text-page-title">Shared Journal</h1>
           </div>
-          <p className="text-muted-foreground mb-8">Write and share your thoughts together</p>
+          <p className="text-muted-foreground mb-6">Write and share your thoughts together</p>
+
+          <TutorialPanel
+            featureKey="journal"
+            featureTitle="Shared Journal"
+            icon={<HelpCircle className="h-5 w-5" />}
+            steps={journalTutorialSteps}
+          />
 
           <Card className="mb-6">
             <CardHeader>

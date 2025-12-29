@@ -6,10 +6,30 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { GradientIcon } from "@/components/GradientIcon";
+import { TutorialPanel } from "@/components/TutorialPanel";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Share2, Users, Upload, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, Share2, Users, Upload, X, ChevronLeft, ChevronRight, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+
+const galleryTutorialSteps = [
+  {
+    title: "Select a family member",
+    description: "Choose who you want to share media with from the dropdown."
+  },
+  {
+    title: "Upload your photos or videos",
+    description: "Click the upload area to select photos, videos, or audio files from your device."
+  },
+  {
+    title: "Add a caption",
+    description: "Write a short description to remember the moment."
+  },
+  {
+    title: "Browse your shared memories",
+    description: "Click on any image to view it full size. Use arrows to navigate through your gallery."
+  }
+];
 
 export default function Gallery() {
   const { data: relationships, isLoading: relationshipsLoading } = useRelationships();
@@ -98,7 +118,14 @@ export default function Gallery() {
             <GradientIcon icon={<Share2 className="h-8 w-8" />} />
             <h1 className="text-3xl font-bold" data-testid="text-page-title">Media Gallery</h1>
           </div>
-          <p className="text-muted-foreground mb-8">Share photos, videos, and memories together</p>
+          <p className="text-muted-foreground mb-6">Share photos, videos, and memories together</p>
+
+          <TutorialPanel
+            featureKey="gallery"
+            featureTitle="Media Gallery"
+            icon={<HelpCircle className="h-5 w-5" />}
+            steps={galleryTutorialSteps}
+          />
 
           <Card className="mb-6">
             <CardHeader>

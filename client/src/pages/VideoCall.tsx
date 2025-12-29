@@ -5,9 +5,33 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GradientIcon } from "@/components/GradientIcon";
-import { Loader2, Video, Users, PhoneOff } from "lucide-react";
+import { TutorialPanel } from "@/components/TutorialPanel";
+import { Loader2, Video, Users, PhoneOff, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { JitsiMeeting } from "@jitsi/react-sdk";
+
+const videoTutorialSteps = [
+  {
+    title: "Select a family member",
+    description: "Choose who you want to video call from the dropdown."
+  },
+  {
+    title: "Start the video call",
+    description: "Click the 'Start Video Call' button to open the video room."
+  },
+  {
+    title: "Share the room",
+    description: "Your family member needs to join the same room - they can access it from their Video page too."
+  },
+  {
+    title: "Allow camera and microphone",
+    description: "When prompted, allow access to your camera and microphone for the call."
+  },
+  {
+    title: "End the call",
+    description: "Click 'End Call' when you're done to close the video session."
+  }
+];
 
 export default function VideoCall() {
   const { user } = useAuth();
@@ -32,7 +56,14 @@ export default function VideoCall() {
             <GradientIcon icon={<Video className="h-8 w-8" />} />
             <h1 className="text-3xl font-bold" data-testid="text-page-title">Video Calls</h1>
           </div>
-          <p className="text-muted-foreground mb-8">Connect face-to-face with your family</p>
+          <p className="text-muted-foreground mb-6">Connect face-to-face with your family</p>
+
+          <TutorialPanel
+            featureKey="video"
+            featureTitle="Video Calls"
+            icon={<HelpCircle className="h-5 w-5" />}
+            steps={videoTutorialSteps}
+          />
 
           <Card className="mb-6">
             <CardHeader>

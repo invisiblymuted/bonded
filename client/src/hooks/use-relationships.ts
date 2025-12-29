@@ -23,6 +23,7 @@ export function useMessages(relationshipId: number) {
       if (!res.ok) throw new Error(`${res.status}`);
       return res.json();
     },
+    enabled: relationshipId > 0,
   });
 }
 
@@ -35,6 +36,7 @@ export function useJournal(relationshipId: number) {
       if (!res.ok) throw new Error(`${res.status}`);
       return res.json();
     },
+    enabled: relationshipId > 0,
   });
 }
 
@@ -47,6 +49,7 @@ export function useMediaGallery(relationshipId: number) {
       if (!res.ok) throw new Error(`${res.status}`);
       return res.json();
     },
+    enabled: relationshipId > 0,
   });
 }
 
@@ -221,6 +224,7 @@ export function useEvents(relationshipId: number) {
       if (!res.ok) throw new Error(`${res.status}`);
       return res.json();
     },
+    enabled: relationshipId > 0,
   });
 }
 

@@ -6,9 +6,29 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GradientIcon } from "@/components/GradientIcon";
-import { Loader2, Send, MessageSquare, Users } from "lucide-react";
+import { TutorialPanel } from "@/components/TutorialPanel";
+import { Loader2, Send, MessageSquare, Users, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+
+const messageTutorialSteps = [
+  {
+    title: "Select a family member",
+    description: "Choose who you want to message from the dropdown menu below."
+  },
+  {
+    title: "Type your message",
+    description: "Write your message in the text box at the bottom of the chat."
+  },
+  {
+    title: "Send and stay connected",
+    description: "Press the send button or hit Enter to send. Your messages appear instantly!"
+  },
+  {
+    title: "View conversation history",
+    description: "All your past messages are saved and visible in the chat window."
+  }
+];
 
 export default function Messages() {
   const { user } = useAuth();
@@ -37,7 +57,14 @@ export default function Messages() {
             <GradientIcon icon={<MessageSquare className="h-8 w-8" />} />
             <h1 className="text-3xl font-bold" data-testid="text-page-title">Messages</h1>
           </div>
-          <p className="text-muted-foreground mb-8">Send instant messages to stay connected</p>
+          <p className="text-muted-foreground mb-6">Send instant messages to stay connected</p>
+
+          <TutorialPanel
+            featureKey="messages"
+            featureTitle="Messages"
+            icon={<HelpCircle className="h-5 w-5" />}
+            steps={messageTutorialSteps}
+          />
 
           <Card className="mb-6">
             <CardHeader>
