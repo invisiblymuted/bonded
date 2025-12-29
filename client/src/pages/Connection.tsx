@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRoute } from "wouter";
+import { useRoute, Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
 import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry, useCreateMedia } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X } from "lucide-react";
+import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft } from "lucide-react";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
@@ -101,10 +101,17 @@ export default function Connection() {
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-          <a href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <BondedLogo className="h-6 w-6 text-primary" />
-            <span className="font-bold text-xl">Bonded</span>
-          </a>
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="icon" data-testid="button-back-dashboard">
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="/dashboard" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <BondedLogo className="h-6 w-6 text-primary" />
+              <span className="font-bold text-xl">Bonded</span>
+            </Link>
+          </div>
           <NotificationBell />
         </div>
       </nav>
