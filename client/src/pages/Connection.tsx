@@ -9,7 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft, Calendar, Trash2, Gift, Phone, Bell, CalendarDays, Video, PhoneOff } from "lucide-react";
+import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft, Calendar, Trash2, Gift, Phone, Bell, CalendarDays, Video, PhoneOff, ChevronLeft, ChevronRight } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { GradientIcon } from "@/components/GradientIcon";
@@ -52,6 +53,21 @@ export default function Connection() {
   const [eventType, setEventType] = useState("general");
   const [eventReminder, setEventReminder] = useState(true);
   const [videoCallActive, setVideoCallActive] = useState(false);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
+
+  const handlePrevMedia = () => {
+    if (selectedMediaIndex !== null && mediaGallery) {
+      setSelectedMediaIndex(selectedMediaIndex === 0 ? mediaGallery.length - 1 : selectedMediaIndex - 1);
+    }
+  };
+
+  const handleNextMedia = () => {
+    if (selectedMediaIndex !== null && mediaGallery) {
+      setSelectedMediaIndex(selectedMediaIndex === mediaGallery.length - 1 ? 0 : selectedMediaIndex + 1);
+    }
+  };
+
+  const selectedMedia = selectedMediaIndex !== null && mediaGallery ? mediaGallery[selectedMediaIndex] : null;
 
   const handleCreateEvent = () => {
     if (eventTitle.trim() && eventDate) {
@@ -566,31 +582,120 @@ export default function Connection() {
                   <Loader2 className="h-6 w-6 animate-spin text-primary" />
                 </div>
               ) : mediaGallery && mediaGallery.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {mediaGallery.map((m) => (
-                    <motion.div
-                      key={m.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow"
-                    >
-                      {m.type === "photo" || m.type === "drawing" ? (
-                        <div className="aspect-square bg-muted overflow-hidden">
-                          <img src={m.url} alt={m.filename} className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="aspect-square bg-muted flex items-center justify-center">
-                          <Share2 className="h-8 w-8 text-muted-foreground" />
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {mediaGallery.map((m, index) => (
+                      <motion.div
+                        key={m.id}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="rounded-lg overflow-hidden border border-border hover:shadow-lg transition-all cursor-pointer hover:ring-2 hover:ring-primary/50"
+                        onClick={() => setSelectedMediaIndex(index)}
+                        data-testid={`gallery-item-${m.id}`}
+                      >
+                        {m.type === "photo" || m.type === "drawing" ? (
+                          <div className="aspect-square bg-muted overflow-hidden">
+                            <img src={m.url} alt={m.filename} className="w-full h-full object-cover" />
+                          </div>
+                        ) : m.type === "video" ? (
+                          <div className="aspect-square bg-muted overflow-hidden relative">
+                            <video src={m.url} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                              <Video className="h-8 w-8 text-white" />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="aspect-square bg-muted flex items-center justify-center">
+                            <Share2 className="h-8 w-8 text-muted-foreground" />
+                          </div>
+                        )}
+                        {m.caption && (
+                          <div className="p-3 bg-card">
+                            <p className="text-sm text-muted-foreground truncate">{m.caption}</p>
+                          </div>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <Dialog open={selectedMediaIndex !== null} onOpenChange={(open) => !open && setSelectedMediaIndex(null)}>
+                    <DialogContent className="max-w-4xl w-full p-0 bg-black/95 border-none">
+                      {selectedMedia && (
+                        <div className="relative">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute top-2 right-2 z-10 text-white hover:bg-white/20"
+                            onClick={() => setSelectedMediaIndex(null)}
+                            data-testid="button-close-gallery"
+                          >
+                            <X className="h-5 w-5" />
+                          </Button>
+
+                          {mediaGallery.length > 1 && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/20"
+                                onClick={handlePrevMedia}
+                                data-testid="button-prev-media"
+                              >
+                                <ChevronLeft className="h-6 w-6" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 text-white hover:bg-white/20"
+                                onClick={handleNextMedia}
+                                data-testid="button-next-media"
+                              >
+                                <ChevronRight className="h-6 w-6" />
+                              </Button>
+                            </>
+                          )}
+
+                          <div className="flex items-center justify-center min-h-[50vh] max-h-[80vh]">
+                            {selectedMedia.type === "photo" || selectedMedia.type === "drawing" ? (
+                              <img
+                                src={selectedMedia.url}
+                                alt={selectedMedia.filename}
+                                className="max-w-full max-h-[80vh] object-contain"
+                              />
+                            ) : selectedMedia.type === "video" ? (
+                              <video
+                                src={selectedMedia.url}
+                                controls
+                                autoPlay
+                                className="max-w-full max-h-[80vh]"
+                              />
+                            ) : selectedMedia.type === "audio" ? (
+                              <div className="p-8">
+                                <audio src={selectedMedia.url} controls autoPlay className="w-full" />
+                              </div>
+                            ) : (
+                              <div className="p-8 text-white">
+                                <Share2 className="h-16 w-16 mx-auto mb-4" />
+                                <p>{selectedMedia.filename}</p>
+                              </div>
+                            )}
+                          </div>
+
+                          {(selectedMedia.caption || selectedMedia.filename) && (
+                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                              {selectedMedia.caption && (
+                                <p className="text-white text-center">{selectedMedia.caption}</p>
+                              )}
+                              <p className="text-white/60 text-sm text-center mt-1">
+                                {selectedMediaIndex !== null && `${selectedMediaIndex + 1} of ${mediaGallery.length}`}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       )}
-                      {m.caption && (
-                        <div className="p-3 bg-card">
-                          <p className="text-sm text-muted-foreground">{m.caption}</p>
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
+                    </DialogContent>
+                  </Dialog>
+                </>
               ) : (
                 <p className="text-center text-muted-foreground py-8">No media yet. Start sharing!</p>
               )}
