@@ -56,6 +56,7 @@ export interface IStorage {
   upsertDashboardPreferences(prefs: InsertDashboardPreferences): Promise<DashboardPreferences>;
 
   getEvents(relationshipId: number): Promise<Event[]>;
+  getEventById(id: number): Promise<Event | undefined>;
   createEvent(event: InsertEvent): Promise<Event>;
   updateEvent(id: number, updates: Partial<InsertEvent>): Promise<Event>;
   deleteEvent(id: number): Promise<boolean>;
@@ -212,6 +213,11 @@ export class DatabaseStorage implements IStorage {
       .from(events)
       .where(eq(events.relationshipId, relationshipId))
       .orderBy(events.eventDate);
+  }
+
+  async getEventById(id: number) {
+    const [event] = await db.select().from(events).where(eq(events.id, id));
+    return event;
   }
 
   async createEvent(event: InsertEvent) {

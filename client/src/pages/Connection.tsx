@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRoute, Link } from "wouter";
 import { useAuth } from "@/hooks/use-auth";
-import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry, useCreateMedia, useRelationships } from "@/hooks/use-relationships";
+import { useMessages, useJournal, useMediaGallery, useCreateMessage, useCreateJournalEntry, useCreateMedia, useRelationships, useEvents, useCreateEvent, useDeleteEvent } from "@/hooks/use-relationships";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,7 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft } from "lucide-react";
+import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft, Calendar, Trash2, Gift, Phone, Bell, CalendarDays } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
@@ -36,6 +38,42 @@ export default function Connection() {
   const [mediaCaption, setMediaCaption] = useState("");
   const [uploadingMedia, setUploadingMedia] = useState(false);
   const createMedia = useCreateMedia(id);
+  const { data: events, isLoading: eventsLoading } = useEvents(id);
+  const createEvent = useCreateEvent(id);
+  const deleteEvent = useDeleteEvent(id);
+
+  const [eventTitle, setEventTitle] = useState("");
+  const [eventDescription, setEventDescription] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [eventType, setEventType] = useState("general");
+  const [eventReminder, setEventReminder] = useState(true);
+
+  const handleCreateEvent = () => {
+    if (eventTitle.trim() && eventDate) {
+      createEvent.mutate({
+        title: eventTitle,
+        description: eventDescription || undefined,
+        eventDate: new Date(eventDate).toISOString(),
+        eventType,
+        reminder: eventReminder,
+      });
+      setEventTitle("");
+      setEventDescription("");
+      setEventDate("");
+      setEventType("general");
+      setEventReminder(true);
+    }
+  };
+
+  const getEventIcon = (type: string) => {
+    switch (type) {
+      case "birthday": return <Gift className="h-4 w-4" />;
+      case "call": return <Phone className="h-4 w-4" />;
+      case "visit": return <CalendarDays className="h-4 w-4" />;
+      case "reminder": return <Bell className="h-4 w-4" />;
+      default: return <Calendar className="h-4 w-4" />;
+    }
+  };
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
@@ -133,7 +171,7 @@ export default function Connection() {
           <p className="text-muted-foreground mb-8">Share moments, memories, and love</p>
 
           <Tabs defaultValue="messages" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsList className="grid w-full grid-cols-4 mb-8">
               <TabsTrigger value="messages" className="gap-2">
                 <GradientIcon icon={<MessageSquare className="h-4 w-4" />} />
                 Messages
@@ -141,6 +179,10 @@ export default function Connection() {
               <TabsTrigger value="journal" className="gap-2">
                 <GradientIcon icon={<BookOpen className="h-4 w-4" />} />
                 Journal
+              </TabsTrigger>
+              <TabsTrigger value="calendar" className="gap-2" data-testid="tab-calendar">
+                <GradientIcon icon={<Calendar className="h-4 w-4" />} />
+                Calendar
               </TabsTrigger>
               <TabsTrigger value="media" className="gap-2">
                 <GradientIcon icon={<Share2 className="h-4 w-4" />} />
@@ -310,6 +352,118 @@ export default function Connection() {
                 </div>
               ) : (
                 <p className="text-center text-muted-foreground py-8">No entries yet. Start your journal!</p>
+              )}
+            </TabsContent>
+
+            {/* Calendar Tab */}
+            <TabsContent value="calendar" className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <GradientIcon icon={<Calendar className="h-5 w-5" />} />
+                    Add Event
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Input
+                    placeholder="Event title..."
+                    value={eventTitle}
+                    onChange={(e) => setEventTitle(e.target.value)}
+                    data-testid="input-event-title"
+                  />
+                  <Input
+                    type="datetime-local"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    data-testid="input-event-date"
+                  />
+                  <Select value={eventType} onValueChange={setEventType}>
+                    <SelectTrigger data-testid="select-event-type">
+                      <SelectValue placeholder="Event type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="general">General</SelectItem>
+                      <SelectItem value="birthday">Birthday</SelectItem>
+                      <SelectItem value="visit">Visit</SelectItem>
+                      <SelectItem value="call">Call</SelectItem>
+                      <SelectItem value="reminder">Reminder</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Textarea
+                    placeholder="Description (optional)..."
+                    value={eventDescription}
+                    onChange={(e) => setEventDescription(e.target.value)}
+                    rows={2}
+                    data-testid="input-event-description"
+                  />
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id="eventReminder"
+                      checked={eventReminder}
+                      onCheckedChange={(checked) => setEventReminder(checked === true)}
+                      data-testid="checkbox-event-reminder"
+                    />
+                    <label htmlFor="eventReminder" className="text-sm text-muted-foreground cursor-pointer">
+                      Send notification reminder
+                    </label>
+                  </div>
+                  <Button onClick={handleCreateEvent} disabled={createEvent.isPending} className="w-full btn-gradient" data-testid="button-create-event">
+                    {createEvent.isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                    Add Event
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {eventsLoading ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                </div>
+              ) : events && events.length > 0 ? (
+                <div className="space-y-3">
+                  {events.map((event) => (
+                    <motion.div key={event.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+                      <Card className="overflow-visible">
+                        <CardContent className="pt-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3">
+                              <div className="mt-1">
+                                <GradientIcon icon={getEventIcon(event.eventType)} />
+                              </div>
+                              <div>
+                                <h4 className="font-semibold">{event.title}</h4>
+                                <p className="text-sm text-muted-foreground">
+                                  {event.eventDate ? format(new Date(event.eventDate), "EEEE, MMM d, yyyy 'at' h:mm a") : ""}
+                                </p>
+                                {event.description && (
+                                  <p className="text-sm text-muted-foreground mt-1">{event.description}</p>
+                                )}
+                                <div className="flex gap-2 mt-2 flex-wrap">
+                                  <Badge variant="outline" className="capitalize">{event.eventType}</Badge>
+                                  {event.reminder && (
+                                    <Badge variant="secondary" className="gap-1">
+                                      <Bell className="h-3 w-3" /> Reminder on
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => deleteEvent.mutate(event.id)}
+                              className="text-muted-foreground hover:text-destructive"
+                              data-testid={`button-delete-event-${event.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-muted-foreground py-8">No events yet. Add your first family event!</p>
               )}
             </TabsContent>
 

@@ -371,10 +371,19 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
   app.patch(api.events.update.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
     try {
+      const eventId = Number(req.params.eventId);
+      const event = await storage.getEventById(eventId);
+      if (!event) return res.status(404).json({ message: "Event not found" });
+      // Check user is part of the relationship
+      const rel = await storage.getRelationshipById(event.relationshipId);
+      if (!rel || (rel.parentId !== userId && rel.childId !== userId)) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
       const data = api.events.update.input.parse(req.body);
-      const event = await storage.updateEvent(Number(req.params.eventId), data);
-      res.json(event);
+      const updated = await storage.updateEvent(eventId, data);
+      res.json(updated);
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: error.errors });
@@ -386,8 +395,17 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
 
   app.delete(api.events.delete.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
     try {
-      const success = await storage.deleteEvent(Number(req.params.eventId));
+      const eventId = Number(req.params.eventId);
+      const event = await storage.getEventById(eventId);
+      if (!event) return res.status(404).json({ message: "Event not found" });
+      // Check user is part of the relationship
+      const rel = await storage.getRelationshipById(event.relationshipId);
+      if (!rel || (rel.parentId !== userId && rel.childId !== userId)) {
+        return res.status(403).json({ message: "Not authorized" });
+      }
+      const success = await storage.deleteEvent(eventId);
       res.json({ success });
     } catch (error) {
       res.status(500).json({ message: "Internal Server Error" });

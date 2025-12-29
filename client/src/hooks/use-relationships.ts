@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Relationship, Message, JournalEntry, Media } from "@shared/schema";
+import type { Relationship, Message, JournalEntry, Media, Event } from "@shared/schema";
 import { api, buildUrl } from "@shared/routes";
 import type { User } from "@shared/models/auth";
 
@@ -188,6 +188,56 @@ export function useDeleteMedia(relationshipId: number) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [api.media.list.path, relationshipId] });
+    },
+  });
+}
+
+export function useEvents(relationshipId: number) {
+  return useQuery<Event[]>({
+    queryKey: [api.events.list.path, relationshipId],
+    queryFn: async () => {
+      const url = buildUrl(api.events.list.path, { relationshipId });
+      const res = await fetch(url, { credentials: "include" });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+  });
+}
+
+export function useCreateEvent(relationshipId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { title: string; description?: string; eventDate: string; eventType: string; reminder?: boolean }) => {
+      const url = buildUrl(api.events.create.path, { relationshipId });
+      const res = await fetch(url, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.events.list.path, relationshipId] });
+    },
+  });
+}
+
+export function useDeleteEvent(relationshipId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (eventId: number) => {
+      const url = buildUrl(api.events.delete.path, { eventId });
+      const res = await fetch(url, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error(`${res.status}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [api.events.list.path, relationshipId] });
     },
   });
 }

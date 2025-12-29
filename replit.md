@@ -13,6 +13,14 @@ Primary action buttons (Create Connection, Send, etc.) should use the btn-gradie
 
 ## Recent Updates
 
+**Session 6 - Shared Family Calendar**
+- Added built-in calendar feature for shared family events
+- Event types: birthday, visit, call, reminder, general
+- Events have title, date/time, description, and notification reminders
+- Calendar tab added to Connection page with create form and event list
+- Notifications sent to other family member when events are created
+- Authorization checks on event update/delete endpoints
+
 **Session 5 - Customizable Dashboard**
 - Added customizable dashboard with widget system
 - Three widgets: Connections, Recent Messages, Quick Actions
