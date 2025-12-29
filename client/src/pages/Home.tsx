@@ -197,7 +197,7 @@ export default function Home() {
 
       {/* Features Section */}
       <div id="features" className="bg-gradient-to-br from-blue-500/5 via-primary/5 to-transparent">
-        <div className="container mx-auto px-4 py-16 max-w-5xl">
+        <div className="container mx-auto px-4 py-10 max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
