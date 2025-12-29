@@ -89,7 +89,24 @@ export const insertNotificationSchema = createInsertSchema(notifications).omit({
   createdAt: true,
 });
 
+// Dashboard preferences for customizable layout
+export const dashboardPreferences = pgTable("dashboard_preferences", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id").notNull().references(() => users.id).unique(),
+  widgetOrder: text("widget_order").notNull().default('["connections","recentMessages","quickActions"]'),
+  hiddenWidgets: text("hidden_widgets").notNull().default('[]'),
+  layoutDensity: text("layout_density").notNull().default('spacious'), // compact, spacious
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertDashboardPreferencesSchema = createInsertSchema(dashboardPreferences).omit({
+  id: true,
+  updatedAt: true,
+});
+
 // Types
+export type DashboardPreferences = typeof dashboardPreferences.$inferSelect;
+export type InsertDashboardPreferences = z.infer<typeof insertDashboardPreferencesSchema>;
 export type Notification = typeof notifications.$inferSelect;
 export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 export type Relationship = typeof relationships.$inferSelect;

@@ -5,6 +5,7 @@ import {
   journalEntries,
   media,
   notifications,
+  dashboardPreferences,
   type Relationship,
   type InsertRelationship,
   type Message,
@@ -15,6 +16,8 @@ import {
   type InsertMedia,
   type Notification,
   type InsertNotification,
+  type DashboardPreferences,
+  type InsertDashboardPreferences,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, like, or } from "drizzle-orm";
@@ -45,6 +48,9 @@ export interface IStorage {
   createNotification(notification: InsertNotification): Promise<Notification>;
   markNotificationRead(id: number, userId: string): Promise<void>;
   markAllNotificationsRead(userId: string): Promise<void>;
+
+  getDashboardPreferences(userId: string): Promise<DashboardPreferences | undefined>;
+  upsertDashboardPreferences(prefs: InsertDashboardPreferences): Promise<DashboardPreferences>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -171,6 +177,25 @@ export class DatabaseStorage implements IStorage {
 
   async markAllNotificationsRead(userId: string) {
     await db.update(notifications).set({ read: true }).where(eq(notifications.userId, userId));
+  }
+
+  async getDashboardPreferences(userId: string) {
+    const [prefs] = await db.select().from(dashboardPreferences).where(eq(dashboardPreferences.userId, userId));
+    return prefs;
+  }
+
+  async upsertDashboardPreferences(prefs: InsertDashboardPreferences) {
+    const existing = await this.getDashboardPreferences(prefs.userId);
+    if (existing) {
+      const [updated] = await db
+        .update(dashboardPreferences)
+        .set({ ...prefs, updatedAt: new Date() })
+        .where(eq(dashboardPreferences.userId, prefs.userId))
+        .returning();
+      return updated;
+    }
+    const [created] = await db.insert(dashboardPreferences).values(prefs).returning();
+    return created;
   }
 }
 

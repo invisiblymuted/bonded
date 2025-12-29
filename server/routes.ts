@@ -270,6 +270,37 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     }
   });
 
+  // Dashboard Preferences
+  app.get("/api/dashboard/preferences", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    const prefs = await storage.getDashboardPreferences(userId);
+    if (prefs) {
+      res.json(prefs);
+    } else {
+      res.json({
+        userId,
+        widgetOrder: '["connections","recentMessages","quickActions"]',
+        hiddenWidgets: '[]',
+        layoutDensity: 'spacious',
+      });
+    }
+  });
+
+  app.patch("/api/dashboard/preferences", async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    try {
+      const prefs = await storage.upsertDashboardPreferences({
+        userId,
+        ...req.body,
+      });
+      res.json(prefs);
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
+    }
+  });
+
   await seed();
   return httpServer;
 }
