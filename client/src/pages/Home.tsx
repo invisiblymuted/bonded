@@ -84,36 +84,42 @@ export default function Home() {
               title: "Real-time Messaging",
               description: "Stay in touch with instant messages that feel like you're in the same room.",
               features: ["Send text messages instantly", "See when messages are delivered", "Keep conversation history safe"],
+              href: "/messages",
             },
             {
               icon: BookOpen,
               title: "Shared Journals",
               description: "Create a private space to write, reflect, and share your thoughts together.",
               features: ["Write daily entries with mood tracking", "Attach photos and videos to entries", "Read and respond to each other's journals"],
+              href: "/journal",
             },
             {
               icon: Share2,
               title: "Media Gallery",
               description: "Build a shared collection of precious moments and creative expressions.",
               features: ["Upload photos and drawings", "Share voice recordings", "Store videos of special moments"],
+              href: "/gallery",
             },
             {
               icon: Calendar,
               title: "Shared Calendar",
               description: "Never miss important dates and plan visits together with a shared family calendar.",
               features: ["Track birthdays and special events", "Schedule video calls and visits", "Set reminders for important moments"],
+              href: "/calendar",
             },
             {
               icon: Video,
               title: "Video Calls",
               description: "See each other face-to-face with free, built-in video calling.",
               features: ["One-click video calls", "No extra apps needed", "High-quality video and audio"],
+              href: "/video",
             },
             {
               icon: Heart,
               title: "Secure & Private",
               description: "Your family's connection is protected with the highest security standards.",
               features: ["Private, invite-only connections", "Your data stays yours", "Built with love and care"],
+              href: null,
             },
           ].map((feature, i) => (
             <motion.div
@@ -122,25 +128,49 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
             >
-              <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center gap-3">
-                    <GradientIcon icon={<feature.icon className="h-7 w-7" />} />
-                    <CardTitle className="text-lg">{feature.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
-                  <ul className="text-xs text-muted-foreground space-y-1">
-                    {feature.features.map((item, j) => (
-                      <li key={j} className="flex items-start gap-2">
-                        <span className="text-primary mt-0.5">•</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
+              {feature.href ? (
+                <Link href={feature.href}>
+                  <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer" data-testid={`card-feature-${feature.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center gap-3">
+                        <GradientIcon icon={<feature.icon className="h-7 w-7" />} />
+                        <CardTitle className="text-lg">{feature.title}</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <p className="text-sm text-muted-foreground">{feature.description}</p>
+                      <ul className="text-xs text-muted-foreground space-y-1">
+                        {feature.features.map((item, j) => (
+                          <li key={j} className="flex items-start gap-2">
+                            <span className="text-primary mt-0.5">•</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ) : (
+                <Card className="h-full hover:shadow-lg transition-shadow">
+                  <CardHeader className="pb-2">
+                    <div className="flex items-center gap-3">
+                      <GradientIcon icon={<feature.icon className="h-7 w-7" />} />
+                      <CardTitle className="text-lg">{feature.title}</CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <p className="text-sm text-muted-foreground">{feature.description}</p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      {feature.features.map((item, j) => (
+                        <li key={j} className="flex items-start gap-2">
+                          <span className="text-primary mt-0.5">•</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              )}
             </motion.div>
           ))}
         </div>

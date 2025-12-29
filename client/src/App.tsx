@@ -13,6 +13,11 @@ import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import Connection from "@/pages/Connection";
 import Profile from "@/pages/Profile";
+import Messages from "@/pages/Messages";
+import Journal from "@/pages/Journal";
+import Gallery from "@/pages/Gallery";
+import Calendar from "@/pages/Calendar";
+import VideoCall from "@/pages/VideoCall";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -22,6 +27,11 @@ function Router() {
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/connection/:id" component={Connection} />
       <Route path="/profile" component={Profile} />
+      <Route path="/messages" component={Messages} />
+      <Route path="/journal" component={Journal} />
+      <Route path="/gallery" component={Gallery} />
+      <Route path="/calendar" component={Calendar} />
+      <Route path="/video" component={VideoCall} />
       <Route component={NotFound} />
     </Switch>
   );
