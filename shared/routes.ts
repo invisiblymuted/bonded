@@ -4,11 +4,13 @@ import {
   insertMessageSchema,
   insertJournalEntrySchema,
   insertMediaSchema,
+  insertEventSchema,
   relationships,
   messages,
   journalEntries,
   media,
   notifications,
+  events,
 } from "./schema";
 import { users } from "./models/auth";
 
@@ -149,6 +151,42 @@ export const api = {
     markAllRead: {
       method: "PATCH" as const,
       path: "/api/notifications/read-all",
+      responses: {
+        200: z.object({ success: z.boolean() }),
+        401: z.object({ message: z.string() }),
+      },
+    },
+  },
+  events: {
+    list: {
+      method: "GET" as const,
+      path: "/api/relationships/:relationshipId/events",
+      responses: {
+        200: z.array(z.custom<typeof events.$inferSelect>()),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    create: {
+      method: "POST" as const,
+      path: "/api/relationships/:relationshipId/events",
+      input: insertEventSchema.omit({ relationshipId: true, creatorId: true }),
+      responses: {
+        201: z.custom<typeof events.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    update: {
+      method: "PATCH" as const,
+      path: "/api/events/:eventId",
+      input: insertEventSchema.partial().omit({ relationshipId: true, creatorId: true }),
+      responses: {
+        200: z.custom<typeof events.$inferSelect>(),
+        401: z.object({ message: z.string() }),
+      },
+    },
+    delete: {
+      method: "DELETE" as const,
+      path: "/api/events/:eventId",
       responses: {
         200: z.object({ success: z.boolean() }),
         401: z.object({ message: z.string() }),

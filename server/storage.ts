@@ -6,6 +6,7 @@ import {
   media,
   notifications,
   dashboardPreferences,
+  events,
   type Relationship,
   type InsertRelationship,
   type Message,
@@ -18,6 +19,8 @@ import {
   type InsertNotification,
   type DashboardPreferences,
   type InsertDashboardPreferences,
+  type Event,
+  type InsertEvent,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, like, or } from "drizzle-orm";
@@ -51,6 +54,11 @@ export interface IStorage {
 
   getDashboardPreferences(userId: string): Promise<DashboardPreferences | undefined>;
   upsertDashboardPreferences(prefs: InsertDashboardPreferences): Promise<DashboardPreferences>;
+
+  getEvents(relationshipId: number): Promise<Event[]>;
+  createEvent(event: InsertEvent): Promise<Event>;
+  updateEvent(id: number, updates: Partial<InsertEvent>): Promise<Event>;
+  deleteEvent(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -196,6 +204,33 @@ export class DatabaseStorage implements IStorage {
     }
     const [created] = await db.insert(dashboardPreferences).values(prefs).returning();
     return created;
+  }
+
+  async getEvents(relationshipId: number) {
+    return await db
+      .select()
+      .from(events)
+      .where(eq(events.relationshipId, relationshipId))
+      .orderBy(events.eventDate);
+  }
+
+  async createEvent(event: InsertEvent) {
+    const [created] = await db.insert(events).values(event).returning();
+    return created;
+  }
+
+  async updateEvent(id: number, updates: Partial<InsertEvent>) {
+    const [updated] = await db
+      .update(events)
+      .set(updates)
+      .where(eq(events.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteEvent(id: number) {
+    await db.delete(events).where(eq(events.id, id));
+    return true;
   }
 }
 

@@ -89,6 +89,24 @@ export const insertNotificationSchema = createInsertSchema(notifications).omit({
   createdAt: true,
 });
 
+// Calendar events for shared family calendar
+export const events = pgTable("events", {
+  id: serial("id").primaryKey(),
+  relationshipId: integer("relationship_id").notNull().references(() => relationships.id),
+  creatorId: varchar("creator_id").notNull().references(() => users.id),
+  title: text("title").notNull(),
+  description: text("description"),
+  eventDate: timestamp("event_date").notNull(),
+  eventType: text("event_type").notNull().default("general"), // birthday, visit, call, reminder, general
+  reminder: boolean("reminder").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertEventSchema = createInsertSchema(events).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Dashboard preferences for customizable layout
 export const dashboardPreferences = pgTable("dashboard_preferences", {
   id: serial("id").primaryKey(),
@@ -117,3 +135,5 @@ export type JournalEntry = typeof journalEntries.$inferSelect;
 export type InsertJournalEntry = z.infer<typeof insertJournalEntrySchema>;
 export type Media = typeof media.$inferSelect;
 export type InsertMedia = z.infer<typeof insertMediaSchema>;
+export type Event = typeof events.$inferSelect;
+export type InsertEvent = z.infer<typeof insertEventSchema>;

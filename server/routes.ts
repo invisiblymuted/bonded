@@ -7,10 +7,12 @@ import {
   insertMessageSchema,
   insertJournalEntrySchema,
   insertMediaSchema,
+  insertEventSchema,
   relationships,
   messages,
   journalEntries,
   media,
+  events,
 } from "@shared/schema";
 import { users } from "@shared/models/auth";
 import { db } from "./db";
@@ -322,6 +324,73 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       } else {
         res.status(500).json({ message: "Internal Server Error" });
       }
+    }
+  });
+
+  // Events (Calendar)
+  app.get(api.events.list.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const evts = await storage.getEvents(Number(req.params.relationshipId));
+    res.json(evts);
+  });
+
+  app.post(api.events.create.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    const userId = (req.user as any).claims.sub;
+    const currentUser = await storage.getUser(userId);
+    const relationshipId = Number(req.params.relationshipId);
+    try {
+      const data = api.events.create.input.parse(req.body);
+      const event = await storage.createEvent({
+        ...data,
+        relationshipId,
+        creatorId: userId,
+      });
+      // Notify the other user
+      const rel = await storage.getRelationshipById(relationshipId);
+      if (rel) {
+        const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
+        await storage.createNotification({
+          userId: otherUserId,
+          type: "event",
+          title: "New Event",
+          message: `${currentUser?.firstName || "Someone"} added: "${data.title}"`,
+          relationshipId,
+          read: false,
+        });
+      }
+      res.status(201).json(event);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: error.errors });
+      } else {
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  });
+
+  app.patch(api.events.update.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    try {
+      const data = api.events.update.input.parse(req.body);
+      const event = await storage.updateEvent(Number(req.params.eventId), data);
+      res.json(event);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: error.errors });
+      } else {
+        res.status(500).json({ message: "Internal Server Error" });
+      }
+    }
+  });
+
+  app.delete(api.events.delete.path, async (req, res) => {
+    if (!req.isAuthenticated()) return res.sendStatus(401);
+    try {
+      const success = await storage.deleteEvent(Number(req.params.eventId));
+      res.json({ success });
+    } catch (error) {
+      res.status(500).json({ message: "Internal Server Error" });
     }
   });
 
