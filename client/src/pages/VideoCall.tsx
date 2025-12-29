@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import { useSearch } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 const videoTutorialSteps = [
   {
@@ -41,6 +42,7 @@ export default function VideoCall() {
   const [selectedConnectionId, setSelectedConnectionId] = useState<number | null>(null);
   const [videoCallActive, setVideoCallActive] = useState(false);
   const searchString = useSearch();
+  const { toast } = useToast();
 
   // Read connection ID from URL query param
   useEffect(() => {
@@ -61,15 +63,24 @@ export default function VideoCall() {
   const generateRoomName = () => {
     if (!selectedConnectionId || !user?.id) return "";
     const ids = [user.id, selectedConnectionId.toString()].sort();
-    return `bonded-family-${ids.join("-")}`;
+    return `bondedfamily${ids.join("")}`;
   };
 
   const startVideoCall = async () => {
     if (!selectedConnectionId) return;
     try {
       await apiRequest("POST", `/api/relationships/${selectedConnectionId}/video-call`);
+      toast({
+        title: "Call Started",
+        description: `${connectionName} has been notified to join!`,
+      });
     } catch (error) {
       console.error("Failed to notify about video call:", error);
+      toast({
+        title: "Starting call...",
+        description: "Your family member may not have been notified automatically.",
+        variant: "destructive",
+      });
     }
     setVideoCallActive(true);
   };
@@ -183,7 +194,7 @@ export default function VideoCall() {
                   <CardContent>
                     <div className="aspect-video rounded-lg overflow-hidden bg-black">
                       <JitsiMeeting
-                        domain="meet.jit.si"
+                        domain="jitsi.riot.im"
                         roomName={generateRoomName()}
                         configOverwrite={{
                           startWithAudioMuted: false,
@@ -196,6 +207,11 @@ export default function VideoCall() {
                           disableModeratorIndicator: true,
                           enableInsecureRoomNameWarning: false,
                           notifications: [],
+                          disableThirdPartyRequests: true,
+                          lobby: {
+                            autoKnock: true,
+                            enableChat: false,
+                          },
                           toolbarButtons: [
                             'microphone',
                             'camera',
