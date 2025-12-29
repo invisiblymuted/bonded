@@ -187,24 +187,25 @@ export default function Connection() {
           <p className="text-muted-foreground mb-8">Share moments, memories, and love</p>
 
           <Tabs defaultValue="messages" className="w-full">
-            <TabsList className="grid w-full grid-cols-5 mb-8">
-              <TabsTrigger value="messages" className="gap-2">
+            <TabsList className="flex flex-wrap justify-center gap-2 w-full mb-8 h-auto p-2 md:grid md:grid-cols-5 md:gap-1 md:p-1">
+              <TabsTrigger value="messages" className="gap-2 px-4 py-2 min-w-[100px] md:min-w-0 md:px-2">
                 <GradientIcon icon={<MessageSquare className="h-4 w-4" />} />
-                Messages
+                <span className="hidden sm:inline">Messages</span>
+                <span className="sm:hidden">Msgs</span>
               </TabsTrigger>
-              <TabsTrigger value="journal" className="gap-2">
+              <TabsTrigger value="journal" className="gap-2 px-4 py-2 min-w-[100px] md:min-w-0 md:px-2">
                 <GradientIcon icon={<BookOpen className="h-4 w-4" />} />
                 Journal
               </TabsTrigger>
-              <TabsTrigger value="calendar" className="gap-2" data-testid="tab-calendar">
+              <TabsTrigger value="calendar" className="gap-2 px-4 py-2 min-w-[100px] md:min-w-0 md:px-2" data-testid="tab-calendar">
                 <GradientIcon icon={<Calendar className="h-4 w-4" />} />
                 Calendar
               </TabsTrigger>
-              <TabsTrigger value="media" className="gap-2">
+              <TabsTrigger value="media" className="gap-2 px-4 py-2 min-w-[100px] md:min-w-0 md:px-2">
                 <GradientIcon icon={<Share2 className="h-4 w-4" />} />
                 Gallery
               </TabsTrigger>
-              <TabsTrigger value="video" className="gap-2" data-testid="tab-video">
+              <TabsTrigger value="video" className="gap-2 px-4 py-2 min-w-[100px] md:min-w-0 md:px-2" data-testid="tab-video">
                 <GradientIcon icon={<Video className="h-4 w-4" />} />
                 Video
               </TabsTrigger>
