@@ -100,7 +100,10 @@ export function useCreateRelationship() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error(`${res.status}`);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Error ${res.status}`);
+      }
       return res.json();
     },
     onSuccess: () => {

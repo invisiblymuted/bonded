@@ -10,6 +10,7 @@ export const relationships = pgTable("relationships", {
   id: serial("id").primaryKey(),
   parentId: varchar("parent_id").notNull().references(() => users.id),
   childId: varchar("child_id").notNull().references(() => users.id),
+  parentName: text("parent_name"), // name of the person who created the connection (optional for backwards compat)
   childName: text("child_name").notNull(), // nickname for the child
   status: text("status").notNull().default("pending"), // pending, accepted
   createdAt: timestamp("created_at").defaultNow(),

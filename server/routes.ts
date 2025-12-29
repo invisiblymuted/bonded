@@ -44,9 +44,18 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
         const isParent = rel.parentId === userId;
         const otherUserId = isParent ? rel.childId : rel.parentId;
         const otherUser = await storage.getUser(otherUserId);
+        // Determine the name to show for the other person
+        let otherUserName: string;
+        if (isParent) {
+          // Current user created the connection - show the nickname they set
+          otherUserName = rel.childName;
+        } else {
+          // Someone else added the current user - show the creator's name
+          otherUserName = rel.parentName || otherUser?.firstName || otherUser?.email?.split('@')[0] || "Connection";
+        }
         return {
           ...rel,
-          otherUserName: isParent ? rel.childName : (otherUser?.firstName || "Someone"),
+          otherUserName,
           otherUserImage: otherUser?.profileImageUrl,
           isParent,
         };
@@ -61,13 +70,39 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     const currentUser = await storage.getUser(currentUserId);
     try {
       const data = insertRelationshipSchema.parse(req.body);
-      const rel = await storage.createRelationship(data);
+      
+      // Validate that the target user exists
+      const targetUser = await storage.getUser(data.childId);
+      if (!targetUser) {
+        return res.status(400).json({ 
+          message: "User not found. Make sure they have logged into Bonded at least once and shared their correct User ID with you." 
+        });
+      }
+      
+      // Don't allow connecting to yourself
+      if (data.childId === currentUserId) {
+        return res.status(400).json({ message: "You cannot connect with yourself." });
+      }
+      
+      // Check for existing connection (in either direction)
+      const existingRels = await storage.getRelationships(currentUserId);
+      const alreadyConnected = existingRels.some(
+        r => (r.parentId === currentUserId && r.childId === data.childId) ||
+             (r.parentId === data.childId && r.childId === currentUserId)
+      );
+      if (alreadyConnected) {
+        return res.status(400).json({ message: "You are already connected with this person." });
+      }
+      
+      // Set the parent's name so the other person sees who connected with them
+      const parentName = currentUser?.firstName || currentUser?.email?.split('@')[0] || "Connection";
+      const rel = await storage.createRelationship({ ...data, parentName });
       // Notify the other user
       await storage.createNotification({
         userId: data.childId,
         type: "connection",
         title: "New Connection",
-        message: `${currentUser?.firstName || "Someone"} wants to connect with you!`,
+        message: `${parentName} connected with you!`,
         relationshipId: rel.id,
         read: false,
       });
@@ -76,6 +111,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: error.errors });
       } else {
+        console.error("Create relationship error:", error);
         res.status(500).json({ message: "Internal Server Error" });
       }
     }

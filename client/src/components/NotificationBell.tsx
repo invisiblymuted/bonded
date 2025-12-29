@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Bell, MessageCircle, BookOpen, Image, Link } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,7 @@ import { useLocation } from "wouter";
 export function NotificationBell() {
   const { notifications, unreadCount, markRead, markAllRead } = useNotifications();
   const [, setLocation] = useLocation();
+  const [open, setOpen] = useState(false);
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -31,13 +33,14 @@ export function NotificationBell() {
 
   const handleNotificationClick = (notification: typeof notifications[0]) => {
     markRead(notification.id);
+    setOpen(false);
     if (notification.relationshipId) {
       setLocation(`/connection/${notification.relationshipId}`);
     }
   };
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"

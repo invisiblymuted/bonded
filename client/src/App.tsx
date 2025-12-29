@@ -41,25 +41,21 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/dashboard">
-          <a className="flex items-center gap-2" data-testid="link-logo-home">
-            <BondedLogo className="h-7 w-7" />
-            <span className="font-semibold text-lg">Bonded</span>
-          </a>
+        <Link href="/dashboard" className="flex items-center gap-2" data-testid="link-logo-home">
+          <BondedLogo className="h-7 w-7" />
+          <span className="font-semibold text-lg">Bonded</span>
         </Link>
         
         <div className="flex items-center gap-3">
           <NotificationBell />
-          <Link href="/profile">
-            <a className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" data-testid="link-profile">
-              <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all">
-                <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || "User"} />
-                <AvatarFallback className="text-xs bg-primary/10 text-primary">{initials}</AvatarFallback>
-              </Avatar>
-              <span className="text-sm font-medium hidden sm:inline" data-testid="text-username">
-                {user.firstName} {user.lastName}
-              </span>
-            </a>
+          <Link href="/profile" className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" data-testid="link-profile">
+            <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all">
+              <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || "User"} />
+              <AvatarFallback className="text-xs bg-primary/10 text-primary">{initials}</AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium hidden sm:inline" data-testid="text-username">
+              {user.firstName} {user.lastName}
+            </span>
           </Link>
           <Button variant="ghost" size="icon" onClick={() => logout()} data-testid="button-logout">
             <LogOut className="h-4 w-4" />

@@ -624,10 +624,10 @@ export default function Dashboard() {
           setIsOpen(false);
           setChildName("");
           setChildId("");
-          toast({ title: "Success", description: "Connection created!" });
+          toast({ title: "Success", description: "Connection created! They will now see you in their connections." });
         },
-        onError: () => {
-          toast({ title: "Error", description: "Failed to create connection", variant: "destructive" });
+        onError: (error) => {
+          toast({ title: "Error", description: error.message || "Failed to create connection", variant: "destructive" });
         },
       }
     );
