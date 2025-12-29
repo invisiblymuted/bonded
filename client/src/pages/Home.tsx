@@ -38,7 +38,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-primary/10 via-transparent to-transparent py-4 px-4">
+      <div className="relative bg-gradient-to-br from-blue-500/10 via-primary/10 to-transparent py-4 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ export default function Home() {
             className="text-5xl sm:text-6xl font-bold mb-4 text-foreground"
           >
             Stay Connected,{" "}
-            <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-500 via-primary to-primary/60 bg-clip-text text-transparent">
               Miles Apart
             </span>
           </motion.h1>
