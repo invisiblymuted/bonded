@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
@@ -555,9 +556,19 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
       {/* Main Content */}
       <div className={`container mx-auto px-4 max-w-5xl ${containerPadding}`}>
-        <div className="flex justify-end mb-4 gap-1">
-          <ManageConnectionsPanel relationships={relationships} onDelete={handleDeleteConnection} />
-          <SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} />
+        <div className="flex justify-end mb-4 gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span><ManageConnectionsPanel relationships={relationships} onDelete={handleDeleteConnection} /></span>
+            </TooltipTrigger>
+            <TooltipContent>Manage Connections</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span><SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} /></span>
+            </TooltipTrigger>
+            <TooltipContent>Dashboard Settings</TooltipContent>
+          </Tooltip>
         </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
