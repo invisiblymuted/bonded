@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import type { DashboardPreferences } from "@shared/schema";
 
-export type WidgetType = "connections" | "quickActions";
+export type WidgetType = "connections";
 
 export interface ParsedPreferences {
   widgetOrder: WidgetType[];
@@ -13,21 +13,24 @@ export interface ParsedPreferences {
 function parsePreferences(prefs: DashboardPreferences | undefined): ParsedPreferences {
   if (!prefs) {
     return {
-      widgetOrder: ["connections", "quickActions"],
+      widgetOrder: ["connections"],
       hiddenWidgets: [],
       layoutDensity: "spacious",
     };
   }
 
   try {
+    // Filter out deprecated widgets
+    const order = (JSON.parse(prefs.widgetOrder) as string[]).filter(w => w === "connections") as WidgetType[];
+    const hidden = (JSON.parse(prefs.hiddenWidgets) as string[]).filter(w => w === "connections") as WidgetType[];
     return {
-      widgetOrder: JSON.parse(prefs.widgetOrder) as WidgetType[],
-      hiddenWidgets: JSON.parse(prefs.hiddenWidgets) as WidgetType[],
+      widgetOrder: order.length > 0 ? order : ["connections"],
+      hiddenWidgets: hidden,
       layoutDensity: prefs.layoutDensity as "compact" | "spacious",
     };
   } catch {
     return {
-      widgetOrder: ["connections", "quickActions"],
+      widgetOrder: ["connections"],
       hiddenWidgets: [],
       layoutDensity: "spacious",
     };

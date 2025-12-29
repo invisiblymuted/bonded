@@ -22,7 +22,6 @@ import type { Message, Relationship } from "@shared/schema";
 
 const WIDGET_INFO: Record<WidgetType, { title: string; description: string; icon: typeof Heart }> = {
   connections: { title: "Connections", description: "Your family connections", icon: Heart },
-  quickActions: { title: "Quick Actions", description: "Frequently used actions", icon: Plus },
 };
 
 function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: { 
@@ -112,54 +111,6 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
         </motion.div>
       ))}
     </div>
-  );
-}
-
-function QuickActionsWidget({ relationships, onOpenCreate }: { 
-  relationships: Relationship[] | undefined;
-  onOpenCreate: () => void;
-}) {
-  const hasConnections = relationships && relationships.length > 0;
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <GradientIcon icon={<Plus className="h-5 w-5" />} />
-          Quick Actions
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-3">
-          <Button variant="outline" onClick={onOpenCreate} className="flex-col h-auto py-4 gap-2">
-            <GradientIcon icon={<Heart className="h-5 w-5" />} />
-            <span className="text-xs">New Connection</span>
-          </Button>
-          {hasConnections && (
-            <>
-              <Link href={`/connection/${relationships[0].id}`}>
-                <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
-                  <span className="text-xs">Send Message</span>
-                </Button>
-              </Link>
-              <Link href={`/connection/${relationships[0].id}`}>
-                <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <GradientIcon icon={<PenLine className="h-5 w-5" />} />
-                  <span className="text-xs">Write Journal</span>
-                </Button>
-              </Link>
-              <Link href={`/connection/${relationships[0].id}`}>
-                <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <GradientIcon icon={<Image className="h-5 w-5" />} />
-                  <span className="text-xs">Share Photo</span>
-                </Button>
-              </Link>
-            </>
-          )}
-        </div>
-      </CardContent>
-    </Card>
   );
 }
 
