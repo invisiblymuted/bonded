@@ -61,7 +61,7 @@ function Header() {
           data-testid="link-logo-home"
         >
           <BondedLogo className="h-7 w-7" />
-          <span className="font-semibold text-lg">Bonded</span>
+          <span className="font-semibold text-lg text-blue-800">Bonded</span>
         </button>
         
         <div className="flex items-center gap-3">

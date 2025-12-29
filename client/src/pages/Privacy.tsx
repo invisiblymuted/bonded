@@ -13,7 +13,7 @@ export default function Privacy() {
           <Link href="/">
             <div className="flex items-center gap-2 cursor-pointer">
               <BondedLogo className="h-6 w-6 text-primary" />
-              <span className="font-bold text-xl">Bonded</span>
+              <span className="font-bold text-xl text-blue-800">Bonded</span>
             </div>
           </Link>
           <Link href="/">
