@@ -37,6 +37,7 @@ export default function Connection() {
   const [journalMedia, setJournalMedia] = useState<{ url: string; type: string; filename: string } | null>(null);
   const [mediaCaption, setMediaCaption] = useState("");
   const [uploadingMedia, setUploadingMedia] = useState(false);
+  const [attachedMedia, setAttachedMedia] = useState<{ url: string; type: "photo" | "drawing" | "video" | "audio"; filename: string } | null>(null);
   const createMedia = useCreateMedia(id);
   const { data: events, isLoading: eventsLoading } = useEvents(id);
   const createEvent = useCreateEvent(id);
@@ -115,11 +116,10 @@ export default function Connection() {
     e.currentTarget.value = "";
   };
 
-  const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAttachMedia = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.currentTarget.files?.[0];
     if (!file) return;
     
-    setUploadingMedia(true);
     const reader = new FileReader();
     reader.onload = (event) => {
       const url = event.target?.result as string;
@@ -128,12 +128,33 @@ export default function Connection() {
       else if (file.type.startsWith("audio")) type = "audio";
       else if (file.type.includes("png") || file.type.includes("jpeg") || file.type.includes("gif")) type = "photo";
       
-      createMedia.mutate({ type, url, filename: file.name, caption: mediaCaption || undefined });
-      setMediaCaption("");
-      setUploadingMedia(false);
-      e.currentTarget.value = "";
+      setAttachedMedia({ url, type, filename: file.name });
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleUploadMedia = () => {
+    if (!attachedMedia) return;
+    
+    setUploadingMedia(true);
+    createMedia.mutate(
+      { type: attachedMedia.type, url: attachedMedia.url, filename: attachedMedia.filename, caption: mediaCaption || undefined },
+      {
+        onSuccess: () => {
+          setAttachedMedia(null);
+          setMediaCaption("");
+          setUploadingMedia(false);
+        },
+        onError: () => {
+          setUploadingMedia(false);
+        }
+      }
+    );
+  };
+
+  const handleRemoveAttached = () => {
+    setAttachedMedia(null);
+    setMediaCaption("");
   };
 
   const moods = ["happy", "sad", "excited", "thoughtful", "grateful"];
@@ -456,27 +477,69 @@ export default function Connection() {
                   <CardTitle>Share Media</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">Choose a file</label>
-                    <div className="flex gap-2">
-                      <input
-                        type="file"
-                        accept="image/*,video/*,audio/*"
-                        onChange={handleMediaUpload}
-                        disabled={uploadingMedia}
-                        className="flex-1 file:bg-primary file:text-primary-foreground file:px-4 file:py-2 file:border-0 file:rounded-md file:cursor-pointer file:mr-4 file:font-medium"
-                        data-testid="input-media-file"
-                      />
+                  {!attachedMedia ? (
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Attach a file</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="file"
+                          accept="image/*,video/*,audio/*"
+                          onChange={handleAttachMedia}
+                          className="flex-1 file:bg-primary file:text-primary-foreground file:px-4 file:py-2 file:border-0 file:rounded-md file:cursor-pointer file:mr-4 file:font-medium"
+                          data-testid="input-media-file"
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">Photos, drawings, videos, or audio files</p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">Photos, drawings, videos, or audio files</p>
-                  </div>
-                  <Input
-                    placeholder="Add a caption (optional)"
-                    value={mediaCaption}
-                    onChange={(e) => setMediaCaption(e.target.value)}
-                    disabled={uploadingMedia}
-                    data-testid="input-media-caption"
-                  />
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-4">
+                        <div className="w-32 h-32 rounded-md overflow-hidden bg-muted flex-shrink-0">
+                          {attachedMedia.type === "photo" || attachedMedia.type === "drawing" ? (
+                            <img src={attachedMedia.url} alt={attachedMedia.filename} className="w-full h-full object-cover" />
+                          ) : attachedMedia.type === "video" ? (
+                            <video src={attachedMedia.url} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Share2 className="h-8 w-8 text-muted-foreground" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <p className="text-sm font-medium truncate">{attachedMedia.filename}</p>
+                          <Badge variant="outline">{attachedMedia.type}</Badge>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={handleRemoveAttached}
+                            className="text-destructive"
+                            data-testid="button-remove-attached"
+                          >
+                            <X className="h-4 w-4 mr-1" /> Remove
+                          </Button>
+                        </div>
+                      </div>
+                      <Input
+                        placeholder="Add a caption (optional)"
+                        value={mediaCaption}
+                        onChange={(e) => setMediaCaption(e.target.value)}
+                        disabled={uploadingMedia}
+                        data-testid="input-media-caption"
+                      />
+                      <Button
+                        className="btn-gradient w-full"
+                        onClick={handleUploadMedia}
+                        disabled={uploadingMedia}
+                        data-testid="button-upload-media"
+                      >
+                        {uploadingMedia ? (
+                          <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Uploading...</>
+                        ) : (
+                          <><Upload className="h-4 w-4 mr-2" /> Upload to Gallery</>
+                        )}
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
