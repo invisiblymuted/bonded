@@ -100,7 +100,7 @@ export default function Connection() {
   const moods = ["happy", "sad", "excited", "thoughtful", "grateful"];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-background">
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
