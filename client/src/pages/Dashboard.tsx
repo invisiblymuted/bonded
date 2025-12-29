@@ -213,7 +213,7 @@ function SettingsPanel({
           <div>
             <h4 className="font-medium mb-3">Widget Order</h4>
             <div className="space-y-2">
-              {preferences.widgetOrder.map((widgetId, index) => {
+              {preferences.widgetOrder.filter(widgetId => WIDGET_INFO[widgetId]).map((widgetId, index) => {
                 const info = WIDGET_INFO[widgetId];
                 const isHidden = preferences.hiddenWidgets.includes(widgetId);
                 const Icon = info.icon;
