@@ -110,7 +110,7 @@ export default function Terms() {
             <section>
               <h2 className="text-xl font-semibold mb-3">Privacy</h2>
               <p className="text-muted-foreground">
-                Your privacy is important to us. Please review our <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link> to 
+                Your privacy is important to us. Please review our <Link href="/privacy" className="bg-gradient-to-r from-blue-600 to-primary bg-clip-text text-transparent hover:underline">Privacy Policy</Link> to 
                 understand how we collect, use, and protect your information.
               </p>
             </section>

@@ -204,7 +204,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <span className="text-sm font-medium text-primary uppercase tracking-wide">Features</span>
+            <span className="text-sm font-medium bg-gradient-to-r from-blue-600 to-primary bg-clip-text text-transparent uppercase tracking-wide">Features</span>
             <h2 className="text-2xl sm:text-3xl font-bold mb-3 mt-1">Everything You Need to Stay Close</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               A complete toolkit designed specifically for maintaining family bonds across any distance.
@@ -276,7 +276,7 @@ export default function Home() {
                         <ul className="text-xs text-muted-foreground space-y-1">
                           {feature.features.map((item, j) => (
                             <li key={j} className="flex items-start gap-2">
-                              <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
+                              <GradientIcon icon={<CheckCircle className="h-3 w-3" />} className="mt-0.5 flex-shrink-0" />
                               {item}
                             </li>
                           ))}
@@ -297,7 +297,7 @@ export default function Home() {
                       <ul className="text-xs text-muted-foreground space-y-1">
                         {feature.features.map((item, j) => (
                           <li key={j} className="flex items-start gap-2">
-                            <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
+                            <GradientIcon icon={<CheckCircle className="h-3 w-3" />} className="mt-0.5 flex-shrink-0" />
                             {item}
                           </li>
                         ))}
