@@ -299,7 +299,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
     }
   });
 
-  // Video Call Notifications
+  // Video Call - Create Whereby room and notify other user
   app.post("/api/relationships/:relationshipId/video-call", async (req, res) => {
     if (!req.isAuthenticated()) return res.sendStatus(401);
     const userId = (req.user as any).claims.sub;
@@ -314,6 +314,37 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       if (rel.parentId !== userId && rel.childId !== userId) {
         return res.status(403).json({ message: "Not authorized" });
       }
+
+      // Create Whereby room
+      const wherebyApiKey = process.env.WHEREBY_API_KEY;
+      if (!wherebyApiKey) {
+        return res.status(500).json({ message: "Video calling not configured" });
+      }
+
+      const endDate = new Date();
+      endDate.setHours(endDate.getHours() + 2); // Room expires in 2 hours
+
+      const wherebyResponse = await fetch("https://api.whereby.dev/v1/meetings", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${wherebyApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          endDate: endDate.toISOString(),
+          fields: ["hostRoomUrl"],
+        }),
+      });
+
+      if (!wherebyResponse.ok) {
+        console.error("Whereby API error:", await wherebyResponse.text());
+        return res.status(500).json({ message: "Failed to create video room" });
+      }
+
+      const wherebyData = await wherebyResponse.json();
+      const roomUrl = wherebyData.roomUrl;
+
+      // Notify the other user with the room URL
       const otherUserId = rel.parentId === userId ? rel.childId : rel.parentId;
       await storage.createNotification({
         userId: otherUserId,
@@ -322,9 +353,12 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
         message: `${currentUser?.firstName || "Someone"} started a video call - join now!`,
         relationshipId,
         read: false,
+        metadata: JSON.stringify({ roomUrl }),
       });
-      res.status(201).json({ success: true });
+
+      res.status(201).json({ success: true, roomUrl });
     } catch (error) {
+      console.error("Video call error:", error);
       res.status(500).json({ message: "Internal Server Error" });
     }
   });

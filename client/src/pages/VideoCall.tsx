@@ -8,7 +8,6 @@ import { GradientIcon } from "@/components/GradientIcon";
 import { TutorialPanel } from "@/components/TutorialPanel";
 import { Loader2, Video, Users, PhoneOff, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { JitsiMeeting } from "@jitsi/react-sdk";
 import { useSearch } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -41,18 +40,27 @@ export default function VideoCall() {
   const { data: relationships, isLoading: relationshipsLoading } = useRelationships();
   const [selectedConnectionId, setSelectedConnectionId] = useState<number | null>(null);
   const [videoCallActive, setVideoCallActive] = useState(false);
+  const [roomUrl, setRoomUrl] = useState<string | null>(null);
+  const [isStartingCall, setIsStartingCall] = useState(false);
   const searchString = useSearch();
   const { toast } = useToast();
 
-  // Read connection ID from URL query param
+  // Read connection ID from URL query param and auto-join if room URL provided
   useEffect(() => {
     const params = new URLSearchParams(searchString);
     const connectionParam = params.get("connection");
+    const roomParam = params.get("room");
+    
     if (connectionParam && relationships) {
       const connectionId = parseInt(connectionParam);
       const exists = relationships.find(r => r.id === connectionId);
       if (exists) {
         setSelectedConnectionId(connectionId);
+        // If room URL provided (from notification), auto-join
+        if (roomParam) {
+          setRoomUrl(decodeURIComponent(roomParam));
+          setVideoCallActive(true);
+        }
       }
     }
   }, [searchString, relationships]);
@@ -60,29 +68,38 @@ export default function VideoCall() {
   const selectedConnection = relationships?.find(r => r.id === selectedConnectionId);
   const connectionName = (selectedConnection as any)?.otherUserName || selectedConnection?.childName || "Connection";
 
-  const generateRoomName = () => {
-    if (!selectedConnectionId || !user?.id) return "";
-    const ids = [user.id, selectedConnectionId.toString()].sort();
-    return `bondedfamily${ids.join("")}`;
-  };
-
   const startVideoCall = async () => {
     if (!selectedConnectionId) return;
+    setIsStartingCall(true);
     try {
-      await apiRequest("POST", `/api/relationships/${selectedConnectionId}/video-call`);
-      toast({
-        title: "Call Started",
-        description: `${connectionName} has been notified to join!`,
-      });
+      const response = await apiRequest("POST", `/api/relationships/${selectedConnectionId}/video-call`);
+      const data = await response.json();
+      
+      if (data.roomUrl) {
+        setRoomUrl(data.roomUrl);
+        setVideoCallActive(true);
+        toast({
+          title: "Call Started",
+          description: `${connectionName} has been notified to join!`,
+        });
+      } else {
+        throw new Error("No room URL returned");
+      }
     } catch (error) {
-      console.error("Failed to notify about video call:", error);
+      console.error("Failed to start video call:", error);
       toast({
-        title: "Starting call...",
-        description: "Your family member may not have been notified automatically.",
+        title: "Failed to start call",
+        description: "Please try again in a moment.",
         variant: "destructive",
       });
+    } finally {
+      setIsStartingCall(false);
     }
-    setVideoCallActive(true);
+  };
+
+  const endVideoCall = () => {
+    setVideoCallActive(false);
+    setRoomUrl(null);
   };
 
   return (
@@ -160,18 +177,23 @@ export default function VideoCall() {
                         onClick={startVideoCall}
                         className="btn-gradient gap-2"
                         size="lg"
+                        disabled={isStartingCall}
                         data-testid="button-start-call"
                       >
-                        <Video className="h-5 w-5" />
-                        Start Video Call
+                        {isStartingCall ? (
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                          <Video className="h-5 w-5" />
+                        )}
+                        {isStartingCall ? "Starting..." : "Start Video Call"}
                       </Button>
                       <p className="text-xs text-muted-foreground">
-                        Share the same room link with {connectionName} so they can join
+                        {connectionName} will be notified when you start the call
                       </p>
                     </div>
                   </CardContent>
                 </Card>
-              ) : (
+              ) : roomUrl ? (
                 <Card>
                   <CardHeader className="pb-2">
                     <div className="flex items-center justify-between gap-4">
@@ -182,7 +204,7 @@ export default function VideoCall() {
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => setVideoCallActive(false)}
+                        onClick={endVideoCall}
                         className="gap-2"
                         data-testid="button-end-call"
                       >
@@ -194,15 +216,15 @@ export default function VideoCall() {
                   <CardContent>
                     <div className="aspect-video rounded-lg overflow-hidden bg-black">
                       <iframe
-                        src={`https://meet.jit.si/${generateRoomName()}#userInfo.displayName="${encodeURIComponent(user?.firstName || 'Family')}"&config.prejoinPageEnabled=false`}
-                        allow="camera; microphone; fullscreen; display-capture; autoplay"
+                        src={`${roomUrl}?displayName=${encodeURIComponent(user?.firstName || 'Family')}&skipMediaPermissionPrompt`}
+                        allow="camera; microphone; fullscreen; display-capture; autoplay; speaker"
                         className="w-full h-full border-0"
                         title="Video Call"
                       />
                     </div>
                   </CardContent>
                 </Card>
-              )}
+              ) : null}
             </motion.div>
           )}
         </motion.div>

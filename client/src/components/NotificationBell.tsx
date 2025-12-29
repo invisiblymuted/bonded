@@ -38,7 +38,19 @@ export function NotificationBell() {
     setOpen(false);
     if (notification.relationshipId) {
       if (notification.type === "video") {
-        setLocation(`/video?connection=${notification.relationshipId}`);
+        // Extract room URL from metadata if available
+        let roomParam = "";
+        if ((notification as any).metadata) {
+          try {
+            const metadata = JSON.parse((notification as any).metadata);
+            if (metadata.roomUrl) {
+              roomParam = `&room=${encodeURIComponent(metadata.roomUrl)}`;
+            }
+          } catch (e) {
+            console.error("Failed to parse notification metadata:", e);
+          }
+        }
+        setLocation(`/video?connection=${notification.relationshipId}${roomParam}`);
       } else {
         setLocation(`/connection/${notification.relationshipId}`);
       }

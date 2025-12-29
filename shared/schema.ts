@@ -77,11 +77,12 @@ export const insertMediaSchema = createInsertSchema(media).omit({
 export const notifications = pgTable("notifications", {
   id: serial("id").primaryKey(),
   userId: varchar("user_id").notNull().references(() => users.id),
-  type: text("type").notNull(), // connection, message, journal, media
+  type: text("type").notNull(), // connection, message, journal, media, video
   title: text("title").notNull(),
   message: text("message").notNull(),
   relationshipId: integer("relationship_id").references(() => relationships.id),
   read: boolean("read").notNull().default(false),
+  metadata: text("metadata"), // JSON string for extra data like video room URLs
   createdAt: timestamp("created_at").defaultNow(),
 });
 
