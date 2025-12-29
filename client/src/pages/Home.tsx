@@ -56,7 +56,7 @@ export default function Home() {
             transition={{ delay: 0.1 }}
             className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            A secure platform for separated families to share moments, memories, and their lives together.
+            A secure platform that keeps relationships alive, families together, and memories possible.
           </motion.p>
           {!isLoading && !isAuthenticated && (
             <motion.div
