@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, ArrowRight, Heart, Calendar, Video, Shield, Users, Globe, Star, CheckCircle, Lock } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, ArrowRight, Heart, Calendar, Video, Shield, Users, Globe, CheckCircle, Lock } from "lucide-react";
 import { GradientIcon } from "@/components/GradientIcon";
 import { motion } from "framer-motion";
 
@@ -34,27 +34,6 @@ export default function Home() {
       description: "Maintaining parent-child bonds during incarceration leads to better outcomes for children and reduced recidivism rates.",
       stat: "2.7M",
       statLabel: "children with incarcerated parents",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote: "Bonded helped me stay connected with my daughter during my 9-month deployment. The shared journal became our special place to talk every day.",
-      author: "Sarah M.",
-      role: "Army Captain, Mother of 2",
-      rating: 5,
-    },
-    {
-      quote: "My kids love sending me drawings and voice messages. It's like I'm still part of their everyday life even though I'm 1,000 miles away.",
-      author: "Michael R.",
-      role: "Divorced Father",
-      rating: 5,
-    },
-    {
-      quote: "As a grandmother, I finally feel included in my grandchildren's lives. The video calls and shared calendar make me feel like I live next door.",
-      author: "Patricia L.",
-      role: "Grandmother of 4",
-      rating: 5,
     },
   ];
 
@@ -328,47 +307,6 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Testimonials Section */}
-      <div className="container mx-auto px-4 py-16 max-w-5xl">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-10"
-        >
-          <h2 className="text-2xl sm:text-3xl font-bold mb-3">Loved by Families Everywhere</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Real stories from families who use Bonded to stay connected across distances.
-          </p>
-        </motion.div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <Card className="h-full">
-                <CardContent className="pt-6">
-                  <div className="flex gap-0.5 mb-4">
-                    {[...Array(testimonial.rating)].map((_, j) => (
-                      <Star key={j} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-foreground mb-4 italic">"{testimonial.quote}"</p>
-                  <div className="border-t border-border pt-4">
-                    <p className="font-medium text-sm">{testimonial.author}</p>
-                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
         </div>
       </div>
 

@@ -18,7 +18,7 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
-import { JitsiMeeting } from "@jitsi/react-sdk";
+import { apiRequest } from "@/lib/queryClient";
 
 export default function Connection() {
   const [match, params] = useRoute("/connection/:id");
@@ -53,6 +53,8 @@ export default function Connection() {
   const [eventType, setEventType] = useState("general");
   const [eventReminder, setEventReminder] = useState(true);
   const [videoCallActive, setVideoCallActive] = useState(false);
+  const [wherebyRoomUrl, setWherebyRoomUrl] = useState<string | null>(null);
+  const [videoCallLoading, setVideoCallLoading] = useState(false);
   const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
 
   const handlePrevMedia = () => {
@@ -713,65 +715,63 @@ export default function Connection() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-muted-foreground">
-                      Start a video call with {connectionName}. Both of you will need to be on this page at the same time to connect.
+                      Start a video call with {connectionName}. They will receive a notification to join.
                     </p>
                     <Button
                       className="btn-gradient w-full"
-                      onClick={() => setVideoCallActive(true)}
+                      disabled={videoCallLoading}
+                      onClick={async () => {
+                        setVideoCallLoading(true);
+                        try {
+                          const response = await apiRequest("POST", `/api/relationships/${id}/video-call`);
+                          const data = await response.json();
+                          if (data.roomUrl) {
+                            setWherebyRoomUrl(data.roomUrl);
+                            setVideoCallActive(true);
+                          } else {
+                            toast({ title: "Error", description: "Could not start video call", variant: "destructive" });
+                          }
+                        } catch (error) {
+                          toast({ title: "Error", description: "Video calling is not configured", variant: "destructive" });
+                        } finally {
+                          setVideoCallLoading(false);
+                        }
+                      }}
                       data-testid="button-start-video-call"
                     >
-                      <Video className="h-4 w-4 mr-2" />
-                      Start Video Call
+                      {videoCallLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Video className="h-4 w-4 mr-2" />}
+                      {videoCallLoading ? "Starting..." : "Start Video Call"}
                     </Button>
                   </CardContent>
                 </Card>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center gap-2 flex-wrap">
                     <h3 className="text-lg font-semibold">Video Call with {connectionName}</h3>
                     <Button
                       variant="destructive"
-                      onClick={() => setVideoCallActive(false)}
+                      onClick={() => {
+                        setVideoCallActive(false);
+                        setWherebyRoomUrl(null);
+                      }}
                       data-testid="button-end-video-call"
                     >
                       <PhoneOff className="h-4 w-4 mr-2" />
                       End Call
                     </Button>
                   </div>
-                  <div className="rounded-lg overflow-hidden border border-border" style={{ height: "500px" }}>
-                    <JitsiMeeting
-                      domain="meet.jit.si"
-                      roomName={`BondedFamily${id}Room${(currentConnection?.parentId || "0").slice(-6)}`}
-                      configOverwrite={{
-                        startWithAudioMuted: true,
-                        startWithVideoMuted: false,
-                        prejoinPageEnabled: false,
-                        disableModeratorIndicator: true,
-                        enableLobbyChat: false,
-                        lobbyModeEnabled: false,
-                        requireDisplayName: false,
-                        enableWelcomePage: false,
-                        enableClosePage: false,
-                        disableInviteFunctions: true,
-                        doNotStoreRoom: true,
-                        p2p: { enabled: true },
-                      }}
-                      interfaceConfigOverwrite={{
-                        DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                        SHOW_JITSI_WATERMARK: false,
-                        MOBILE_APP_PROMO: false,
-                        HIDE_INVITE_MORE_HEADER: true,
-                        DISABLE_RINGING: true,
-                      }}
-                      userInfo={{
-                        displayName: user?.firstName || "Family Member",
-                        email: user?.email || "",
-                      }}
-                      getIFrameRef={(iframeRef) => {
-                        iframeRef.style.height = "100%";
-                        iframeRef.style.width = "100%";
-                      }}
-                    />
+                  <div 
+                    className="rounded-lg overflow-hidden border border-border" 
+                    style={{ minHeight: "60vh", height: "calc(100vh - 280px)" }}
+                  >
+                    {wherebyRoomUrl && (
+                      <iframe
+                        src={wherebyRoomUrl}
+                        allow="camera; microphone; fullscreen; speaker; display-capture; compute-pressure"
+                        style={{ width: "100%", height: "100%", border: "none" }}
+                        title="Whereby Video Call"
+                      />
+                    )}
                   </div>
                 </div>
               )}
