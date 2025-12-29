@@ -741,15 +741,27 @@ export default function Connection() {
                   <div className="rounded-lg overflow-hidden border border-border" style={{ height: "500px" }}>
                     <JitsiMeeting
                       domain="meet.jit.si"
-                      roomName={`bonded-family-${id}-${currentConnection?.parentId || 0}`}
+                      roomName={`BondedFamily${id}Room${(currentConnection?.parentId || "0").slice(-6)}`}
                       configOverwrite={{
                         startWithAudioMuted: true,
                         startWithVideoMuted: false,
                         prejoinPageEnabled: false,
+                        disableModeratorIndicator: true,
+                        enableLobbyChat: false,
+                        lobbyModeEnabled: false,
+                        requireDisplayName: false,
+                        enableWelcomePage: false,
+                        enableClosePage: false,
+                        disableInviteFunctions: true,
+                        doNotStoreRoom: true,
+                        p2p: { enabled: true },
                       }}
                       interfaceConfigOverwrite={{
                         DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
                         SHOW_JITSI_WATERMARK: false,
+                        MOBILE_APP_PROMO: false,
+                        HIDE_INVITE_MORE_HEADER: true,
+                        DISABLE_RINGING: true,
                       }}
                       userInfo={{
                         displayName: user?.firstName || "Family Member",
