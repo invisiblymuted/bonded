@@ -14,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
+import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { JitsiMeeting } from "@jitsi/react-sdk";
@@ -40,6 +41,7 @@ export default function Connection() {
   const [uploadingMedia, setUploadingMedia] = useState(false);
   const [attachedMedia, setAttachedMedia] = useState<{ url: string; type: "photo" | "drawing" | "video" | "audio"; filename: string } | null>(null);
   const createMedia = useCreateMedia(id);
+  const { toast } = useToast();
   const { data: events, isLoading: eventsLoading } = useEvents(id);
   const createEvent = useCreateEvent(id);
   const deleteEvent = useDeleteEvent(id);
@@ -146,9 +148,18 @@ export default function Connection() {
           setAttachedMedia(null);
           setMediaCaption("");
           setUploadingMedia(false);
+          toast({
+            title: "Media uploaded",
+            description: "Your media has been added to the gallery.",
+          });
         },
-        onError: () => {
+        onError: (error) => {
           setUploadingMedia(false);
+          toast({
+            title: "Upload failed",
+            description: error instanceof Error ? error.message : "Failed to upload media. Please try again.",
+            variant: "destructive",
+          });
         }
       }
     );
