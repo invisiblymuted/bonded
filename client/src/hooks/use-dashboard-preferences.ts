@@ -2,7 +2,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import type { DashboardPreferences } from "@shared/schema";
 
-export type WidgetType = "connections" | "recentMessages" | "quickActions";
+export type WidgetType = "connections" | "quickActions";
 
 export interface ParsedPreferences {
   widgetOrder: WidgetType[];
@@ -13,7 +13,7 @@ export interface ParsedPreferences {
 function parsePreferences(prefs: DashboardPreferences | undefined): ParsedPreferences {
   if (!prefs) {
     return {
-      widgetOrder: ["connections", "recentMessages", "quickActions"],
+      widgetOrder: ["connections", "quickActions"],
       hiddenWidgets: [],
       layoutDensity: "spacious",
     };
@@ -27,7 +27,7 @@ function parsePreferences(prefs: DashboardPreferences | undefined): ParsedPrefer
     };
   } catch {
     return {
-      widgetOrder: ["connections", "recentMessages", "quickActions"],
+      widgetOrder: ["connections", "quickActions"],
       hiddenWidgets: [],
       layoutDensity: "spacious",
     };

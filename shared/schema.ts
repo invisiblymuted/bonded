@@ -113,7 +113,7 @@ export const insertEventSchema = createInsertSchema(events).omit({
 export const dashboardPreferences = pgTable("dashboard_preferences", {
   id: serial("id").primaryKey(),
   userId: varchar("user_id").notNull().references(() => users.id).unique(),
-  widgetOrder: text("widget_order").notNull().default('["connections","recentMessages","quickActions"]'),
+  widgetOrder: text("widget_order").notNull().default('["connections","quickActions"]'),
   hiddenWidgets: text("hidden_widgets").notNull().default('[]'),
   layoutDensity: text("layout_density").notNull().default('spacious'), // compact, spacious
   updatedAt: timestamp("updated_at").defaultNow(),

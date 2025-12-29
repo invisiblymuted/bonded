@@ -22,7 +22,6 @@ import type { Message, Relationship } from "@shared/schema";
 
 const WIDGET_INFO: Record<WidgetType, { title: string; description: string; icon: typeof Heart }> = {
   connections: { title: "Connections", description: "Your family connections", icon: Heart },
-  recentMessages: { title: "Recent Messages", description: "Latest messages across connections", icon: MessageSquare },
   quickActions: { title: "Quick Actions", description: "Frequently used actions", icon: Plus },
 };
 
@@ -113,97 +112,6 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
         </motion.div>
       ))}
     </div>
-  );
-}
-
-function RecentMessagesWidget({ relationships }: { relationships: Relationship[] | undefined }) {
-  const { data: allMessages, isLoading } = useQuery<{ relationshipId: number; messages: Message[]; connectionName: string }[]>({
-    queryKey: ["/api/recent-messages"],
-    queryFn: async () => {
-      if (!relationships || relationships.length === 0) return [];
-      const results = await Promise.all(
-        relationships.slice(0, 5).map(async (rel) => {
-          try {
-            const res = await fetch(`/api/relationships/${rel.id}/messages`);
-            if (!res.ok) return { relationshipId: rel.id, messages: [], connectionName: (rel as any).otherUserName || rel.childName };
-            const msgs = await res.json();
-            return { 
-              relationshipId: rel.id, 
-              messages: msgs.slice(0, 3),
-              connectionName: (rel as any).otherUserName || rel.childName
-            };
-          } catch {
-            return { relationshipId: rel.id, messages: [], connectionName: (rel as any).otherUserName || rel.childName };
-          }
-        })
-      );
-      return results.filter(r => r.messages.length > 0);
-    },
-    enabled: !!relationships && relationships.length > 0,
-  });
-
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
-            Recent Messages
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-center py-8">
-            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!allMessages || allMessages.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
-            Recent Messages
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground text-sm text-center py-4">
-            No messages yet. Start a conversation with your connections!
-          </p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
-          Recent Messages
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        {allMessages.map(({ relationshipId, messages, connectionName }) => (
-          <Link key={relationshipId} href={`/connection/${relationshipId}`}>
-            <div className="p-3 rounded-md bg-muted/50 hover:bg-muted transition-colors cursor-pointer">
-              <div className="flex items-center justify-between mb-1">
-                <span className="font-medium text-sm">{connectionName}</span>
-                <span className="text-xs text-muted-foreground">
-                  {messages[0]?.createdAt ? new Date(messages[0].createdAt).toLocaleDateString() : ""}
-                </span>
-              </div>
-              <p className="text-sm text-muted-foreground line-clamp-1">
-                {messages[0]?.content || "No messages"}
-              </p>
-            </div>
-          </Link>
-        ))}
-      </CardContent>
-    </Card>
   );
 }
 
@@ -382,8 +290,9 @@ function ManageConnectionsPanel({
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { setIsOpen(open); setConfirmDelete(null); }}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="icon" data-testid="button-manage-connections">
+        <Button variant="outline" size="sm" className="gap-2" data-testid="button-manage-connections">
           <Users className="h-4 w-4" />
+          <span className="hidden sm:inline">Manage</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
@@ -677,8 +586,6 @@ export default function Dashboard() {
             onOpenCreate={() => setIsOpen(true)}
           />
         );
-      case "recentMessages":
-        return <RecentMessagesWidget key={widgetId} relationships={relationships} />;
       case "quickActions":
         return (
           <QuickActionsWidget 
