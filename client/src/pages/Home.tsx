@@ -47,7 +47,7 @@ export default function Home() {
           >
             Stay Connected,{" "}
             <span className="bg-gradient-to-r from-blue-500 via-primary to-primary/60 bg-clip-text text-transparent">
-              Miles Apart
+              Worlds Apart
             </span>
           </motion.h1>
           <motion.p
