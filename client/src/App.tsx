@@ -12,6 +12,7 @@ import { LogOut } from "lucide-react";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import Connection from "@/pages/Connection";
+import Profile from "@/pages/Profile";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/connection/:id" component={Connection} />
+      <Route path="/profile" component={Profile} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -46,15 +48,15 @@ function Header() {
         
         <div className="flex items-center gap-3">
           <NotificationBell />
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
+          <Link href="/profile" className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity" data-testid="link-profile">
+            <Avatar className="h-8 w-8 ring-2 ring-transparent hover:ring-primary/20 transition-all">
               <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || "User"} />
-              <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+              <AvatarFallback className="text-xs bg-primary/10 text-primary">{initials}</AvatarFallback>
             </Avatar>
             <span className="text-sm font-medium hidden sm:inline" data-testid="text-username">
               {user.firstName} {user.lastName}
             </span>
-          </div>
+          </Link>
           <Button variant="ghost" size="icon" onClick={() => logout()} data-testid="button-logout">
             <LogOut className="h-4 w-4" />
           </Button>
