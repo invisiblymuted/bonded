@@ -193,62 +193,11 @@ export default function VideoCall() {
                   </CardHeader>
                   <CardContent>
                     <div className="aspect-video rounded-lg overflow-hidden bg-black">
-                      <JitsiMeeting
-                        domain="jitsi.riot.im"
-                        roomName={generateRoomName()}
-                        configOverwrite={{
-                          startWithAudioMuted: false,
-                          startWithVideoMuted: false,
-                          prejoinPageEnabled: false,
-                          disableDeepLinking: true,
-                          enableLobbyChat: false,
-                          hideLobbyButton: true,
-                          requireDisplayName: false,
-                          disableModeratorIndicator: true,
-                          enableInsecureRoomNameWarning: false,
-                          notifications: [],
-                          disableThirdPartyRequests: true,
-                          lobby: {
-                            autoKnock: true,
-                            enableChat: false,
-                          },
-                          toolbarButtons: [
-                            'microphone',
-                            'camera',
-                            'closedcaptions',
-                            'desktop',
-                            'fullscreen',
-                            'hangup',
-                            'chat',
-                            'settings',
-                            'videoquality',
-                            'filmstrip',
-                            'tileview',
-                          ],
-                          p2p: {
-                            enabled: true,
-                          },
-                          disableTileEnlargement: true,
-                        }}
-                        interfaceConfigOverwrite={{
-                          DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
-                          SHOW_JITSI_WATERMARK: false,
-                          SHOW_WATERMARK_FOR_GUESTS: false,
-                          SHOW_BRAND_WATERMARK: false,
-                          SHOW_POWERED_BY: false,
-                          DEFAULT_BACKGROUND: '#1a1a1a',
-                          TOOLBAR_ALWAYS_VISIBLE: true,
-                          MOBILE_APP_PROMO: false,
-                          HIDE_INVITE_MORE_HEADER: true,
-                        }}
-                        userInfo={{
-                          displayName: user?.firstName || 'Family Member',
-                          email: user?.email || '',
-                        }}
-                        getIFrameRef={(iframeRef) => {
-                          iframeRef.style.height = '100%';
-                          iframeRef.style.width = '100%';
-                        }}
+                      <iframe
+                        src={`https://meet.jit.si/${generateRoomName()}#userInfo.displayName="${encodeURIComponent(user?.firstName || 'Family')}"&config.prejoinPageEnabled=false`}
+                        allow="camera; microphone; fullscreen; display-capture; autoplay"
+                        className="w-full h-full border-0"
+                        title="Video Call"
                       />
                     </div>
                   </CardContent>
