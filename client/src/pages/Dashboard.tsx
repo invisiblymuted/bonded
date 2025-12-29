@@ -91,15 +91,15 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
               <CardContent className="pt-2">
                 <div className="flex gap-4 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <MessageSquare className="h-3 w-3" />
+                    <MessageSquare className="h-3 w-3 text-blue-500" />
                     <span>Chat</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <BookOpen className="h-3 w-3" />
+                    <BookOpen className="h-3 w-3 text-primary" />
                     <span>Journal</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Share2 className="h-3 w-3" />
+                    <Share2 className="h-3 w-3 text-blue-500" />
                     <span>Media</span>
                   </div>
                 </div>
@@ -143,7 +143,7 @@ function RecentMessagesWidget({ relationships }: { relationships: Relationship[]
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-primary" />
+            <MessageSquare className="h-5 w-5 text-blue-500" />
             Recent Messages
           </CardTitle>
         </CardHeader>
@@ -161,7 +161,7 @@ function RecentMessagesWidget({ relationships }: { relationships: Relationship[]
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-primary" />
+            <MessageSquare className="h-5 w-5 text-blue-500" />
             Recent Messages
           </CardTitle>
         </CardHeader>
@@ -227,7 +227,7 @@ function QuickActionsWidget({ relationships, onOpenCreate }: {
             <>
               <Link href={`/connection/${relationships[0].id}`}>
                 <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <MessageSquare className="h-5 w-5 text-primary" />
+                  <MessageSquare className="h-5 w-5 text-blue-500" />
                   <span className="text-xs">Send Message</span>
                 </Button>
               </Link>
@@ -239,7 +239,7 @@ function QuickActionsWidget({ relationships, onOpenCreate }: {
               </Link>
               <Link href={`/connection/${relationships[0].id}`}>
                 <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <Image className="h-5 w-5 text-primary" />
+                  <Image className="h-5 w-5 text-blue-500" />
                   <span className="text-xs">Share Photo</span>
                 </Button>
               </Link>
@@ -463,7 +463,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-background">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">

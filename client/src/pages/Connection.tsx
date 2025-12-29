@@ -100,7 +100,7 @@ export default function Connection() {
   const moods = ["happy", "sad", "excited", "thoughtful", "grateful"];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-background">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
@@ -134,15 +134,15 @@ export default function Connection() {
           <Tabs defaultValue="messages" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
               <TabsTrigger value="messages" className="gap-2">
-                <MessageSquare className="h-4 w-4" />
+                <MessageSquare className="h-4 w-4 text-blue-500" />
                 Messages
               </TabsTrigger>
               <TabsTrigger value="journal" className="gap-2">
-                <BookOpen className="h-4 w-4" />
+                <BookOpen className="h-4 w-4 text-primary" />
                 Journal
               </TabsTrigger>
               <TabsTrigger value="media" className="gap-2">
-                <Share2 className="h-4 w-4" />
+                <Share2 className="h-4 w-4 text-blue-500" />
                 Gallery
               </TabsTrigger>
             </TabsList>
