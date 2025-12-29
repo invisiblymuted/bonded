@@ -38,12 +38,12 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-b from-primary/10 via-transparent to-transparent py-6 px-4">
+      <div className="relative bg-gradient-to-b from-primary/10 via-transparent to-transparent py-4 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-5xl sm:text-6xl font-bold mb-6 text-foreground"
+            className="text-5xl sm:text-6xl font-bold mb-4 text-foreground"
           >
             Stay Connected,{" "}
             <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
@@ -54,7 +54,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
+            className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto"
           >
             A secure platform that keeps relationships alive, families together, and making memories possible.
           </motion.p>
@@ -75,7 +75,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="container mx-auto px-4 py-6 max-w-5xl">
+      <div className="container mx-auto px-4 py-4 max-w-5xl">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
