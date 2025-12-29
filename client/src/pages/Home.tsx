@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, ArrowRight, Heart } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, ArrowRight, Heart, Calendar, Video } from "lucide-react";
 import { GradientIcon } from "@/components/GradientIcon";
 import { motion } from "framer-motion";
 
@@ -77,7 +77,7 @@ export default function Home() {
 
       {/* Features Section */}
       <div className="container mx-auto px-4 py-4 max-w-5xl">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
             {
               icon: MessageSquare,
@@ -96,6 +96,18 @@ export default function Home() {
               title: "Media Gallery",
               description: "Build a shared collection of precious moments and creative expressions.",
               features: ["Upload photos and drawings", "Share voice recordings", "Store videos of special moments"],
+            },
+            {
+              icon: Calendar,
+              title: "Shared Calendar",
+              description: "Never miss important dates and plan visits together with a shared family calendar.",
+              features: ["Track birthdays and special events", "Schedule video calls and visits", "Set reminders for important moments"],
+            },
+            {
+              icon: Video,
+              title: "Video Calls",
+              description: "See each other face-to-face with free, built-in video calling.",
+              features: ["One-click video calls", "No extra apps needed", "High-quality video and audio"],
             },
             {
               icon: Heart,

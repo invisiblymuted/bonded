@@ -13,6 +13,17 @@ Primary action buttons (Create Connection, Send, etc.) should use the btn-gradie
 
 ## Recent Updates
 
+**Session 7 - Video Calls, Notification Settings & UI Improvements**
+- Integrated Jitsi Meet for free video calling (no API keys required)
+- Video tab added to Connection page with one-click video calls
+- Added customizable notification settings (sound type, vibration pattern)
+- Four sound options: chime, bell, pop, gentle
+- Three vibration patterns: short, long, double
+- Toggle notifications by type (messages, events, journal, media)
+- Added Calendar and Video tiles to homepage features section
+- Improved media upload flow with attach-then-upload (preview before uploading)
+- Added tooltips to dashboard settings icons for better discoverability
+
 **Session 6 - Shared Family Calendar**
 - Added built-in calendar feature for shared family events
 - Event types: birthday, visit, call, reminder, general

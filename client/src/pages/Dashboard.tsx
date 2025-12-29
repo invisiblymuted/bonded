@@ -10,7 +10,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Switch } from "@/components/ui/switch";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus, Trash2, Users } from "lucide-react";
+import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus, Trash2, Users, Bell, Volume2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useNotificationSettings, type SoundType, type VibrationPattern } from "@/hooks/use-notification-settings";
 import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
@@ -443,6 +445,144 @@ function ManageConnectionsPanel({
   );
 }
 
+function NotificationSettingsPanel() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { settings, updateSettings, isPending } = useNotificationSettings();
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant="ghost" size="icon" data-testid="button-notification-settings">
+          <Volume2 className="h-4 w-4" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <GradientIcon icon={<Bell className="h-5 w-5" />} />
+            Notification Settings
+          </DialogTitle>
+          <DialogDescription>Customize sounds and vibrations for notifications</DialogDescription>
+        </DialogHeader>
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <h4 className="font-medium">Sound Settings</h4>
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-sm">Enable Sound</span>
+                <p className="text-xs text-muted-foreground">Play a sound for new notifications</p>
+              </div>
+              <Switch
+                checked={settings.soundEnabled}
+                onCheckedChange={(checked) => updateSettings({ soundEnabled: checked })}
+                disabled={isPending}
+                data-testid="switch-sound-enabled"
+              />
+            </div>
+            {settings.soundEnabled && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Sound Type</span>
+                <Select
+                  value={settings.soundType}
+                  onValueChange={(value: SoundType) => updateSettings({ soundType: value })}
+                  disabled={isPending}
+                >
+                  <SelectTrigger className="w-32" data-testid="select-sound-type">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="chime">Chime</SelectItem>
+                    <SelectItem value="bell">Bell</SelectItem>
+                    <SelectItem value="pop">Pop</SelectItem>
+                    <SelectItem value="gentle">Gentle</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-medium">Vibration Settings</h4>
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-sm">Enable Vibration</span>
+                <p className="text-xs text-muted-foreground">Vibrate on mobile devices</p>
+              </div>
+              <Switch
+                checked={settings.vibrationEnabled}
+                onCheckedChange={(checked) => updateSettings({ vibrationEnabled: checked })}
+                disabled={isPending}
+                data-testid="switch-vibration-enabled"
+              />
+            </div>
+            {settings.vibrationEnabled && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Vibration Pattern</span>
+                <Select
+                  value={settings.vibrationPattern}
+                  onValueChange={(value: VibrationPattern) => updateSettings({ vibrationPattern: value })}
+                  disabled={isPending}
+                >
+                  <SelectTrigger className="w-32" data-testid="select-vibration-pattern">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="short">Short</SelectItem>
+                    <SelectItem value="long">Long</SelectItem>
+                    <SelectItem value="double">Double</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-medium">Notification Types</h4>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Messages</span>
+                <Switch
+                  checked={settings.messageNotifications}
+                  onCheckedChange={(checked) => updateSettings({ messageNotifications: checked })}
+                  disabled={isPending}
+                  data-testid="switch-message-notifications"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Calendar Events</span>
+                <Switch
+                  checked={settings.eventNotifications}
+                  onCheckedChange={(checked) => updateSettings({ eventNotifications: checked })}
+                  disabled={isPending}
+                  data-testid="switch-event-notifications"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Journal Entries</span>
+                <Switch
+                  checked={settings.journalNotifications}
+                  onCheckedChange={(checked) => updateSettings({ journalNotifications: checked })}
+                  disabled={isPending}
+                  data-testid="switch-journal-notifications"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Media Uploads</span>
+                <Switch
+                  checked={settings.mediaNotifications}
+                  onCheckedChange={(checked) => updateSettings({ mediaNotifications: checked })}
+                  disabled={isPending}
+                  data-testid="switch-media-notifications"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function Dashboard() {
   const { user, isLoading: authLoading, isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
@@ -562,6 +702,12 @@ export default function Dashboard() {
               <span><ManageConnectionsPanel relationships={relationships} onDelete={handleDeleteConnection} /></span>
             </TooltipTrigger>
             <TooltipContent>Manage Connections</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span><NotificationSettingsPanel /></span>
+            </TooltipTrigger>
+            <TooltipContent>Notification Settings</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
