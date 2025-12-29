@@ -47,6 +47,7 @@ function updateUserSession(
   user.claims = tokens.claims();
   user.access_token = tokens.access_token;
   user.refresh_token = tokens.refresh_token;
+  user.id_token = tokens.id_token;
   user.expires_at = user.claims?.exp;
 }
 
@@ -105,7 +106,7 @@ export async function setupAuth(app: Express) {
   app.get("/api/login", (req, res, next) => {
     ensureStrategy(req.hostname);
     passport.authenticate(`replitauth:${req.hostname}`, {
-      prompt: "login",
+      prompt: "select_account login",
       scope: ["openid", "email", "profile", "offline_access"],
     })(req, res, next);
   });
@@ -119,25 +120,39 @@ export async function setupAuth(app: Express) {
   });
 
   app.get("/api/logout", (req, res) => {
+    const user = req.user as any;
+    const idToken = user?.id_token;
+    
     req.logout(() => {
-      res.redirect(
-        client.buildEndSessionUrl(config, {
+      req.session.destroy((err) => {
+        const endSessionParams: any = {
           client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}`,
-        }).href
-      );
+          post_logout_redirect_uri: `https://${req.hostname}`,
+        };
+        if (idToken) {
+          endSessionParams.id_token_hint = idToken;
+        }
+        res.redirect(client.buildEndSessionUrl(config, endSessionParams).href);
+      });
     });
   });
 
-  // Switch account - logs out and immediately redirects to login
+  // Switch account - logs out and immediately redirects to login with account selection
   app.get("/api/switch-account", (req, res) => {
+    const user = req.user as any;
+    const idToken = user?.id_token;
+    
     req.logout(() => {
-      res.redirect(
-        client.buildEndSessionUrl(config, {
+      req.session.destroy((err) => {
+        const endSessionParams: any = {
           client_id: process.env.REPL_ID!,
-          post_logout_redirect_uri: `${req.protocol}://${req.hostname}/api/login`,
-        }).href
-      );
+          post_logout_redirect_uri: `https://${req.hostname}/api/login`,
+        };
+        if (idToken) {
+          endSessionParams.id_token_hint = idToken;
+        }
+        res.redirect(client.buildEndSessionUrl(config, endSessionParams).href);
+      });
     });
   });
 }
