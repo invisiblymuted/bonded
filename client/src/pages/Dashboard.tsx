@@ -696,32 +696,34 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
       {/* Main Content */}
       <div className={`container mx-auto px-4 max-w-5xl ${containerPadding}`}>
-        <div className="flex justify-end mb-4 gap-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span><ManageConnectionsPanel relationships={relationships} onDelete={handleDeleteConnection} /></span>
-            </TooltipTrigger>
-            <TooltipContent>Manage Connections</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span><NotificationSettingsPanel /></span>
-            </TooltipTrigger>
-            <TooltipContent>Notification Settings</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span><SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} /></span>
-            </TooltipTrigger>
-            <TooltipContent>Dashboard Settings</TooltipContent>
-          </Tooltip>
-        </div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className={isCompact ? "mb-6" : "mb-8"}
         >
-          <h1 className={`font-bold mb-2 ${isCompact ? "text-3xl" : "text-4xl"}`}>Welcome back, {user?.firstName}!</h1>
+          <div className="flex items-start justify-between gap-4 mb-2 flex-wrap">
+            <h1 className={`font-bold ${isCompact ? "text-3xl" : "text-4xl"}`}>Welcome back, {user?.firstName}!</h1>
+            <div className="flex items-center gap-2">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span><ManageConnectionsPanel relationships={relationships} onDelete={handleDeleteConnection} /></span>
+                </TooltipTrigger>
+                <TooltipContent>Manage Connections</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span><NotificationSettingsPanel /></span>
+                </TooltipTrigger>
+                <TooltipContent>Notification Settings</TooltipContent>
+              </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span><SettingsPanel preferences={preferences} onUpdate={handleUpdatePreferences} /></span>
+                </TooltipTrigger>
+                <TooltipContent>Dashboard Settings</TooltipContent>
+              </Tooltip>
+            </div>
+          </div>
           <p className={`text-muted-foreground mb-4 ${isCompact ? "text-base" : "text-lg"}`}>
             Stay connected with your loved ones
           </p>
