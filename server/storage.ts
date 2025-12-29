@@ -118,7 +118,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteRelationship(id: number) {
-    const result = await db.delete(relationships).where(eq(relationships.id, id));
+    // Delete related records first (foreign key constraints)
+    await db.delete(messages).where(eq(messages.relationshipId, id));
+    await db.delete(journalEntries).where(eq(journalEntries.relationshipId, id));
+    await db.delete(media).where(eq(media.relationshipId, id));
+    await db.delete(events).where(eq(events.relationshipId, id));
+    await db.delete(notifications).where(eq(notifications.relationshipId, id));
+    // Now delete the relationship
+    await db.delete(relationships).where(eq(relationships.id, id));
     return true;
   }
 
