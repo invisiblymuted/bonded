@@ -38,7 +38,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-blue-500/10 via-primary/10 to-transparent py-4 px-4">
+      <div className="relative bg-gradient-to-br from-blue-500/10 via-primary/10 to-transparent pt-12 pb-8 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
