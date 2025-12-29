@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { GradientIcon } from "@/components/GradientIcon";
-import { Copy, Check, User, Mail, Calendar } from "lucide-react";
+import { Copy, Check, User, Mail, Calendar, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { Link } from "wouter";
 import { format } from "date-fns";
 
 export default function Profile() {
@@ -28,6 +29,12 @@ export default function Profile() {
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
       
       <div className="container mx-auto px-4 max-w-2xl py-8">
+        <Link href="/dashboard">
+          <Button variant="ghost" className="mb-4 gap-2" data-testid="button-back-dashboard">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Dashboard
+          </Button>
+        </Link>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
