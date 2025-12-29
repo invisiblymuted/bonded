@@ -13,8 +13,19 @@ Primary action buttons (Create Connection, Send, etc.) should use the btn-gradie
 
 ## Recent Updates
 
+**Session 8 - Investor-Ready Polish**
+- Enhanced landing page with compelling use cases, statistics, and testimonials
+- Added sections for: military families, divorced parents, grandparents, incarcerated parents
+- New trust & security section emphasizing privacy and child safety
+- Created Privacy Policy and Terms of Service pages
+- Improved feature cards with checkmark icons and clearer benefits
+- Added smooth scroll behavior for better UX
+- Switched video calling to Whereby for more reliable video quality
+- Video notifications now include direct room join links
+- Improved mobile responsiveness for video calls
+
 **Session 7 - Video Calls, Notification Settings & UI Improvements**
-- Integrated Jitsi Meet for free video calling (no API keys required)
+- Integrated video calling with direct notification join links
 - Video tab added to Connection page with one-click video calls
 - Added customizable notification settings (sound type, vibration pattern)
 - Four sound options: chime, bell, pop, gentle
