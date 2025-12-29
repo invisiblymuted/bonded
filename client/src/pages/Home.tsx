@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { MessageSquare, BookOpen, Share2, ArrowRight, Heart } from "lucide-react";
+import { GradientIcon } from "@/components/GradientIcon";
 import { motion } from "framer-motion";
 
 export default function Home() {
@@ -112,7 +113,7 @@ export default function Home() {
               <Card className="h-full hover:shadow-lg transition-shadow">
                 <CardHeader className="pb-2">
                   <div className="flex items-center gap-3">
-                    <feature.icon className="h-7 w-7 text-primary" />
+                    <GradientIcon icon={<feature.icon className="h-7 w-7" />} />
                     <CardTitle className="text-lg">{feature.title}</CardTitle>
                   </div>
                 </CardHeader>

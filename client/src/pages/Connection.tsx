@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BondedLogo } from "@/components/BondedLogo";
 import { Loader2, Send, MessageSquare, BookOpen, Share2, Upload, ImagePlus, X, ArrowLeft } from "lucide-react";
+import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
@@ -134,15 +135,15 @@ export default function Connection() {
           <Tabs defaultValue="messages" className="w-full">
             <TabsList className="grid w-full grid-cols-3 mb-8">
               <TabsTrigger value="messages" className="gap-2">
-                <MessageSquare className="h-4 w-4 text-blue-500" />
+                <GradientIcon icon={<MessageSquare className="h-4 w-4" />} />
                 Messages
               </TabsTrigger>
               <TabsTrigger value="journal" className="gap-2">
-                <BookOpen className="h-4 w-4 text-primary" />
+                <GradientIcon icon={<BookOpen className="h-4 w-4" />} />
                 Journal
               </TabsTrigger>
               <TabsTrigger value="media" className="gap-2">
-                <Share2 className="h-4 w-4 text-blue-500" />
+                <GradientIcon icon={<Share2 className="h-4 w-4" />} />
                 Gallery
               </TabsTrigger>
             </TabsList>

@@ -10,6 +10,7 @@ import { Switch } from "@/components/ui/switch";
 import { Link, useLocation } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { MessageSquare, BookOpen, Share2, Loader2, ArrowRight, Heart, Copy, Check, Settings, ChevronUp, ChevronDown, Image, PenLine, Plus } from "lucide-react";
+import { GradientIcon } from "@/components/GradientIcon";
 import { NotificationBell } from "@/components/NotificationBell";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
@@ -33,7 +34,7 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Heart className="h-5 w-5 text-primary" />
+            <GradientIcon icon={<Heart className="h-5 w-5" />} />
             Connections
           </CardTitle>
         </CardHeader>
@@ -50,7 +51,7 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
     return (
       <Card className="border-dashed">
         <CardContent className="pt-8 pb-8 text-center">
-          <Heart className="h-12 w-12 text-primary/30 mx-auto mb-3" />
+          <GradientIcon icon={<Heart className="h-12 w-12 opacity-30" />} className="mx-auto mb-3" />
           <h3 className="text-lg font-semibold mb-2">No connections yet</h3>
           <p className="text-muted-foreground text-sm mb-4">
             Create your first family connection to start sharing.
@@ -76,7 +77,7 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
             <Card className="h-full hover:shadow-lg transition-all cursor-pointer group">
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2 mb-1">
-                  <Heart className="h-4 w-4 text-primary" />
+                  <GradientIcon icon={<Heart className="h-4 w-4" />} />
                   <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
                     Connected
                   </span>
@@ -91,15 +92,15 @@ function ConnectionsWidget({ relationships, isLoading, user, onOpenCreate }: {
               <CardContent className="pt-2">
                 <div className="flex gap-4 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <MessageSquare className="h-3 w-3 text-blue-500" />
+                    <GradientIcon icon={<MessageSquare className="h-3 w-3" />} />
                     <span>Chat</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <BookOpen className="h-3 w-3 text-primary" />
+                    <GradientIcon icon={<BookOpen className="h-3 w-3" />} />
                     <span>Journal</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Share2 className="h-3 w-3 text-blue-500" />
+                    <GradientIcon icon={<Share2 className="h-3 w-3" />} />
                     <span>Media</span>
                   </div>
                 </div>
@@ -143,7 +144,7 @@ function RecentMessagesWidget({ relationships }: { relationships: Relationship[]
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-blue-500" />
+            <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
             Recent Messages
           </CardTitle>
         </CardHeader>
@@ -161,7 +162,7 @@ function RecentMessagesWidget({ relationships }: { relationships: Relationship[]
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-blue-500" />
+            <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
             Recent Messages
           </CardTitle>
         </CardHeader>
@@ -178,7 +179,7 @@ function RecentMessagesWidget({ relationships }: { relationships: Relationship[]
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5 text-primary" />
+          <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
           Recent Messages
         </CardTitle>
       </CardHeader>
@@ -213,33 +214,33 @@ function QuickActionsWidget({ relationships, onOpenCreate }: {
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Plus className="h-5 w-5 text-primary" />
+          <GradientIcon icon={<Plus className="h-5 w-5" />} />
           Quick Actions
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 gap-3">
           <Button variant="outline" onClick={onOpenCreate} className="flex-col h-auto py-4 gap-2">
-            <Heart className="h-5 w-5 text-primary" />
+            <GradientIcon icon={<Heart className="h-5 w-5" />} />
             <span className="text-xs">New Connection</span>
           </Button>
           {hasConnections && (
             <>
               <Link href={`/connection/${relationships[0].id}`}>
                 <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <MessageSquare className="h-5 w-5 text-blue-500" />
+                  <GradientIcon icon={<MessageSquare className="h-5 w-5" />} />
                   <span className="text-xs">Send Message</span>
                 </Button>
               </Link>
               <Link href={`/connection/${relationships[0].id}`}>
                 <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <PenLine className="h-5 w-5 text-primary" />
+                  <GradientIcon icon={<PenLine className="h-5 w-5" />} />
                   <span className="text-xs">Write Journal</span>
                 </Button>
               </Link>
               <Link href={`/connection/${relationships[0].id}`}>
                 <Button variant="outline" className="w-full flex-col h-auto py-4 gap-2">
-                  <Image className="h-5 w-5 text-blue-500" />
+                  <GradientIcon icon={<Image className="h-5 w-5" />} />
                   <span className="text-xs">Share Photo</span>
                 </Button>
               </Link>

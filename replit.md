@@ -8,6 +8,7 @@ Bonded is a family connection application designed to help parents and children 
 
 Preferred communication style: Simple, everyday language.
 Prefers warm, inviting design (peach/orange color palette with blue accents)
+All icons should use the GradientIcon component for blue-to-orange gradient effect (matching the BondedLogo heart)
 
 ## Recent Updates
 
