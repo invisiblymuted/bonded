@@ -81,22 +81,26 @@ export default function Home() {
             {
               icon: MessageSquare,
               title: "Real-time Messaging",
-              description: "Chat with your loved ones anytime, anywhere",
+              description: "Stay in touch with instant messages that feel like you're in the same room.",
+              features: ["Send text messages instantly", "See when messages are delivered", "Keep conversation history safe"],
             },
             {
               icon: BookOpen,
               title: "Shared Journals",
-              description: "Write together, capture memories, express feelings",
+              description: "Create a private space to write, reflect, and share your thoughts together.",
+              features: ["Write daily entries with mood tracking", "Attach photos and videos to entries", "Read and respond to each other's journals"],
             },
             {
               icon: Share2,
-              title: "Media Sharing",
-              description: "Share photos, artwork, audio, and videos",
+              title: "Media Gallery",
+              description: "Build a shared collection of precious moments and creative expressions.",
+              features: ["Upload photos and drawings", "Share voice recordings", "Store videos of special moments"],
             },
             {
               icon: Heart,
               title: "Secure & Private",
-              description: "End-to-end encrypted, your family data is safe",
+              description: "Your family's connection is protected with the highest security standards.",
+              features: ["Private, invite-only connections", "Your data stays yours", "Built with love and care"],
             },
           ].map((feature, i) => (
             <motion.div
@@ -106,12 +110,20 @@ export default function Home() {
               transition={{ delay: i * 0.1 }}
             >
               <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardHeader>
+                <CardHeader className="pb-2">
                   <feature.icon className="h-8 w-8 text-primary mb-2" />
                   <CardTitle className="text-lg">{feature.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-3">
                   <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <ul className="text-xs text-muted-foreground space-y-1">
+                    {feature.features.map((item, j) => (
+                      <li key={j} className="flex items-start gap-2">
+                        <span className="text-primary mt-0.5">•</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </CardContent>
               </Card>
             </motion.div>
