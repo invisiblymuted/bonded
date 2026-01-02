@@ -15,7 +15,9 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/app" component={Home} />
       <Route path="/choice" component={AuthChoice} />
-      <Route path="/auth" component={AuthPage} />
+      <Route path="/auth" component={AuthChoice} />
+      <Route path="/login" component={AuthPage} />
+      <Route path="/signup" component={AuthPage} />
       <Route path="/research" component={Research} />
       {/* 404 Fallback */}
       <Route>
