@@ -37,8 +37,6 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center">
             <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
               <BondedLogo />
             </div>
