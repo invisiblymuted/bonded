@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import AuthPage from "./pages/AuthPage";
+import AuthChoice from "./pages/AuthChoice";
 import Research from "./pages/Research";
 
 // The Router handles the URL paths
@@ -13,6 +14,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/app" component={Home} />
+      <Route path="/choice" component={AuthChoice} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/research" component={Research} />
       {/* 404 Fallback */}
