@@ -2,7 +2,6 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
-import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import AuthPage from "./pages/AuthPage";
 import Research from "./pages/Research";
@@ -11,8 +10,7 @@ import Research from "./pages/Research";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Landing} />
-      <Route path="/app" component={Home} />
+      <Route path="/" component={Home} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/research" component={Research} />
       {/* 404 Fallback */}
