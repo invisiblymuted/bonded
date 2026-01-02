@@ -59,7 +59,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/auth">
+            <Link href="/choice">
               <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#dcd7ca] rounded-full cursor-pointer hover:border-[#f26522] transition-all group shadow-sm">
                 <UserCircle className="h-5 w-5 text-[#4a453e] group-hover:text-[#f26522]" strokeWidth={2.5} />
                 <span className="text-[10px] font-black text-[#4a453e] uppercase tracking-widest group-hover:text-[#2458a0]">Bonded Profile</span>
