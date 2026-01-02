@@ -8,8 +8,8 @@ const LandingPage = () => {
       {/* Hero Section */}
       <main className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-20 pb-32">
         <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          Connection, <br />
-          <span className="text-slate-500">Reimagined.</span>
+          See How <br />
+          <span className="text-slate-500">Bonded Works</span>
         </h1>
         <p className="text-lg text-slate-600 max-w-md mb-10 leading-relaxed">
           Deepen your most important relationships through intentionality and shared growth.
