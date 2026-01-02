@@ -20,20 +20,31 @@ const resilienceData = [
 
 const StatCounter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
   const [count, setCount] = useState(0);
+  
   useEffect(() => {
     let start = 0;
     const increment = end / (duration / 16);
-    const timer = setInterval(() => {
+    let animationFrame: number;
+    
+    const animate = () => {
       start += increment;
       if (start >= end) {
         setCount(end);
-        clearInterval(timer);
       } else {
         setCount(Math.floor(start));
+        animationFrame = requestAnimationFrame(animate);
       }
-    }, 16);
-    return () => clearInterval(timer);
+    };
+    
+    animationFrame = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+    };
   }, [end, duration]);
+  
   return <span>{count.toLocaleString()}{suffix}</span>;
 };
 
@@ -210,11 +221,27 @@ export default function Research() {
               </h2>
               <div className="h-64 w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={resilienceData}>
+                  <AreaChart 
+                    data={resilienceData}
+                    aria-label="Chart showing resilience levels based on contact frequency"
+                    role="img"
+                  >
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#eee" />
                     <XAxis dataKey="contact" hide />
-                    <Tooltip contentStyle={{borderRadius: '16px', border: 'none', fontSize: '10px'}} />
-                    <Area type="monotone" dataKey="resilience" stroke="#2458a0" strokeWidth={3} fill="#2458a0" fillOpacity={0.1} />
+                    <Tooltip 
+                      contentStyle={{borderRadius: '16px', border: 'none', fontSize: '10px'}}
+                      labelFormatter={(value) => `Contact: ${value}`}
+                      formatter={(value) => [`${value}%`, 'Resilience']}
+                    />
+                    <Area 
+                      type="monotone" 
+                      dataKey="resilience" 
+                      stroke="#2458a0" 
+                      strokeWidth={3} 
+                      fill="#2458a0" 
+                      fillOpacity={0.1}
+                      aria-label="Resilience percentage data"
+                    />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>

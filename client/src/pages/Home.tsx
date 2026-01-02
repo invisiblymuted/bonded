@@ -17,7 +17,7 @@ const IconGradient = () => (
   </svg>
 );
 
-export default function About() {
+export default function Home() {
   const families = [
     { title: "Military Families", desc: "Parents deployed overseas can stay present in their children's daily lives through shared journals and real-time messaging." },
     { title: "Divorced Parents", desc: "Co-parents can maintain strong bonds with their children regardless of custody arrangements." },
