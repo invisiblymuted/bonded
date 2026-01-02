@@ -1,44 +1,45 @@
 import React from 'react';
-import { Button } from "@/components/ui/button";
 import { BondedLogo } from "@/components/BondedLogo";
+import { GradientIcon } from "@/components/GradientIcon";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  Heart,
+  Globe,
+  Users,
+  Shield,
+  Activity,
+  MessageSquare,
+  Video,
+  BookOpen,
+  Share2,
+  Calendar,
+  Star,
+} from 'lucide-react';
+
+const testimonials = [
+  {
+    quote: "Bonded has been a lifeline for our family. We feel connected even when we're apart.",
+    author: "Sarah M.",
+    role: "Military Spouse"
+  },
+  {
+    quote: "The security features give us peace of mind knowing our conversations are private.",
+    author: "James T.",
+    role: "Incarcerated Individual"
+  },
+  {
+    quote: "Finally, a platform designed with our family's needs in mind.",
+    author: "Maria L.",
+    role: "Grandmother"
+  }
+];
 
 const LandingPage = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-white text-slate-900">
-      {/* Hero Section */}
-      <main className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-20 pb-32">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          Connection, <br />
-          <span className="text-slate-500">Reimagined.</span>
-        </h1>
-        <p className="text-lg text-slate-600 max-w-md mb-10 leading-relaxed">
-          Deepen your most important relationships through intentionality and shared growth.
-        </p>
-        <Button 
-          size="lg" 
-          className="px-10 py-7 text-xl shadow-xl hover:shadow-2xl transition-all"
-         onClick={() => window.location.href = '/auth'}
-        >
-          Get Started
-        </Button>
-      </main>
-
-      {/* Footer with specifically centered and scooted Logo */}
-      <footer className="py-12 border-t border-slate-100">
-        <div className="flex flex-col items-center justify-center">
-          <BondedLogo />
-          <p className="mt-4 text-sm text-slate-400 font-medium tracking-widest uppercase">
-            EST. 2026
-          </p>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-export default LandingPage;
     <div className="min-h-screen bg-[#f5f1e8] text-[#2c2c2c]">
-      <IconGradient />
+      <GradientIcon />
 
       {/* HEADER */}
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
@@ -51,17 +52,17 @@ export default LandingPage;
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/research">
+            <a href="/research">
               <div className="text-sm font-bold text-[#4a453e] cursor-pointer hover:text-[#f26522] transition-colors uppercase tracking-widest">
                 Research
               </div>
-            </Link>
-            <Link href="/app">
+            </a>
+            <a href="/app">
               <div className="flex items-center gap-2 px-4 py-2 bg-[#4a453e] text-white rounded-full cursor-pointer hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] transition-all shadow-sm">
                 <span className="text-[10px] font-black uppercase tracking-widest">Enter App</span>
                 <ArrowRight className="h-3 w-3" />
               </div>
-            </Link>
+            </a>
           </div>
         </div>
       </nav>
@@ -89,18 +90,18 @@ export default LandingPage;
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link href="/app">
+              <a href="/app">
                 <div className="h-16 px-8 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center gap-4 shadow-xl cursor-pointer">
                   Start Connecting Today
                   <ArrowRight className="h-5 w-5" />
                 </div>
-              </Link>
-              <Link href="/research">
+              </a>
+              <a href="/research">
                 <div className="h-16 px-8 border-2 border-[#4a453e] text-[#4a453e] rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-[#4a453e] hover:text-white transition-all flex items-center gap-4 cursor-pointer">
                   <Globe className="h-5 w-5" />
                   View Research
                 </div>
-              </Link>
+              </a>
             </div>
           </div>
         </section>
@@ -221,15 +222,17 @@ export default LandingPage;
               Join thousands of families who have found their way back to each other.
             </p>
 
-            <Link href="/app">
+            <a href="/app">
               <div className="inline-flex h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all items-center gap-4 shadow-xl cursor-pointer">
                 Get Started Free
                 <ArrowRight className="h-6 w-6" />
               </div>
-            </Link>
+            </a>
           </div>
         </section>
       </main>
     </div>
   );
-}
+};
+
+export default LandingPage;
