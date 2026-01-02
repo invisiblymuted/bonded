@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { findUser, hashPin, createSession } from "./_authStore";
+import { getUserByUsername, verifyPin, createSession } from "./_authDb";
 import { sessionCookie } from "./_cookie";
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
@@ -16,10 +16,10 @@ export default function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ message: "PIN must be at least 4 digits" });
   }
 
-  const user = findUser(username);
+  const user = await getUserByUsername(username);
   if (!user) return res.status(401).json({ message: "User not found" });
 
-  const valid = user.pinHash === hashPin(pin);
+  const valid = verifyPin(pin, user.pin_hash);
   if (!valid) return res.status(401).json({ message: "Invalid PIN" });
 
   const sid = createSession(user.id);
