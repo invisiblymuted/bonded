@@ -1,6 +1,6 @@
 import { createServer, type Server } from "http";
 import type { Express } from "express";
-import { storage } from "./storage";
+import { storage, hashPin } from "./storage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -15,6 +15,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const users = await storage.getUsers();
   res.json(users);
 });
+
+  app.post("/api/signup", async (req, res, next) => {
+    try {
+      const { username, pin, birthday } = req.body ?? {};
+
+      if (!username || typeof username !== "string") {
+        return res.status(400).json({ message: "Username is required" });
+      }
+      if (!pin || typeof pin !== "string" || pin.length < 4) {
+        return res.status(400).json({ message: "PIN must be at least 4 digits" });
+      }
+      if (!birthday || typeof birthday !== "string") {
+        return res.status(400).json({ message: "Birthday is required" });
+      }
+
+      const existing = await storage.getUserByUsername(username);
+      if (existing) {
+        return res.status(409).json({ message: "Username already exists" });
+      }
+
+      const user = await storage.createUser({
+        username,
+        email: username,
+        firstName: username,
+        lastName: "",
+        birthday,
+        pinHash: hashPin(pin),
+        password: null,
+      });
+
+      req.login(user, (err) => {
+        if (err) return next(err);
+        res.status(201).json({ id: user.id, username: user.username, birthday: user.birthday });
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
 
 app.get("/api/relationships/:userId", async (req, res) => {
   const relationships = await storage.getRelationships(Number(req.params.userId));

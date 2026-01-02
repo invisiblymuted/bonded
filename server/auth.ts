@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Express } from "express";
 import session from "express-session";
-import { storage } from "./storage";
+import { storage, hashPin } from "./storage";
 import { User as SelectUser } from "@shared/schema";
 
 export function setupAuth(app: Express) {
@@ -19,13 +19,16 @@ export function setupAuth(app: Express) {
   app.use(passport.session());
 
   passport.use(
-    new LocalStrategy(async (username, password, done) => {
+    new LocalStrategy({ usernameField: "username", passwordField: "pin" }, async (username, pin, done) => {
       try {
         const user = await storage.getUserByUsername(username);
-        if (!user) {
+        if (!user || !user.pinHash) {
           return done(null, false, { message: "User not found" });
         }
-        // For now, we are skipping password hashing to get you in quickly
+
+        const valid = user.pinHash === hashPin(pin);
+        if (!valid) return done(null, false, { message: "Invalid PIN" });
+
         return done(null, user);
       } catch (err) {
         return done(err);

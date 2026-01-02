@@ -1,11 +1,23 @@
 import { User, UpsertUser } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
+import { createHash } from "crypto";
 
 const MemoryStore = createMemoryStore(session);
 
+export type StoredUser = User & {
+  username?: string;
+  pinHash?: string | null;
+  birthday?: string | null;
+  displayName?: string | null;
+};
+
+export function hashPin(pin: string): string {
+  return createHash("sha256").update(pin).digest("hex");
+}
+
 export class MemStorage {
-  private users: Map<string, User> = new Map();
+  private users: Map<string, StoredUser> = new Map();
   private relationships: Map<number, any> = new Map();
   private currentId: number = 5; // Starting at 5 since we seed 1-4
   private bondingCodes = new Map<string, { userId: string, expires: number }>();
@@ -20,13 +32,17 @@ export class MemStorage {
     this.users.set("1", { 
       id: "1", 
       email: "daddy@bonded.com",
+      username: "daddy",
+      displayName: "Daddy",
+      birthday: null,
       firstName: "Daddy", 
       lastName: "", 
       profileImageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Daddy",
       password: null,
+      pinHash: hashPin("1234"),
       createdAt: new Date(),
       updatedAt: new Date()
-    } as User);
+    } as StoredUser);
 
     // 2. SEED USERS
     this.seedDirectory();
@@ -43,13 +59,17 @@ export class MemStorage {
       this.users.set(u.id, { 
         id: u.id,
         email: u.email,
+        username: u.firstName.toLowerCase(),
+        displayName: u.firstName,
         firstName: u.firstName,
         lastName: u.lastName,
+        birthday: null,
         profileImageUrl: `https://api.dicebear.com/7.x/avataaars/svg?seed=${u.firstName}`,
         password: null,
+        pinHash: hashPin("1234"),
         createdAt: new Date(),
         updatedAt: new Date()
-      } as User);
+      } as StoredUser);
       
       this.relationships.set(parseInt(u.id), { id: parseInt(u.id), userId: 1, targetId: parseInt(u.id), status: "connected" });
     });
@@ -57,7 +77,7 @@ export class MemStorage {
 
   async getUser(id: string) { return this.users.get(id); }
   async getUserByUsername(username: string) { 
-    return Array.from(this.users.values()).find(u => u.email === username); 
+    return Array.from(this.users.values()).find(u => u.username === username || u.email === username); 
   }
   
   async getUsers() {
@@ -93,9 +113,9 @@ export class MemStorage {
   async getDashboardPreferences() { return null; }
   async getNotificationSettings() { return null; }
   
-  async createUser(user: UpsertUser): Promise<User> {
+  async createUser(user: UpsertUser & Partial<StoredUser>): Promise<StoredUser> {
     const id = (this.currentId++).toString();
-    const newUser = { ...user, id, createdAt: new Date(), updatedAt: new Date() } as User;
+    const newUser = { ...user, id, createdAt: new Date(), updatedAt: new Date() } as StoredUser;
     this.users.set(id, newUser);
     return newUser;
   }
