@@ -37,7 +37,6 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-            <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
               <BondedLogo />
             </div>
             <span className="font-black text-3xl text-[#4a453e] tracking-tighter -ml-1">Bonded</span>
