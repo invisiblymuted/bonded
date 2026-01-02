@@ -143,37 +143,60 @@ export default function Calendar() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Input
-                    placeholder="Event title..."
-                    value={eventTitle}
-                    onChange={(e) => setEventTitle(e.target.value)}
-                    data-testid="input-event-title"
-                  />
-                  <Input
-                    type="datetime-local"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                    data-testid="input-event-date"
-                  />
-                  <Select value={eventType} onValueChange={setEventType}>
-                    <SelectTrigger data-testid="select-event-type">
-                      <SelectValue placeholder="Event type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="general">General</SelectItem>
-                      <SelectItem value="birthday">Birthday</SelectItem>
-                      <SelectItem value="visit">Visit</SelectItem>
-                      <SelectItem value="call">Call</SelectItem>
-                      <SelectItem value="reminder">Reminder</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Textarea
-                    placeholder="Description (optional)..."
-                    value={eventDescription}
-                    onChange={(e) => setEventDescription(e.target.value)}
-                    rows={2}
-                    data-testid="input-event-description"
-                  />
+                  <div>
+                    <label htmlFor="event-title" className="text-sm font-medium mb-2 block">
+                      Event Title
+                    </label>
+                    <Input
+                      id="event-title"
+                      placeholder="Event title..."
+                      value={eventTitle}
+                      onChange={(e) => setEventTitle(e.target.value)}
+                      data-testid="input-event-title"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="event-date" className="text-sm font-medium mb-2 block">
+                      Event Date & Time
+                    </label>
+                    <Input
+                      id="event-date"
+                      type="datetime-local"
+                      value={eventDate}
+                      onChange={(e) => setEventDate(e.target.value)}
+                      data-testid="input-event-date"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="event-type" className="text-sm font-medium mb-2 block">
+                      Event Type
+                    </label>
+                    <Select value={eventType} onValueChange={setEventType}>
+                      <SelectTrigger id="event-type" data-testid="select-event-type">
+                        <SelectValue placeholder="Event type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="general">General</SelectItem>
+                        <SelectItem value="birthday">Birthday</SelectItem>
+                        <SelectItem value="visit">Visit</SelectItem>
+                        <SelectItem value="call">Call</SelectItem>
+                        <SelectItem value="reminder">Reminder</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <label htmlFor="event-description" className="text-sm font-medium mb-2 block">
+                      Description (Optional)
+                    </label>
+                    <Textarea
+                      id="event-description"
+                      placeholder="Description (optional)..."
+                      value={eventDescription}
+                      onChange={(e) => setEventDescription(e.target.value)}
+                      rows={2}
+                      data-testid="input-event-description"
+                    />
+                  </div>
                   <div className="flex items-center gap-2">
                     <Checkbox
                       id="eventReminder"

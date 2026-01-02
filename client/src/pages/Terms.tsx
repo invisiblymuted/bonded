@@ -10,13 +10,13 @@ export default function Terms() {
       {/* Navigation */}
       <nav className="border-b border-border/50 sticky top-0 z-50 bg-background/95 backdrop-blur">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center gap-4">
-          <Link href="/">
+          <Link href="/app">
             <div className="flex items-center gap-2 cursor-pointer">
               <BondedLogo className="h-6 w-6 text-primary" />
               <span className="font-bold text-xl text-blue-800">Bonded</span>
             </div>
           </Link>
-          <Link href="/">
+          <Link href="/app">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back to Home

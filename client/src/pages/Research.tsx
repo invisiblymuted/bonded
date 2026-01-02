@@ -115,7 +115,7 @@ export default function Research() {
       
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/">
+          <Link href="/app">
             <div className="flex items-center cursor-pointer">
               <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
                 <BondedLogo />
@@ -146,7 +146,9 @@ export default function Research() {
           {/* SEARCH ENGINE */}
           <div className="max-w-2xl mx-auto mb-12">
             <form onSubmit={handleGoogleSearch} className="relative group">
+              <label htmlFor="research-search" className="sr-only">Search for research topics</label>
               <input 
+                id="research-search"
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -299,7 +301,7 @@ export default function Research() {
       <footer className="py-20 border-t border-[#dcd7ca] bg-[#ede8dc]">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center gap-12 text-center">
-            <Link href="/">
+            <Link href="/app">
               <div className="flex items-center cursor-pointer group pr-10"> 
                 <div className="h-12 w-12 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
                   <BondedLogo />

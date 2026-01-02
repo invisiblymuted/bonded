@@ -41,7 +41,7 @@ export default function Home() {
       {/* HEADER */}
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/">
+          <Link href="/app">
             <div className="flex items-center cursor-pointer">
               <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
                 <BondedLogo />
@@ -84,9 +84,9 @@ export default function Home() {
             </p>
             
             <Link href="/auth">
-              <button className="h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center gap-4 shadow-xl mx-auto group">
+              <div className="h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center gap-4 shadow-xl mx-auto group cursor-pointer">
                 Establish Your Bonds
-              </button>
+              </div>
             </Link>
           </div>
         </section>
@@ -107,7 +107,7 @@ export default function Home() {
                     </div>
                     <p className="text-sm text-[#4a453e] font-bold opacity-70 mb-6">{f.desc}</p>
                     <div className="text-xs font-black text-[#2458a0] flex items-center gap-2 uppercase tracking-widest group-hover:text-[#f26522] transition-colors">
-                      Dig Deeper <ExternalLink className="h-3 w-3" />
+                    <ExternalLink className="h-3 w-3" />
                     </div>
                   </Card>
                 </Link>
@@ -164,7 +164,7 @@ export default function Home() {
       <footer className="py-20 border-t border-[#dcd7ca] bg-[#ede8dc]">
         <div className="container mx-auto px-4">
           <div className="flex flex-col items-center text-center gap-8">
-            <Link href="/">
+            <Link href="/app">
               <div className="flex items-center justify-center cursor-pointer group">
                 <div className="h-12 w-12 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
                   <BondedLogo />
