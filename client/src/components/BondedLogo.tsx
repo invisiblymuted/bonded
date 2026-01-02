@@ -7,7 +7,7 @@ export function BondedLogo({ className = "h-6 w-6" }: { className?: string }) {
     >
       <defs>
         <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#1E3A8A" />
+          <stop offset="0%" stopColor="#3B82F6" />
           <stop offset="100%" stopColor="#FB923C" />
         </linearGradient>
       </defs>
