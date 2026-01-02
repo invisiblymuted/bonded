@@ -1,46 +1,42 @@
 import React from 'react';
-import { BondedLogo } from "@/components/BondedLogo";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  ArrowRight,
-  Heart,
-  Globe,
-  Users,
-  Shield,
-  Activity,
-  MessageSquare,
-  Video,
-  BookOpen,
-  Share2,
-  Calendar,
-  Star,
-} from 'lucide-react';
-
-const testimonials = [
-  {
-    quote: "Bonded has been a lifeline for our family. We feel connected even when we're apart.",
-    author: "Sarah M.",
-    role: "Military Spouse"
-  },
-  {
-    quote: "The security features give us peace of mind knowing our conversations are private.",
-    author: "James T.",
-    role: "Incarcerated Individual"
-  },
-  {
-    quote: "Finally, a platform designed with our family's needs in mind.",
-    author: "Maria L.",
-    role: "Grandmother"
-  }
-];
+import { BondedLogo } from "@/components/BondedLogo";
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-[#f5f1e8] text-[#2c2c2c]">
+    <div className="flex flex-col min-h-screen bg-white text-slate-900">
+      {/* Hero Section */}
+      <main className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-20 pb-32">
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+          Connection, <br />
+          <span className="text-slate-500">Reimagined.</span>
+        </h1>
+        <p className="text-lg text-slate-600 max-w-md mb-10 leading-relaxed">
+          Deepen your most important relationships through intentionality and shared growth.
+        </p>
+        <Button 
+          size="lg" 
+          className="px-10 py-7 text-xl shadow-xl hover:shadow-2xl transition-all"
+         onClick={() => window.location.href = '/auth'}
+        >
+          Get Started
+        </Button>
+      </main>
 
-      {/* HEADER */}
-      <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
+      {/* Footer with specifically centered and scooted Logo */}
+      <footer className="py-12 border-t border-slate-100">
+        <div className="flex flex-col items-center justify-center">
+          <BondedLogo />
+          <p className="mt-4 text-sm text-slate-400 font-medium tracking-widest uppercase">
+            EST. 2026
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center">
             <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
