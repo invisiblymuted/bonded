@@ -32,3 +32,15 @@ export function clearSessionCookie() {
   if (process.env.VERCEL === "1") parts.push("Secure");
   return parts.join("; ");
 }
+
+export function clearSessionCookie() {
+  const parts = [
+    "bonded_session=",
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Lax",
+    "Max-Age=0",
+  ];
+  if (process.env.VERCEL === "1") parts.push("Secure");
+  return parts.join("; ");
+}

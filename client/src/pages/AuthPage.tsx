@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useLocation, Redirect, Link } from "wouter";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 type UserOption = {
   id: string;
@@ -15,6 +17,7 @@ type UserOption = {
 
 export default function AuthPage() {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [location, setLocation] = useLocation();
   const mode = location.includes("signup") ? "signup" : "login";
 
@@ -53,10 +56,17 @@ export default function AuthPage() {
         const msg = await res.text();
         throw new Error(msg || "Login failed");
       }
-      return res.json();
+      
+      const userData = await res.json();
+      // Save to localStorage for persistence
+      localStorage.setItem("bonded_user", JSON.stringify(userData));
+      localStorage.setItem("bonded_auth_timestamp", new Date().toISOString());
+      
+      return userData;
     },
     onSuccess: () => {
       setError("");
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       setLocation("/app");
     },
     onError: (err: any) => setError(err?.message || "Login failed"),
@@ -75,10 +85,17 @@ export default function AuthPage() {
         const msg = await res.text();
         throw new Error(msg || "Signup failed");
       }
-      return res.json();
+      
+      const userData = await res.json();
+      // Save to localStorage for persistence
+      localStorage.setItem("bonded_user", JSON.stringify(userData));
+      localStorage.setItem("bonded_auth_timestamp", new Date().toISOString());
+      
+      return userData;
     },
     onSuccess: () => {
       setError("");
+      queryClient.invalidateQueries({ queryKey: ["/api/user"] });
       setLocation("/app");
     },
     onError: (err: any) => setError(err?.message || "Signup failed"),
@@ -116,21 +133,23 @@ export default function AuthPage() {
   const isLogin = mode === "login";
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] flex items-center justify-center p-4">
-      <Card className="w-full max-w-lg bg-[#e9e4d9] border-[#dcd7ca]">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold text-[#4a453e]">
-              {isLogin ? "Log In" : "Join Bonded"}
-            </CardTitle>
-            <Link href="/app">
-              <Button variant="ghost" size="sm" className="text-xs font-semibold text-[#4a453e] hover:text-[#2458a0]">
-                ← Home
-              </Button>
-            </Link>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#f5f1e8] via-[#ede8dc] to-[#f5f1e8] flex flex-col">
+      <Header />
+      <div className="flex items-center justify-center p-4 pt-24 flex-1">
+        <Card className="w-full max-w-lg bg-white/90 border-[#dcd7ca] shadow-lg">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-2xl font-bold text-[#4a453e]">
+                {isLogin ? "Log In" : "Join Bonded"}
+              </CardTitle>
+              <Link href="/landing">
+                <Button variant="ghost" size="sm" className="text-xs font-semibold text-[#4a453e] hover:text-[#2458a0]">
+                  ← Home
+                </Button>
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
           {isLogin ? (
             <div className="space-y-4">
               {options.length > 0 && (
@@ -233,12 +252,14 @@ export default function AuthPage() {
               {error && <p className="text-sm text-red-600">{error}</p>}
 
               <Button className="w-full h-12 btn-gradient" onClick={handleSignup} disabled={signupMutation.isPending}>
-                {signupMutation.isPending ? "Creating profile…" : "Create Profile"}
+                {signupMutation.isPending ? "Creating profile…" : "Build Your Bonds"}
               </Button>
             </div>
           )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
+      <Footer />
     </div>
   );
 }

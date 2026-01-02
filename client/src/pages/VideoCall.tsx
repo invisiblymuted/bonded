@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { GradientIcon } from "@/components/GradientIcon";
 import { TutorialPanel } from "@/components/TutorialPanel";
+import { MediaTest } from "@/components/MediaTest";
 import { Loader2, Video, Users, PhoneOff, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSearch } from "wouter";
@@ -173,6 +174,18 @@ export default function VideoCall() {
                           Start a video call and see each other face-to-face
                         </p>
                       </div>
+                      <MediaTest
+                        trigger={
+                          <Button
+                            variant="outline"
+                            className="gap-2"
+                            size="lg"
+                          >
+                            <Video className="h-5 w-5" />
+                            Test Camera & Mic
+                          </Button>
+                        }
+                      />
                       <Button
                         onClick={startVideoCall}
                         className="btn-gradient gap-2"

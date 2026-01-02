@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useMessages, useCreateMessage, useRelationships } from "@/hooks/use-relationships";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,17 +52,20 @@ export default function Messages() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center gap-3 mb-2">
-            <GradientIcon icon={<MessageSquare className="h-8 w-8" />} />
-            <h1 className="text-3xl font-bold" data-testid="text-page-title">Messages</h1>
-          </div>
-          <p className="text-muted-foreground mb-6">Send instant messages to stay connected</p>
+    <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+      <Header />
+      
+      <main className="pt-24 pb-20 px-4 flex-1">
+        <div className="container mx-auto max-w-4xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="flex items-center gap-3 mb-2">
+              <MessageSquare className="h-8 w-8 text-[#2458a0]" />
+              <h1 className="text-3xl font-bold text-[#4a453e]">Messages</h1>
+            </div>
+            <p className="text-[#4a453e] opacity-70 mb-6 font-bold">Send instant messages to stay connected</p>
 
-          <TutorialPanel
-            featureKey="messages"
+            <TutorialPanel
+              featureKey="messages"
             featureTitle="Messages"
             icon={<HelpCircle className="h-5 w-5" />}
             steps={messageTutorialSteps}
@@ -149,7 +154,7 @@ export default function Messages() {
                       onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                       data-testid="input-message"
                     />
-                    <Button onClick={handleSendMessage} disabled={createMessage.isPending} className="btn-gradient" data-testid="button-send">
+                    <Button onClick={handleSendMessage} disabled={createMessage.isPending} className="bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white" data-testid="button-send">
                       {createMessage.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </Button>
                   </div>
@@ -157,8 +162,10 @@ export default function Messages() {
               </Card>
             </motion.div>
           )}
-        </motion.div>
-      </div>
+          </div>
+        </main>
+      
+      <Footer />
     </div>
   );
 }

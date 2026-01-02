@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useJournal, useCreateJournalEntry, useRelationships } from "@/hooks/use-relationships";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { GradientIcon } from "@/components/GradientIcon";
 import { TutorialPanel } from "@/components/TutorialPanel";
 import { Loader2, BookOpen, Users, ImagePlus, X, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
@@ -86,14 +87,17 @@ export default function Journal() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center gap-3 mb-2">
-            <GradientIcon icon={<BookOpen className="h-8 w-8" />} />
-            <h1 className="text-3xl font-bold" data-testid="text-page-title">Shared Journal</h1>
-          </div>
-          <p className="text-muted-foreground mb-6">Write and share your thoughts together</p>
+    <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+      <Header />
+      
+      <main className="pt-24 pb-20 px-4 flex-1">
+        <div className="container mx-auto max-w-4xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="flex items-center gap-3 mb-2">
+              <BookOpen className="h-8 w-8 text-[#2458a0]" />
+              <h1 className="text-3xl font-bold text-[#4a453e]">Shared Journal</h1>
+            </div>
+            <p className="text-[#4a453e] opacity-70 mb-6 font-bold">Write and share your thoughts together</p>
 
           <TutorialPanel
             featureKey="journal"
@@ -254,8 +258,11 @@ export default function Journal() {
               )}
             </motion.div>
           )}
+          </div>
         </motion.div>
-      </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 }

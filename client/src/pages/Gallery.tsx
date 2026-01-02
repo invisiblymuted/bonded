@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useMediaGallery, useCreateMedia, useRelationships } from "@/hooks/use-relationships";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { GradientIcon } from "@/components/GradientIcon";
 import { TutorialPanel } from "@/components/TutorialPanel";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Share2, Users, Upload, X, ChevronLeft, ChevronRight, HelpCircle } from "lucide-react";
@@ -111,14 +112,17 @@ export default function Gallery() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center gap-3 mb-2">
-            <GradientIcon icon={<Share2 className="h-8 w-8" />} />
-            <h1 className="text-3xl font-bold" data-testid="text-page-title">Media Gallery</h1>
-          </div>
-          <p className="text-muted-foreground mb-6">Share photos, videos, and memories together</p>
+    <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+      <Header />
+      
+      <main className="pt-24 pb-20 px-4 flex-1">
+        <div className="container mx-auto max-w-4xl">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="flex items-center gap-3 mb-2">
+              <Share2 className="h-8 w-8 text-[#2458a0]" />
+              <h1 className="text-3xl font-bold text-[#4a453e]">Media Gallery</h1>
+            </div>
+            <p className="text-[#4a453e] opacity-70 mb-6 font-bold">Share photos and videos with your family</p>
 
           <TutorialPanel
             featureKey="gallery"
@@ -293,8 +297,11 @@ export default function Gallery() {
               </div>
             </div>
           )}
-        </DialogContent>
-      </Dialog>
+          </div>
+        </motion.div>
+      </main>
+      
+      <Footer />
     </div>
   );
 }

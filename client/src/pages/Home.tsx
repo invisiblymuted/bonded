@@ -1,9 +1,10 @@
 import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
 import { BondedLogo } from "@/components/BondedLogo";
+import { Footer } from "@/components/Footer";
 import { 
   MessageSquare, BookOpen, Share2, Calendar, 
-  Video, Shield, ExternalLink, Activity, UserCircle 
+  Video, Shield, ExternalLink, Activity, UserCircle, LayoutGrid, Home as HomeIcon 
 } from "lucide-react";
 
 const IconGradient = () => (
@@ -41,7 +42,7 @@ export default function Home() {
       {/* HEADER */}
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/app">
+          <Link href="/landing">
             <div className="flex items-center cursor-pointer">
               <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
                 <BondedLogo />
@@ -51,18 +52,30 @@ export default function Home() {
             </div>
           </Link>
           
-          <div className="flex items-center gap-4">
-            <Link href="/research">
-              <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#dcd7ca] rounded-full cursor-pointer hover:border-[#2458a0] transition-all group shadow-sm">
-                <Activity className="h-4 w-4 text-[#4a453e] group-hover:text-[#2458a0]" strokeWidth={2.5} />
-                <span className="text-[10px] font-black text-[#4a453e] uppercase tracking-widest group-hover:text-[#2458a0]">Research Hub</span>
+          <div className="flex items-center gap-3">
+            <Link href="/">
+              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Info">
+                <HomeIcon className="h-4 w-4" />
               </div>
             </Link>
-
+            <Link href="/app">
+              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Dashboard">
+                <LayoutGrid className="h-4 w-4" />
+              </div>
+            </Link>
+            <Link href="/research">
+              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Research">
+                <Activity className="h-4 w-4" />
+              </div>
+            </Link>
             <Link href="/profile">
-              <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#dcd7ca] rounded-full cursor-pointer hover:border-[#f26522] transition-all group shadow-sm">
-                <UserCircle className="h-5 w-5 text-[#4a453e] group-hover:text-[#f26522]" strokeWidth={2.5} />
-                  <span className="text-[10px] font-black text-[#4a453e] uppercase tracking-widest group-hover:text-[#2458a0]">Bonded Profile</span>
+              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Profile">
+                <UserCircle className="h-4 w-4" />
+              </div>
+            </Link>
+            <Link href="/auth">
+              <div className="flex items-center gap-2 px-4 py-2 bg-[#4a453e] text-white border border-[#4a453e] rounded-full cursor-pointer hover:from-[#2458a0] hover:to-[#f26522] hover:bg-gradient-to-r transition-all group shadow-sm">
+                <span className="text-[10px] font-black uppercase tracking-widest">Bond</span>
               </div>
             </Link>
           </div>
@@ -79,15 +92,9 @@ export default function Home() {
                 No Matter the Distance
               </span>
             </h1>
-            <p className="text-xl text-[#4a453e] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-80 mb-12">
+            <p className="text-xl text-[#4a453e] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-80">
               A safe place for you and your loved ones, without being defined by circumstance or geography.
             </p>
-            
-            <Link href="/signup">
-              <div className="h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center justify-center shadow-xl mx-auto group cursor-pointer w-fit">
-                Get Bonded
-              </div>
-            </Link>
           </div>
         </section>
 
@@ -107,7 +114,7 @@ export default function Home() {
                     </div>
                     <p className="text-sm text-[#4a453e] font-bold opacity-70 mb-6">{f.desc}</p>
                     <div className="text-xs font-black text-[#2458a0] flex items-center gap-2 uppercase tracking-widest group-hover:text-[#f26522] transition-colors">
-                    <ExternalLink className="h-3 w-3" />
+                      Dig Deeper <ExternalLink className="h-3 w-3" />
                     </div>
                   </Card>
                 </Link>
@@ -160,39 +167,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* FOOTER: Fixed Centering & Negative Margin Lockup */}
-      <footer className="py-20 border-t border-[#dcd7ca] bg-[#ede8dc]">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center text-center gap-8">
-            <Link href="/app">
-              <div className="flex items-center justify-center cursor-pointer group">
-                <div className="h-12 w-12 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
-                  <BondedLogo />
-                </div>
-                {/* Pulling heart tight against text with -ml-1 */}
-                <span className="font-black text-4xl text-[#4a453e] tracking-tighter -ml-1">
-                  Bonded
-                </span>
-              </div>
-            </Link>
-
-            <Link href="/research">
-              <div className="group cursor-pointer">
-                <span className="text-sm font-black text-[#4a453e] uppercase tracking-[0.2em] group-hover:text-[#2458a0] transition-colors">
-                  Research Hub
-                </span>
-                <p className="text-[10px] font-bold opacity-40 uppercase mt-1">
-                  The Data Behind the Need for Connection
-                </p>
-              </div>
-            </Link>
-            
-            <p className="text-[10px] font-black text-[#4a453e] uppercase tracking-[0.3em] pt-12 opacity-30">
-              © 2026 Bonded. All Connections Encrypted.
-            </p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

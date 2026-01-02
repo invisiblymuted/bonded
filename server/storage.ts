@@ -16,6 +16,10 @@ export function hashPin(pin: string): string {
   return createHash("sha256").update(pin).digest("hex");
 }
 
+export function verifyPin(pin: string, hash: string): boolean {
+  return hashPin(pin) === hash;
+}
+
 export class MemStorage {
   private users: Map<string, StoredUser> = new Map();
   private relationships: Map<number, any> = new Map();
@@ -39,7 +43,7 @@ export class MemStorage {
       lastName: "", 
       profileImageUrl: "https://api.dicebear.com/7.x/avataaars/svg?seed=Daddy",
       password: null,
-      pinHash: hashPin("1234"),
+      pinHash: hashPin("0524"),
       createdAt: new Date(),
       updatedAt: new Date()
     } as StoredUser);
@@ -50,9 +54,8 @@ export class MemStorage {
 
   private seedDirectory() {
     const seedData = [
-      { id: "2", firstName: "Sarah", lastName: "Smith", email: "sarah@bonded.com" },
-      { id: "3", firstName: "James", lastName: "Wilson", email: "james@bonded.com" },
-      { id: "4", firstName: "Emily", lastName: "Chen", email: "emily@bonded.com" }
+      { id: "2", firstName: "Jackson", lastName: "Bonded", email: "jackson@bonded.com" },
+      { id: "3", firstName: "Jude", lastName: "Bonded", email: "jude@bonded.com" }
     ];
 
     seedData.forEach(u => {

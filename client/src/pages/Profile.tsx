@@ -3,18 +3,52 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { GradientIcon } from "@/components/GradientIcon";
-import { Copy, Check, User, Mail, Calendar, ArrowLeft } from "lucide-react";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { Copy, Check, User, Mail, Calendar, Sparkles } from "lucide-react";
+import { BondedLogo } from "@/components/BondedLogo";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "wouter";
-import { format } from "date-fns";
+import { format, differenceInDays } from "date-fns";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function Profile() {
   const { user } = useAuth();
   const [copied, setCopied] = useState(false);
 
   if (!user) {
-    return null;
+    return (
+      <div className="min-h-screen bg-[#f5f1e8]">
+        <Header />
+        <main className="pt-24 pb-16 px-4">
+          <div className="container mx-auto max-w-4xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Link href="/signup" className="block">
+                <Card className="h-full bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all cursor-pointer">
+                  <CardContent className="h-full flex flex-col items-center justify-center py-12 gap-4">
+                    <BondedLogo className="w-16 h-16" />
+                    <CardTitle className="text-2xl font-black text-[#4a453e]">Join</CardTitle>
+                    <CardDescription className="text-sm text-[#4a453e] opacity-70">Create your Bonded profile.</CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link href="/login" className="block">
+                <Card className="h-full bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all cursor-pointer">
+                  <CardContent className="h-full flex flex-col items-center justify-center py-12 gap-4">
+                    <BondedLogo className="w-16 h-16" />
+                    <CardTitle className="text-2xl font-black text-[#4a453e]">Already Bonded?</CardTitle>
+                    <CardDescription className="text-sm text-[#4a453e] opacity-70">Log in with your PIN.</CardDescription>
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   const initials = `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase() || 'U';
@@ -26,10 +60,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background">
-      
-      <div className="container mx-auto px-4 max-w-2xl py-8">
-        <Link href="/dashboard">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background flex flex-col">
+      <Header />
+      <div className="container mx-auto px-4 max-w-2xl py-10 flex-1">
+        <Link href="/app">
           <Button variant="ghost" className="mb-4 gap-2" data-testid="button-back-dashboard">
             <ArrowLeft className="h-4 w-4" />
             Back to Dashboard
