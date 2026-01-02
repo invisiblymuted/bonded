@@ -84,7 +84,7 @@ export default function Home() {
             </p>
             
             <Link href="/auth">
-              <div className="h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center gap-4 shadow-xl mx-auto group cursor-pointer">
+              <div className="h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center justify-center shadow-xl mx-auto group cursor-pointer w-fit">
                 Get Bonded
               </div>
             </Link>
