@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { Activity, LayoutGrid, Home, UserCircle } from "lucide-react";
+import { HelpCircle, Activity, LayoutGrid, Home, UserCircle } from "lucide-react";
 
 export function Footer() {
   return (
@@ -50,7 +50,7 @@ export function Footer() {
               </Link>
               <Link href="/help">
                 <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Get Help">
-                  <img src="/help-icon.svg" alt="Help" className="h-4 w-4" />
+                  <HelpCircle className="h-4 w-4" />
                 </div>
               </Link>
             </div>
