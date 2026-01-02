@@ -1,6 +1,5 @@
 import React from 'react';
 import { BondedLogo } from "@/components/BondedLogo";
-import { GradientIcon } from "@/components/GradientIcon";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,7 +38,6 @@ const testimonials = [
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-[#f5f1e8] text-[#2c2c2c]">
-      <GradientIcon />
 
       {/* HEADER */}
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
