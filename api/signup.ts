@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { createUser, getUserByUsername, createSession } from "./_authDb";
 import { sessionCookie } from "./_cookie";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
   }

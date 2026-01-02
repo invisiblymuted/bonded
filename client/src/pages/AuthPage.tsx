@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, Redirect } from "wouter";
+import { useLocation, Redirect, Link } from "wouter";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -119,9 +119,16 @@ export default function AuthPage() {
     <div className="min-h-screen bg-[#f5f1e8] flex items-center justify-center p-4">
       <Card className="w-full max-w-lg bg-[#e9e4d9] border-[#dcd7ca]">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-[#4a453e] text-center">
-            {isLogin ? "Log In" : "Join Bonded"}
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-2xl font-bold text-[#4a453e]">
+              {isLogin ? "Log In" : "Join Bonded"}
+            </CardTitle>
+            <Link href="/app">
+              <Button variant="ghost" size="sm" className="text-xs font-semibold text-[#4a453e] hover:text-[#2458a0]">
+                ← Home
+              </Button>
+            </Link>
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           {isLogin ? (

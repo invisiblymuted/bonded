@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import AuthPage from "./pages/AuthPage";
 import AuthChoice from "./pages/AuthChoice";
 import Research from "./pages/Research";
+import Profile from "./pages/Profile";
 
 // The Router handles the URL paths
 function Router() {
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/auth" component={AuthChoice} />
       <Route path="/login" component={AuthPage} />
       <Route path="/signup" component={AuthPage} />
+      <Route path="/profile" component={Profile} />
       <Route path="/research" component={Research} />
       {/* 404 Fallback */}
       <Route>

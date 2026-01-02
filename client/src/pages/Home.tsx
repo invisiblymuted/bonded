@@ -59,10 +59,10 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/choice">
+            <Link href="/profile">
               <div className="flex items-center gap-2 px-4 py-2 bg-white border border-[#dcd7ca] rounded-full cursor-pointer hover:border-[#f26522] transition-all group shadow-sm">
                 <UserCircle className="h-5 w-5 text-[#4a453e] group-hover:text-[#f26522]" strokeWidth={2.5} />
-                <span className="text-[10px] font-black text-[#4a453e] uppercase tracking-widest group-hover:text-[#2458a0]">Bonded Profile</span>
+                  <span className="text-[10px] font-black text-[#4a453e] uppercase tracking-widest group-hover:text-[#2458a0]">Bonded Profile</span>
               </div>
             </Link>
           </div>
@@ -83,7 +83,7 @@ export default function Home() {
               A safe place for you and your loved ones, without being defined by circumstance or geography.
             </p>
             
-            <Link href="/auth">
+            <Link href="/signup">
               <div className="h-20 px-12 bg-[#4a453e] text-white rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gradient-to-r hover:from-[#2458a0] hover:to-[#f26522] hover:scale-105 transition-all flex items-center justify-center shadow-xl mx-auto group cursor-pointer w-fit">
                 Get Bonded
               </div>
