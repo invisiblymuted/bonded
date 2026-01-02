@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Activity, LayoutGrid, Home, UserCircle } from "lucide-react";
 
 export function Footer() {
   return (
@@ -30,22 +30,22 @@ export function Footer() {
             <div className="flex items-center gap-3 text-[#4a453e]">
               <Link href="/">
                 <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Learn more">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9-9 9 9M4 10v10h5v-6h6v6h5V10" /></svg>
+                  <Home className="h-4 w-4" />
                 </div>
               </Link>
               <Link href="/app">
                 <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Dashboard">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 9h7V3H3v6zm11 0h7V3h-7v6zM3 21h7v-8H3v8zm11 0h7v-8h-7v8z" /></svg>
+                  <LayoutGrid className="h-4 w-4" />
                 </div>
               </Link>
               <Link href="/research">
                 <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Research">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M11 19a8 8 0 100-16 8 8 0 000 16zm0 0l6 6" /></svg>
+                  <Activity className="h-4 w-4" />
                 </div>
               </Link>
               <Link href="/profile">
                 <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Profile">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" /></svg>
+                  <UserCircle className="h-4 w-4" />
                 </div>
               </Link>
               <Link href="/help">
