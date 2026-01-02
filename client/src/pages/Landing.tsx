@@ -37,7 +37,6 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
-              <BondedLogo />
             </div>
             <span className="font-black text-3xl text-[#4a453e] tracking-tighter -ml-1">Bonded</span>
           </div>
