@@ -20,6 +20,7 @@ export default function AuthPage() {
 
   const [selectedUser, setSelectedUser] = useState("");
   const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [birthday, setBirthday] = useState("");
   const [pin, setPin] = useState("");
   const [confirmPin, setConfirmPin] = useState("");
@@ -67,7 +68,7 @@ export default function AuthPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ username, pin, birthday }),
+        body: JSON.stringify({ username, pin, birthday, displayName }),
       });
 
       if (!res.ok) {
@@ -105,6 +106,7 @@ export default function AuthPage() {
 
   const handleSignup = () => {
     if (!username) return setError("Username is required");
+    if (!displayName) return setError("Name to show is required");
     if (!birthday) return setError("Birthday is required");
     if (!pin || pin.length < 4) return setError("PIN must be at least 4 digits");
     if (pin !== confirmPin) return setError("PINs do not match");
@@ -175,6 +177,16 @@ export default function AuthPage() {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Pick a username"
+                  className="h-12"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-[#4a453e]">Name to show (display name)</label>
+                <Input
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="What should we call you?"
                   className="h-12"
                 />
               </div>

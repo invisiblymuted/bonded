@@ -18,7 +18,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/signup", async (req, res, next) => {
     try {
-      const { username, pin, birthday } = req.body ?? {};
+      const { username, pin, birthday, displayName } = req.body ?? {};
 
       if (!username || typeof username !== "string") {
         return res.status(400).json({ message: "Username is required" });
@@ -38,8 +38,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = await storage.createUser({
         username,
         email: username,
-        firstName: username,
+        firstName: displayName || username,
         lastName: "",
+        displayName: displayName || username,
         birthday,
         pinHash: hashPin(pin),
         password: null,
