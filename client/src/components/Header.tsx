@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { useAuth } from "@/hooks/use-auth";
-import { Activity, UserCircle, LayoutGrid, Home, HelpCircle } from "lucide-react";
+import { Activity, UserCircle, LayoutGrid, Home } from "lucide-react";
 
 export function Header() {
   const { user } = useAuth();
@@ -51,7 +51,7 @@ export function Header() {
             </Link>
             <Link href="/help">
               <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Get Help">
-                <HelpCircle className="h-4 w-4" />
+                <img src="/help-icon.svg" alt="Help" className="h-4 w-4" />
               </div>
             </Link>
             {user ? (
