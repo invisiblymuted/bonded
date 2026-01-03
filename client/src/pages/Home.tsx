@@ -26,15 +26,18 @@ export default function Home() {
     { title: "Incarcerated Parents", desc: "Prioritizing the parent-child bond to improve long-term outcomes for families." }
   ];
 
+  const trustTiles = [
+    { id: "no-social", icon: EyeOff, title: "No Social Media", desc: "Absolutely zero social media integration. No feeds, no algorithms tracking activity." },
+    { id: "all-ages", icon: Ban, title: "No Email or Phone Needed", desc: "Any age can join safely—no phone number, no email required to connect." }
+  ];
+
   const features = [
     { id: "messaging", icon: MessageSquare, title: "Messaging", desc: "Stay in touch with instant messages that feel like you're in the same room." },
     { id: "journals", icon: BookOpen, title: "Journals", desc: "Create a private space to write and share thoughts together." },
     { id: "gallery", icon: Share2, title: "Gallery", desc: "Build a shared collection of precious moments and creative expressions." },
     { id: "calendar", icon: Calendar, title: "Calendar", desc: "Plan visits and video calls together with shared reminders." },
     { id: "video", icon: Video, title: "Video Calls", desc: "Face-to-face connection with built-in, secure high-quality calling." },
-    { id: "security", icon: Shield, title: "Security", desc: "Your family's connection is protected with end-to-end encryption." },
-    { id: "no-social", icon: EyeOff, title: "No Social Feeds", desc: "Absolutely zero social media integration. No feeds, no algorithms tracking activity." },
-    { id: "all-ages", icon: Ban, title: "No Email or Phone Needed", desc: "Any age can join safely—no phone number, no email required to connect." }
+    { id: "security", icon: Shield, title: "Security", desc: "Your family's connection is protected with end-to-end encryption." }
   ];
 
   return (
@@ -64,6 +67,26 @@ export default function Home() {
             <h2 className="text-3xl font-black mb-12 text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
               How it Works
             </h2>
+
+            {/* Trust-first tiles, full width stacked */}
+            <div className="grid grid-cols-1 gap-4 md:gap-6 mb-8">
+              {trustTiles.map((t) => (
+                <Card key={t.id} className="bg-white border-[#dcd7ca] p-6 sm:p-7 md:p-8 rounded-3xl shadow-sm">
+                  <div className="flex items-start gap-4">
+                    <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center shrink-0 border border-[#dcd7ca]">
+                      <t.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
+                    </div>
+                    <div className="space-y-2 text-left">
+                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#4a453e]">{t.title}</h3>
+                      <p className="text-sm text-[#4a453e] font-bold opacity-80 leading-relaxed">
+                        {t.desc}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((f) => (
                 <Link key={f.id} href={`/tutorials/${f.id}`}>
@@ -72,10 +95,7 @@ export default function Home() {
                       <f.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
                       <h3 className="font-black text-[#4a453e] uppercase tracking-tight text-lg">{f.title}</h3>
                     </div>
-                    <p className="text-sm text-[#4a453e] font-bold opacity-70 mb-6">{f.desc}</p>
-                    <div className="text-xs font-black text-[#2458a0] flex items-center gap-2 uppercase tracking-widest group-hover:text-[#f26522] transition-colors">
-                      Dig Deeper <ExternalLink className="h-3 w-3" />
-                    </div>
+                    <p className="text-sm text-[#4a453e] font-bold opacity-80 leading-relaxed">{f.desc}</p>
                   </Card>
                 </Link>
               ))}

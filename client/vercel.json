@@ -5,6 +5,14 @@
   "framework": "vite",
   "buildCommand": "cd .. && npm install && cd client && npm run build",
   "outputDirectory": "dist",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "x-vercel-toolbar-disabled", "value": "true" }
+      ]
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
