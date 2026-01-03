@@ -74,77 +74,79 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background flex flex-col">
       <Header />
-      <div className="container mx-auto px-4 max-w-2xl py-10 flex-1">
-        <Link href="/app">
-          <Button variant="ghost" className="mb-4 gap-2" data-testid="button-back-dashboard">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Dashboard
-          </Button>
-        </Link>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <Card>
-            <CardHeader className="text-center pb-2">
-              <div className="flex justify-center mb-4">
-                <Avatar className="h-24 w-24 ring-4 ring-primary/20">
-                  <AvatarImage src={currentUser.profileImageUrl || undefined} alt={currentUser.firstName || 'Profile'} />
-                  <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
-                    {initials}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <CardTitle className="text-2xl" data-testid="text-profile-name">
-                {currentUser.firstName} {currentUser.lastName}
-              </CardTitle>
-              <CardDescription>Your Bonded Profile</CardDescription>
-            </CardHeader>
-            
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
-                  <GradientIcon icon={<User className="h-5 w-5" />} />
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground">Your User ID</p>
-                    <p className="font-mono text-sm" data-testid="text-profile-user-id">{currentUser.id}</p>
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={copyUserId} className="gap-1" data-testid="button-copy-profile-id">
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                    {copied ? "Copied" : "Copy"}
-                  </Button>
+      <main className="flex-1 flex flex-col">
+        <div className="container mx-auto px-4 max-w-2xl py-10 flex-1">
+          <Link href="/app">
+            <Button variant="ghost" className="mb-4 gap-2" data-testid="button-back-dashboard">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <Card>
+              <CardHeader className="text-center pb-2">
+                <div className="flex justify-center mb-4">
+                  <Avatar className="h-24 w-24 ring-4 ring-primary/20">
+                    <AvatarImage src={currentUser.profileImageUrl || undefined} alt={currentUser.firstName || 'Profile'} />
+                    <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
+                      {initials}
+                    </AvatarFallback>
+                  </Avatar>
                 </div>
-
-                <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
-                  <GradientIcon icon={<Mail className="h-5 w-5" />} />
-                  <div className="flex-1">
-                    <p className="text-xs text-muted-foreground">Email</p>
-                    <p className="text-sm" data-testid="text-profile-email">{currentUser.email}</p>
-                  </div>
-                </div>
-
-                {currentUser.createdAt && (
+                <CardTitle className="text-2xl" data-testid="text-profile-name">
+                  {currentUser.firstName} {currentUser.lastName}
+                </CardTitle>
+                <CardDescription>Your Bonded Profile</CardDescription>
+              </CardHeader>
+              
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
                   <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
-                    <GradientIcon icon={<Calendar className="h-5 w-5" />} />
+                    <GradientIcon icon={<User className="h-5 w-5" />} />
                     <div className="flex-1">
-                      <p className="text-xs text-muted-foreground">Member Since</p>
-                      <p className="text-sm" data-testid="text-profile-joined">
-                        {format(new Date(currentUser.createdAt), "MMMM d, yyyy")}
-                      </p>
+                      <p className="text-xs text-muted-foreground">Your User ID</p>
+                      <p className="font-mono text-sm" data-testid="text-profile-user-id">{currentUser.id}</p>
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={copyUserId} className="gap-1" data-testid="button-copy-profile-id">
+                      {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                      {copied ? "Copied" : "Copy"}
+                    </Button>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
+                    <GradientIcon icon={<Mail className="h-5 w-5" />} />
+                    <div className="flex-1">
+                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-sm" data-testid="text-profile-email">{currentUser.email}</p>
                     </div>
                   </div>
-                )}
-              </div>
 
-              <div className="pt-4 border-t">
-                <p className="text-sm text-muted-foreground text-center">
-                  Share your User ID with family members so they can connect with you on Bonded.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                  {currentUser.createdAt && (
+                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
+                      <GradientIcon icon={<Calendar className="h-5 w-5" />} />
+                      <div className="flex-1">
+                        <p className="text-xs text-muted-foreground">Member Since</p>
+                        <p className="text-sm" data-testid="text-profile-joined">
+                          {format(new Date(currentUser.createdAt), "MMMM d, yyyy")}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-4 border-t">
+                  <p className="text-sm text-muted-foreground text-center">
+                    Share your User ID with family members so they can connect with you on Bonded.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </main>
       <Footer />
     </div>
   );
