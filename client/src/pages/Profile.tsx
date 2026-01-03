@@ -31,9 +31,9 @@ export default function Profile() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-screen bg-[#f5f1e8]">
+      <div className="min-h-[100dvh] bg-[#f5f1e8] flex flex-col justify-between">
         <Header />
-        <main className="pt-24 pb-16 px-4">
+        <main className="flex-1 flex flex-col pt-24 pb-20 px-4">
           <div className="container mx-auto max-w-4xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link href="/signup" className="block">
@@ -58,7 +58,9 @@ export default function Profile() {
             </div>
           </div>
         </main>
-        <Footer />
+        <div className="mt-auto">
+          <Footer />
+        </div>
       </div>
     );
   }
@@ -72,9 +74,9 @@ export default function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/5 via-primary/5 to-background flex flex-col">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-blue-500/5 via-primary/5 to-background flex flex-col justify-between">
       <Header />
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col pt-24 pb-20">
         <div className="container mx-auto px-4 max-w-2xl py-10 flex-1">
           <Link href="/app">
             <Button variant="ghost" className="mb-4 gap-2" data-testid="button-back-dashboard">
@@ -147,7 +149,9 @@ export default function Profile() {
           </motion.div>
         </div>
       </main>
-      <Footer />
+      <div className="mt-auto">
+        <Footer />
+      </div>
     </div>
   );
 }

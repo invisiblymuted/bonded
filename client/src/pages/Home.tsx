@@ -1,10 +1,11 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
 import { BondedLogo } from "@/components/BondedLogo";
 import { Footer } from "@/components/Footer";
 import { 
   MessageSquare, BookOpen, Share2, Calendar, 
-  Video, Shield, ExternalLink, Activity, UserCircle, LayoutGrid, Home as HomeIcon 
+  Video, Shield, ExternalLink, Activity, UserCircle, LayoutGrid, Home as HomeIcon, HelpCircle, Menu, X 
 } from "lucide-react";
 
 const IconGradient = () => (
@@ -19,6 +20,7 @@ const IconGradient = () => (
 );
 
 export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const families = [
     { title: "Military Families", desc: "Parents deployed overseas can stay present in their children's daily lives through shared journals and real-time messaging." },
     { title: "Divorced Parents", desc: "Co-parents can maintain strong bonds with their children regardless of custody arrangements." },
@@ -41,57 +43,70 @@ export default function Home() {
       
       {/* HEADER */}
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
-        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-2.5 sm:px-4 h-16 flex items-center justify-between">
           <Link href="/landing">
-            <div className="flex items-center cursor-pointer">
-              <div className="h-14 w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
+            <div className="flex items-center cursor-pointer gap-1 md:gap-0">
+              <div className="h-10 md:h-14 w-10 md:w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
                 <BondedLogo />
               </div>
-              <span className="font-black text-3xl text-[#3E2723] tracking-tight -ml-2">Bonded</span>
+              <span className="hidden md:block font-black text-3xl text-[#3E2723] tracking-tight -ml-2">Bonded</span>
             </div>
           </Link>
           
-          <div className="flex items-center gap-3">
-            <Link href="/">
-              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Info">
-                <HomeIcon className="h-4 w-4" />
-              </div>
-            </Link>
-            <Link href="/app">
-              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Dashboard">
-                <LayoutGrid className="h-4 w-4" />
-              </div>
-            </Link>
-            <Link href="/research">
-              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Research">
-                <Activity className="h-4 w-4" />
-              </div>
-            </Link>
-            <Link href="/profile">
-              <div className="p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Profile">
-                <UserCircle className="h-4 w-4" />
-              </div>
-            </Link>
-            <Link href="/auth">
-              <div className="flex items-center gap-2 px-4 py-2 bg-[#4a453e] text-white border border-[#4a453e] rounded-full cursor-pointer hover:from-[#2458a0] hover:to-[#f26522] hover:bg-gradient-to-r transition-all group shadow-sm">
-                <span className="text-[10px] font-black uppercase tracking-widest">Bond</span>
-              </div>
-            </Link>
+          <div className="flex items-center gap-2 md:gap-3">
+            <button
+              type="button"
+              className="md:hidden p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0]"
+              aria-label="Toggle navigation menu"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
+
+            <div
+              className={`${menuOpen ? "flex" : "hidden"} md:flex items-center gap-1.5 sm:gap-2 md:gap-3 md:static absolute right-2 top-16 md:top-auto bg-white md:bg-transparent border md:border-0 border-[#dcd7ca] rounded-2xl px-3 py-2 md:p-0 shadow-md md:shadow-none z-50`}
+            >
+              <Link href="/">
+                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Info">
+                  <HomeIcon className="h-4 w-4" />
+                </div>
+              </Link>
+              <Link href="/app">
+                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Dashboard">
+                  <LayoutGrid className="h-4 w-4" />
+                </div>
+              </Link>
+              <Link href="/research">
+                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Research">
+                  <Activity className="h-4 w-4" />
+                </div>
+              </Link>
+              <Link href="/profile">
+                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Profile">
+                  <UserCircle className="h-4 w-4" />
+                </div>
+              </Link>
+              <Link href="/help">
+                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Get Help">
+                  <HelpCircle className="h-4 w-4" />
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
       <main>
         {/* HERO SECTION */}
-        <section className="pt-48 pb-24 px-4 text-center">
+        <section className="pt-16 sm:pt-24 md:pt-48 pb-12 md:pb-24 px-4 text-center">
           <div className="container mx-auto max-w-5xl">
-            <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tight flex flex-col items-center leading-none uppercase">
-              <span className="text-[#4a453e]">Stay Connected,</span>
-              <span className="bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent mt-2">
+            <h1 className="text-[clamp(1rem,6vw,1.9rem)] sm:text-[clamp(1.5rem,5vw,2.6rem)] md:text-5xl lg:text-7xl font-black mb-4 md:mb-8 tracking-tight flex flex-col items-center leading-tight uppercase">
+              <span className="text-[#4a453e] text-balance">Stay Connected,</span>
+              <span className="bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent mt-2 text-balance">
                 No Matter the Distance
               </span>
             </h1>
-            <p className="text-xl text-[#4a453e] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-80">
+            <p className="text-[10px] sm:text-sm md:text-lg lg:text-xl text-[#4a453e] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-80 text-balance">
               A safe place for you and your loved ones, without being defined by circumstance or geography.
             </p>
           </div>

@@ -187,7 +187,7 @@ export default function Dashboard() {
         return {
           count: 1,
           preview: (
-            <p className="text-sm font-bold text-[#4a453e]">Join a private room</p>
+            <p className="text-sm text-[#4a453e]">Join a private room</p>
           ),
         };
       case "calendar": {
