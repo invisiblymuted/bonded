@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { 
   MessageSquare, BookOpen, Share2, Calendar, 
-  Video, Shield, ExternalLink
+  Video, Shield, ExternalLink, EyeOff, Ban
 } from "lucide-react";
 
 const IconGradient = () => (
@@ -32,7 +32,9 @@ export default function Home() {
     { id: "gallery", icon: Share2, title: "Gallery", desc: "Build a shared collection of precious moments and creative expressions." },
     { id: "calendar", icon: Calendar, title: "Calendar", desc: "Plan visits and video calls together with shared reminders." },
     { id: "video", icon: Video, title: "Video Calls", desc: "Face-to-face connection with built-in, secure high-quality calling." },
-    { id: "security", icon: Shield, title: "Security", desc: "Your family's connection is protected with end-to-end encryption." }
+    { id: "security", icon: Shield, title: "Security", desc: "Your family's connection is protected with end-to-end encryption." },
+    { id: "no-social", icon: EyeOff, title: "No Social Feeds", desc: "Absolutely zero social media integration. No feeds, no algorithms tracking activity." },
+    { id: "all-ages", icon: Ban, title: "No Email or Phone Needed", desc: "Any age can join safely—no phone number, no email required to connect." }
   ];
 
   return (
