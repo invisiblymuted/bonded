@@ -2,8 +2,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { InteractiveResourceMap } from "@/components/InteractiveResourceMap";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { 
@@ -12,7 +11,8 @@ import {
   BarChart3, 
   Phone, 
   ExternalLink,
-  Heart
+  Heart,
+  type LucideIcon
 } from "lucide-react";
 
 interface Resource {
@@ -20,7 +20,7 @@ interface Resource {
   description: string;
   url: string;
   category: "legal" | "research" | "support" | "international";
-  icon: React.ReactNode;
+  icon: LucideIcon;
 }
 
 const resources: Resource[] = [
@@ -29,64 +29,64 @@ const resources: Resource[] = [
     description: "Official treaty information and signatory countries for the 1980 Hague Convention - the primary legal framework for addressing international parental child abduction.",
     url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/parental-responsibility-and-protection-of-children/hague-convention-on-international-child-abduction",
     category: "legal",
-    icon: <FileText className="h-6 w-6" />,
+    icon: FileText,
   },
   {
     title: "International Center for Missing & Exploited Children (ICMEC)",
     description: "Global resources for missing and abducted children, including country-specific contact information and legal resources.",
     url: "https://www.icmec.org/",
     category: "international",
-    icon: <Globe className="h-6 w-6" />,
+    icon: Globe,
   },
   {
     title: "U.S. State Department - Child Abduction",
     description: "Official U.S. government resources for parents dealing with international child abduction cases.",
     url: "https://travel.state.gov/content/travel/en/International-Parental-Child-Abduction.html",
     category: "legal",
-    icon: <Phone className="h-6 w-6" />,
+    icon: Phone,
   },
   {
     title: "Reunite International",
     description: "UK-based charity providing emotional support and practical advice for parents of abducted children.",
     url: "https://www.reunite.org/",
     category: "support",
-    icon: <Heart className="h-6 w-6" />,
+    icon: Heart,
   },
   {
     title: "Global Family Law Network",
     description: "International directory of family law attorneys specializing in parental abduction cases.",
     url: "https://www.globalfamilylaw.org/",
     category: "legal",
-    icon: <FileText className="h-6 w-6" />,
+    icon: FileText,
   },
   {
     title: "UN Sustainable Development Goals - Family & Children",
     description: "Research and statistics on global child welfare and family separation issues from the United Nations.",
     url: "https://www.un.org/sustainabledevelopment/",
     category: "research",
-    icon: <BarChart3 className="h-6 w-6" />,
+    icon: BarChart3,
   },
   {
     title: "World Health Organization - Family Separation Impact",
     description: "Scientific research on the psychological and health impacts of family separation.",
     url: "https://www.who.int/",
     category: "research",
-    icon: <BarChart3 className="h-6 w-6" />,
+    icon: BarChart3,
   },
   {
     title: "NCMEC - National Center for Missing & Exploited Children (U.S.)",
     description: "Comprehensive U.S. resources including hotline (1-800-THE-LOST) and case assistance.",
     url: "https://www.missingkids.org/",
     category: "support",
-    icon: <Phone className="h-6 w-6" />,
+    icon: Phone,
   },
 ];
 
 const categoryColors: Record<string, string> = {
-  legal: "bg-blue-100 text-blue-800",
-  research: "bg-purple-100 text-purple-800",
-  support: "bg-pink-100 text-pink-800",
-  international: "bg-green-100 text-green-800",
+  legal: "bg-[#e7eef8] text-[#2458a0]",
+  research: "bg-[#fcefe6] text-[#f26522]",
+  support: "bg-[#ede8dc] text-[#4a453e]",
+  international: "bg-[#e9f3fb] text-[#2458a0]",
 };
 
 const categoryLabels: Record<string, string> = {
@@ -95,6 +95,17 @@ const categoryLabels: Record<string, string> = {
   support: "Support Services",
   international: "International Organizations",
 };
+
+const IconGradient = () => (
+  <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="brand-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#2458a0" />
+        <stop offset="100%" stopColor="#f26522" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
 
 export default function GetHelp() {
   const { user } = useAuth();
@@ -109,6 +120,7 @@ export default function GetHelp() {
 
   return (
     <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+      <IconGradient />
       <Header />
 
       <main className="pt-28 pb-20 px-4 flex-1">
@@ -118,7 +130,7 @@ export default function GetHelp() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12 text-center"
           >
-            <Heart className="h-12 w-12 text-[#f26522] mx-auto mb-4" />
+            <Heart stroke="url(#brand-gradient)" className="h-12 w-12 mx-auto mb-4" />
             <h1 className="text-4xl font-black text-[#4a453e] mb-4">Get Help</h1>
             <p className="text-lg text-[#4a453e] opacity-70 font-bold max-w-2xl mx-auto">
               Resources, legal assistance, and support services for families affected by international child abduction and separation.
@@ -133,7 +145,7 @@ export default function GetHelp() {
             className="mb-16 bg-gradient-to-br from-[#2458a0]/5 to-[#f26522]/5 border border-[#dcd7ca] rounded-3xl p-8"
           >
             <h2 className="text-2xl font-black text-[#4a453e] uppercase tracking-tight mb-2 flex items-center gap-3">
-              <Globe className="h-6 w-6 text-[#2458a0]" /> Find Help Near You
+              <Globe stroke="url(#brand-gradient)" className="h-6 w-6" /> Find Help Near You
             </h2>
             <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-6">
               Allow access to your location to find support organizations and legal resources nearest to you worldwide.
@@ -172,7 +184,7 @@ export default function GetHelp() {
                         <CardContent className="pt-6">
                           <div className="flex gap-4">
                             <div className="text-[#2458a0] flex-shrink-0">
-                              {resource.icon}
+                              <resource.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
                             </div>
                             <div className="flex-1">
                               <h3 className="text-lg font-black text-[#4a453e] mb-2">
@@ -187,7 +199,7 @@ export default function GetHelp() {
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg transition-shadow"
                               >
-                                Visit Resource <ExternalLink className="h-3 w-3" />
+                                Visit Resource <ExternalLink stroke="url(#brand-gradient)" className="h-3 w-3" />
                               </a>
                             </div>
                           </div>
