@@ -41,14 +41,13 @@ export default function Home() {
       
       {/* HEADER */}
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/landing">
             <div className="flex items-center cursor-pointer">
-              <div className="h-10 w-10 flex items-center justify-center [&_svg]:fill-[url(#brand-gradient)]">
+              <div className="h-14 w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
                 <BondedLogo />
               </div>
-              {/* Tight spacing for header logo */}
-              <span className="font-black text-3xl text-[#4a453e] tracking-tighter -ml-1">Bonded</span>
+              <span className="font-black text-3xl text-[#3E2723] tracking-tight -ml-2">Bonded</span>
             </div>
           </Link>
           

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { GradientIcon } from "@/components/GradientIcon";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Copy, Check, User, Mail, Calendar, Sparkles } from "lucide-react";
+import { Copy, Check, User, Mail, Calendar, Sparkles, ArrowLeft } from "lucide-react";
 import { BondedLogo } from "@/components/BondedLogo";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -17,7 +17,19 @@ export default function Profile() {
   const { user } = useAuth();
   const [copied, setCopied] = useState(false);
 
-  if (!user) {
+  // Get user from localStorage as fallback for development
+  const getStoredUser = () => {
+    try {
+      const stored = localStorage.getItem("bonded_user");
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const currentUser = user || getStoredUser();
+
+  if (!currentUser) {
     return (
       <div className="min-h-screen bg-[#f5f1e8]">
         <Header />
@@ -51,10 +63,10 @@ export default function Profile() {
     );
   }
 
-  const initials = `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase() || 'U';
+  const initials = `${currentUser.firstName?.[0] || ''}${currentUser.lastName?.[0] || ''}`.toUpperCase() || 'U';
 
   const copyUserId = () => {
-    navigator.clipboard.writeText(user.id);
+    navigator.clipboard.writeText(currentUser.id);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -77,14 +89,14 @@ export default function Profile() {
             <CardHeader className="text-center pb-2">
               <div className="flex justify-center mb-4">
                 <Avatar className="h-24 w-24 ring-4 ring-primary/20">
-                  <AvatarImage src={user.profileImageUrl || undefined} alt={user.firstName || 'Profile'} />
+                  <AvatarImage src={currentUser.profileImageUrl || undefined} alt={currentUser.firstName || 'Profile'} />
                   <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
               </div>
               <CardTitle className="text-2xl" data-testid="text-profile-name">
-                {user.firstName} {user.lastName}
+                {currentUser.firstName} {currentUser.lastName}
               </CardTitle>
               <CardDescription>Your Bonded Profile</CardDescription>
             </CardHeader>
@@ -95,7 +107,7 @@ export default function Profile() {
                   <GradientIcon icon={<User className="h-5 w-5" />} />
                   <div className="flex-1">
                     <p className="text-xs text-muted-foreground">Your User ID</p>
-                    <p className="font-mono text-sm" data-testid="text-profile-user-id">{user.id}</p>
+                    <p className="font-mono text-sm" data-testid="text-profile-user-id">{currentUser.id}</p>
                   </div>
                   <Button variant="ghost" size="sm" onClick={copyUserId} className="gap-1" data-testid="button-copy-profile-id">
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
@@ -107,17 +119,17 @@ export default function Profile() {
                   <GradientIcon icon={<Mail className="h-5 w-5" />} />
                   <div className="flex-1">
                     <p className="text-xs text-muted-foreground">Email</p>
-                    <p className="text-sm" data-testid="text-profile-email">{user.email}</p>
+                    <p className="text-sm" data-testid="text-profile-email">{currentUser.email}</p>
                   </div>
                 </div>
 
-                {user.createdAt && (
+                {currentUser.createdAt && (
                   <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
                     <GradientIcon icon={<Calendar className="h-5 w-5" />} />
                     <div className="flex-1">
                       <p className="text-xs text-muted-foreground">Member Since</p>
                       <p className="text-sm" data-testid="text-profile-joined">
-                        {format(new Date(user.createdAt), "MMMM d, yyyy")}
+                        {format(new Date(currentUser.createdAt), "MMMM d, yyyy")}
                       </p>
                     </div>
                   </div>

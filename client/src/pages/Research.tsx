@@ -111,7 +111,7 @@ export default function Research() {
               Research Hub
             </h1>
             <p className="text-xl text-[#4a453e] max-w-3xl mx-auto font-bold uppercase tracking-wide opacity-90">
-              The data behind the connection.
+              The data on how much connection is needed.
             </p>
           </header>
 
@@ -140,11 +140,11 @@ export default function Research() {
           {/* COUNTER UNDER SEARCH - KEY METRICS */}
           <section className="mb-20">
             <h2 className="text-2xl font-black text-[#4a453e] uppercase tracking-tight mb-8 text-center">
-              Global Impact: Key Metrics
+              Key Metrics
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-white p-8 rounded-3xl border-[#dcd7ca] shadow-sm flex flex-col items-center text-center">
-                <Globe className="h-6 w-6 text-[#2458a0] mb-4" />
+                <Globe stroke="url(#brand-gradient)" className="h-6 w-6 mb-4" />
                 <div className="text-4xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">
                   <StatCounter end={13200000} suffix="+" />
                 </div>
@@ -152,7 +152,7 @@ export default function Research() {
               </Card>
 
               <Card className="bg-white p-8 rounded-3xl border-[#dcd7ca] shadow-sm flex flex-col items-center text-center">
-                <Activity className="h-6 w-6 text-[#f26522] mb-4" />
+                <Activity stroke="url(#brand-gradient)" className="h-6 w-6 mb-4" />
                 <div className="text-4xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">
                   <StatCounter end={4} suffix=".0" />
                 </div>
@@ -160,7 +160,7 @@ export default function Research() {
               </Card>
 
               <Card className="bg-white p-8 rounded-3xl border-[#dcd7ca] shadow-sm flex flex-col items-center text-center">
-                <TrendingUp className="h-6 w-6 text-[#4a453e] mb-4" />
+                <TrendingUp stroke="url(#brand-gradient)" className="h-6 w-6 mb-4" />
                 <div className="text-4xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">
                   <StatCounter end={72} suffix="%" />
                 </div>
@@ -172,14 +172,14 @@ export default function Research() {
           {/* INTERNATIONAL ISSUES SECTION */}
           <section className="mb-20">
             <h2 className="text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-8 text-center">
-              Global Challenges: Broken Family Bonds
+              Global Challenges
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* Parental Abduction */}
               <Card className="bg-white border-[#dcd7ca] p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-12 w-12 rounded-2xl bg-red-100 flex items-center justify-center">
-                    <Heart className="h-6 w-6 text-red-600" />
+                  <div className="h-12 w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center">
+                    <Heart stroke="url(#brand-gradient)" className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-black text-[#4a453e] uppercase">Parental Abduction</h3>
                 </div>
@@ -211,8 +211,8 @@ export default function Research() {
               {/* Military Separation */}
               <Card className="bg-white border-[#dcd7ca] p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-12 w-12 rounded-2xl bg-blue-100 flex items-center justify-center">
-                    <Users className="h-6 w-6 text-blue-600" />
+                  <div className="h-12 w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center">
+                    <Activity stroke="url(#brand-gradient)" className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-black text-[#4a453e] uppercase">Military Separation</h3>
                 </div>
@@ -244,8 +244,8 @@ export default function Research() {
               {/* Incarceration */}
               <Card className="bg-white border-[#dcd7ca] p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="h-12 w-12 rounded-2xl bg-amber-100 flex items-center justify-center">
-                    <BarChart3 className="h-6 w-6 text-amber-600" />
+                  <div className="h-12 w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center">
+                    <BarChart3 stroke="url(#brand-gradient)" className="h-6 w-6" />
                   </div>
                   <h3 className="text-lg font-black text-[#4a453e] uppercase">Parental Incarceration</h3>
                 </div>
@@ -278,7 +278,7 @@ export default function Research() {
           {/* RESEARCH CATEGORIES SECTION */}
           <section className="mb-20">
             <h2 className="text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-8 text-center">
-              Deep Research Categories
+              Research Categories
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {categories.map((cat, i) => (

@@ -58,6 +58,7 @@ export class MemStorage {
       { id: "3", firstName: "Jude", lastName: "Bonded", email: "jude@bonded.com" }
     ];
 
+    let relId = 1;
     seedData.forEach(u => {
       this.users.set(u.id, { 
         id: u.id,
@@ -74,7 +75,13 @@ export class MemStorage {
         updatedAt: new Date()
       } as StoredUser);
       
-      this.relationships.set(parseInt(u.id), { id: parseInt(u.id), userId: 1, targetId: parseInt(u.id), status: "connected" });
+      // Create relationship from user 1 to this user
+      this.relationships.set(relId++, { 
+        id: relId, 
+        userId: 1, 
+        targetId: parseInt(u.id), 
+        status: "connected" 
+      });
     });
   }
 

@@ -7,7 +7,7 @@ const Logo = () => {
   return (
     <Link href="/home">
       <div className="inline-flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
-        <div className="flex items-center gap-12">
+        <div className="flex items-center gap-4">
           <BondedLogo className="w-48 h-48" />
           <span className="text-9xl font-black tracking-tight" style={{ color: '#3E2723' }}>
             Bonded
@@ -21,14 +21,14 @@ const Logo = () => {
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white selection:bg-slate-100">
-      <header className="border-b border-slate-200 bg-white/90 backdrop-blur">
+      <header className="border-b border-slate-200 bg-white/90 backdrop-blur sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/landing">
-            <div className="flex items-center cursor-pointer gap-3">
+            <div className="flex items-center cursor-pointer">
               <div className="h-14 w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
                 <BondedLogo />
               </div>
-              <span className="font-black text-3xl text-[#3E2723] tracking-tight">Bonded</span>
+              <span className="font-black text-3xl text-[#3E2723] tracking-tight -ml-2">Bonded</span>
             </div>
           </Link>
         </div>
