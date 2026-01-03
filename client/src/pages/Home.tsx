@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { Link } from "wouter";
 import { Card } from "@/components/ui/card";
-import { BondedLogo } from "@/components/BondedLogo";
 import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
 import { 
   MessageSquare, BookOpen, Share2, Calendar, 
-  Video, Shield, ExternalLink, Activity, UserCircle, LayoutGrid, Home as HomeIcon, HelpCircle, Menu, X 
+  Video, Shield, ExternalLink
 } from "lucide-react";
 
 const IconGradient = () => (
@@ -20,7 +19,6 @@ const IconGradient = () => (
 );
 
 export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const families = [
     { title: "Military Families", desc: "Parents deployed overseas can stay present in their children's daily lives through shared journals and real-time messaging." },
     { title: "Divorced Parents", desc: "Co-parents can maintain strong bonds with their children regardless of custody arrangements." },
@@ -40,63 +38,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#f5f1e8] text-[#2c2c2c]">
       <IconGradient />
-      
-      {/* HEADER */}
-      <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca]">
-        <div className="max-w-6xl mx-auto px-2.5 sm:px-4 h-16 flex items-center justify-between">
-          <Link href="/landing">
-            <div className="flex items-center cursor-pointer gap-1 md:gap-0">
-              <div className="h-10 md:h-14 w-10 md:w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
-                <BondedLogo />
-              </div>
-              <span className="hidden md:block font-black text-3xl text-[#3E2723] tracking-tight -ml-2">Bonded</span>
-            </div>
-          </Link>
-          
-          <div className="flex items-center gap-2 md:gap-3">
-            <button
-              type="button"
-              className="md:hidden p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0]"
-              aria-label="Toggle navigation menu"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            </button>
+      <Header />
 
-            <div
-              className={`${menuOpen ? "flex" : "hidden"} md:flex items-center gap-1.5 sm:gap-2 md:gap-3 md:static absolute right-2 top-16 md:top-auto bg-white md:bg-transparent border md:border-0 border-[#dcd7ca] rounded-2xl px-3 py-2 md:p-0 shadow-md md:shadow-none z-50`}
-            >
-              <Link href="/">
-                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Info">
-                  <HomeIcon className="h-4 w-4" />
-                </div>
-              </Link>
-              <Link href="/app">
-                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Dashboard">
-                  <LayoutGrid className="h-4 w-4" />
-                </div>
-              </Link>
-              <Link href="/research">
-                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Research">
-                  <Activity className="h-4 w-4" />
-                </div>
-              </Link>
-              <Link href="/profile">
-                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Profile">
-                  <UserCircle className="h-4 w-4" />
-                </div>
-              </Link>
-              <Link href="/help">
-                <div className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Get Help">
-                  <HelpCircle className="h-4 w-4" />
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <main>
+      <main className="pt-24">
         {/* HERO SECTION */}
         <section className="pt-16 sm:pt-24 md:pt-48 pb-12 md:pb-24 px-4 text-center">
           <div className="container mx-auto max-w-5xl">
