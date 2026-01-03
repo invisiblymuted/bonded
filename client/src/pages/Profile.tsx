@@ -145,6 +145,7 @@ export default function Profile() {
           </Card>
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 }
