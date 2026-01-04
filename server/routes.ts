@@ -118,6 +118,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(relationships);
   });
 
+  // Messages for a relationship
+  app.get('/api/relationships/:relationshipId/messages', async (req, res) => {
+    const msgs = await storage.getMessagesForRelationship(Number(req.params.relationshipId));
+    res.json(msgs);
+  });
+
+  app.post('/api/relationships/:relationshipId/messages', async (req, res) => {
+    const { content } = req.body ?? {};
+    if (!content || typeof content !== 'string') return res.status(400).json({ message: 'Content required' });
+    const relationshipId = Number(req.params.relationshipId);
+    const senderId = (req.user as any)?.id || 1;
+    const msg = await storage.createMessage(relationshipId, senderId, content);
+    res.status(201).json(msg);
+  });
+
+  // Journal endpoints
+  app.get('/api/relationships/:relationshipId/journal', async (req, res) => {
+    const entries = await storage.getJournalEntriesForRelationship(Number(req.params.relationshipId));
+    res.json(entries);
+  });
+
+  app.post('/api/relationships/:relationshipId/journal', async (req, res) => {
+    const { title, content } = req.body ?? {};
+    if (!title || typeof title !== 'string') return res.status(400).json({ message: 'Title required' });
+    const relationshipId = Number(req.params.relationshipId);
+    const authorId = (req.user as any)?.id || 1;
+    const entry = await storage.createJournalEntry(relationshipId, authorId, { title, content: content || '' });
+    res.status(201).json(entry);
+  });
+
+  // Media endpoints
+  app.get('/api/relationships/:relationshipId/media', async (req, res) => {
+    const items = await storage.getMediaForRelationship(Number(req.params.relationshipId));
+    res.json(items);
+  });
+
+  app.post('/api/relationships/:relationshipId/media', async (req, res) => {
+    const { type, url, filename, caption } = req.body ?? {};
+    if (!type || !url || !filename) return res.status(400).json({ message: 'type, url and filename required' });
+    const relationshipId = Number(req.params.relationshipId);
+    const item = await storage.createMediaForRelationship(relationshipId, { type, url, filename, caption });
+    res.status(201).json(item);
+  });
+
+  // Events
+  app.get('/api/relationships/:relationshipId/events', async (req, res) => {
+    const evts = await storage.getEventsForRelationship(Number(req.params.relationshipId));
+    res.json(evts);
+  });
+
+  app.post('/api/relationships/:relationshipId/events', async (req, res) => {
+    const { title, eventDate, eventType } = req.body ?? {};
+    if (!title || !eventDate) return res.status(400).json({ message: 'title and eventDate required' });
+    const relationshipId = Number(req.params.relationshipId);
+    const creatorId = (req.user as any)?.id || 1;
+    const ev = await storage.createEventForRelationship(relationshipId, creatorId, { title, eventDate, eventType });
+    res.status(201).json(ev);
+  });
+
   // Update current user's profile
   app.patch("/api/user", async (req, res) => {
     if (!req.user) {

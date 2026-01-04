@@ -135,7 +135,7 @@ export default function Research() {
                 Search
               </button>
             </form>
-          </div>r
+          </div>
 
           {/* COUNTER UNDER SEARCH - KEY METRICS */}
           <section className="mb-16 md:mb-20">

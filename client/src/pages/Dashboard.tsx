@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
@@ -218,6 +218,76 @@ export default function Dashboard() {
     }
   };
 
+  const queryClient = useQueryClient();
+
+  const handleAddItem = async (sectionId: string, relationshipId: number | null) => {
+    if (!relationshipId) {
+      alert('Select a bond before adding an item');
+      return;
+    }
+
+    try {
+      switch (sectionId) {
+        case 'messages': {
+          const content = window.prompt('Enter message text');
+          if (!content) return;
+          await fetch(`/api/relationships/${relationshipId}/messages`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content }),
+          });
+          break;
+        }
+        case 'journal': {
+          const title = window.prompt('Journal title');
+          if (!title) return;
+          const content = window.prompt('Journal content') || '';
+          await fetch(`/api/relationships/${relationshipId}/journal`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, content }),
+          });
+          break;
+        }
+        case 'calendar': {
+          const title = window.prompt('Event title');
+          if (!title) return;
+          const date = window.prompt('Event date (ISO or YYYY-MM-DD)');
+          if (!date) return;
+          await fetch(`/api/relationships/${relationshipId}/events`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title, eventDate: date, eventType: 'custom' }),
+          });
+          break;
+        }
+        case 'media': {
+          const url = window.prompt('Media URL (public image/video link)');
+          if (!url) return;
+          const filename = url.split('/').pop() || 'file';
+          await fetch(`/api/relationships/${relationshipId}/media`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'photo', url, filename }),
+          });
+          break;
+        }
+        default:
+          return;
+      }
+
+      // Refresh queries so the new item appears in the UI
+      queryClient.invalidateQueries();
+    } catch (err) {
+      console.error('Add item failed', err);
+      alert('Failed to add item');
+    }
+  };
+
   const sectionConfigs = [
     { id: "messages", icon: MessageSquare, title: "Messages", color: "from-blue-500 to-blue-600" },
     { id: "journal", icon: BookOpen, title: "Journal", color: "from-amber-500 to-amber-600" },
@@ -359,6 +429,14 @@ export default function Dashboard() {
                           );
                         })}
                       </div>
+                        <div className="mt-3 flex justify-end">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleAddItem(config.id, selectedBond ?? null); }}
+                            className="px-3 py-2 bg-[#2458a0] text-white rounded-full text-xs font-black"
+                          >
+                            Add
+                          </button>
+                        </div>
                     </div>
                   )}
 

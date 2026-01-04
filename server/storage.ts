@@ -23,6 +23,10 @@ export function verifyPin(pin: string, hash: string): boolean {
 export class MemStorage {
   private users: Map<string, StoredUser> = new Map();
   private relationships: Map<number, any> = new Map();
+  private messages: Map<number, any> = new Map();
+  private journalEntries: Map<number, any> = new Map();
+  private mediaItems: Map<number, any> = new Map();
+  private events: Map<number, any> = new Map();
   private currentId: number = 5; // Starting at 5 since we seed 1-4
   private bondingCodes = new Map<string, { userId: string, expires: number }>();
   
@@ -98,6 +102,54 @@ export class MemStorage {
     return Array.from(this.relationships.values()).filter(r => r.userId === userId); 
   }
 
+  // Messages
+  async getMessagesForRelationship(relationshipId: number) {
+    return Array.from(this.messages.values()).filter(m => Number(m.relationshipId) === Number(relationshipId));
+  }
+
+  async createMessage(relationshipId: number, senderId: string | number, content: string) {
+    const id = this.currentId++;
+    const msg = { id: String(id), relationshipId: Number(relationshipId), senderId: String(senderId), content, timestamp: new Date().toISOString(), read: false };
+    this.messages.set(id, msg);
+    return msg;
+  }
+
+  // Journal
+  async getJournalEntriesForRelationship(relationshipId: number) {
+    return Array.from(this.journalEntries.values()).filter(j => Number(j.relationshipId) === Number(relationshipId));
+  }
+
+  async createJournalEntry(relationshipId: number, authorId: string | number, data: { title: string; content: string }) {
+    const id = this.currentId++;
+    const entry = { id: String(id), relationshipId: Number(relationshipId), authorId: String(authorId), title: data.title, content: data.content, createdAt: new Date().toISOString() };
+    this.journalEntries.set(id, entry);
+    return entry;
+  }
+
+  // Media
+  async getMediaForRelationship(relationshipId: number) {
+    return Array.from(this.mediaItems.values()).filter(m => Number(m.relationshipId) === Number(relationshipId));
+  }
+
+  async createMediaForRelationship(relationshipId: number, data: { type: string; url: string; filename: string; caption?: string }) {
+    const id = this.currentId++;
+    const item = { id: String(id), relationshipId: Number(relationshipId), type: data.type, url: data.url, filename: data.filename, caption: data.caption || null, uploadedAt: new Date().toISOString() };
+    this.mediaItems.set(id, item);
+    return item;
+  }
+
+  // Events
+  async getEventsForRelationship(relationshipId: number) {
+    return Array.from(this.events.values()).filter(e => Number(e.relationshipId) === Number(relationshipId));
+  }
+
+  async createEventForRelationship(relationshipId: number, creatorId: string | number, data: { title: string; eventDate: string; eventType?: string }) {
+    const id = this.currentId++;
+    const ev = { id: String(id), relationshipId: Number(relationshipId), creatorId: String(creatorId), title: data.title, date: data.eventDate, type: data.eventType || 'custom' };
+    this.events.set(id, ev);
+    return ev;
+  }
+
   async createBondingCode(userId: string): Promise<string> {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     this.bondingCodes.set(code, { 
@@ -113,13 +165,14 @@ export class MemStorage {
     return data.userId;
   }
 
-  async getMessages() { return []; }
-  async getJournalEntries() { return []; }
-  async getMedia() { return []; }
-  async getJournal() { return []; }
-  async getJournalEntry(id: number) { return null; }
+  // Backwards-compatible generic getters (not used directly)
+  async getMessages() { return Array.from(this.messages.values()); }
+  async getJournalEntries() { return Array.from(this.journalEntries.values()); }
+  async getMedia() { return Array.from(this.mediaItems.values()); }
+  async getJournal() { return Array.from(this.journalEntries.values()); }
+  async getJournalEntry(id: number) { return this.journalEntries.get(id) ?? null; }
   async getNotifications() { return []; }
-  async getEvents() { return []; }
+  async getEvents() { return Array.from(this.events.values()); }
   async getDashboardPreferences() { return null; }
   async getNotificationSettings() { return null; }
   
