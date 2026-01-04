@@ -111,7 +111,7 @@ export default function Research() {
               Research Hub
             </h1>
             <p className="text-[13px] sm:text-sm md:text-lg text-[#4a453e] max-w-3xl mx-auto font-bold uppercase tracking-wide opacity-90 text-balance">
-              The data on how much connection is needed.
+              The data showing the need for closer bonds
             </p>
           </header>
 
@@ -135,11 +135,11 @@ export default function Research() {
                 Search
               </button>
             </form>
-          </div>
+          </div>r
 
           {/* COUNTER UNDER SEARCH - KEY METRICS */}
           <section className="mb-16 md:mb-20">
-            <h2 className="text-xl sm:text-2xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
               Key Metrics
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">

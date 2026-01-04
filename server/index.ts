@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupAuth } from "./auth"; // This connects your auth logic
+import cookieParser from "cookie-parser";
+import { jwtMiddleware } from "./jwt";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
@@ -39,6 +41,8 @@ app.use((req, res, next) => {
 
 (async () => {
   // 1. Setup Auth FIRST so routes are protected
+  app.use(cookieParser());
+  app.use(jwtMiddleware);
   setupAuth(app);
 
   // 2. Register API Routes

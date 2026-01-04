@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { TutorialPanel } from "@/components/TutorialPanel";
 import { Loader2, BookOpen, Users, ImagePlus, X, HelpCircle } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 import { format } from "date-fns";
 
 const journalTutorialSteps = [
@@ -37,6 +38,7 @@ const journalTutorialSteps = [
 ];
 
 export default function Journal() {
+  const [, setLocation] = useLocation();
   const { data: relationships, isLoading: relationshipsLoading } = useRelationships();
   const [selectedConnectionId, setSelectedConnectionId] = useState<number | null>(null);
 
@@ -86,18 +88,39 @@ export default function Journal() {
     }
   };
 
+  const handleClose = () => {
+    setLocation("/dashboard");
+  };
+
+  // close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
       <Header />
       
       <main className="pt-24 pb-20 px-4 flex-1">
         <div className="container mx-auto max-w-4xl">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="flex items-center gap-3 mb-2">
+          {/* Modal backdrop */}
+          <div className="fixed inset-0 bg-black/40 z-40 flex items-start md:items-center justify-center p-4 md:p-8">
+            <div className="w-full max-w-3xl bg-[#f5f1e8] rounded-2xl shadow-2xl z-50 overflow-auto max-h-[90vh]">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                <div className="flex justify-end p-4">
+                  <button onClick={handleClose} aria-label="Close journal" className="text-[#4a453e] bg-white/0 hover:bg-white/30 rounded-full p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" /></svg>
+                  </button>
+                </div>
+            <div className="flex items-center gap-3 mb-2 px-6">
               <BookOpen className="h-8 w-8 text-[#2458a0]" />
               <h1 className="text-3xl font-bold text-[#4a453e]">Shared Journal</h1>
             </div>
-            <p className="text-[#4a453e] opacity-70 mb-6 font-bold">Write and share your thoughts together</p>
+                <p className="text-[#4a453e] opacity-70 mb-6 font-bold px-6">Write and share your thoughts together</p>
 
           <TutorialPanel
             featureKey="journal"
@@ -258,7 +281,9 @@ export default function Journal() {
               )}
             </motion.div>
           )}
-        </motion.div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </main>
       

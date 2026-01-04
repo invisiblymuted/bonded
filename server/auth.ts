@@ -4,6 +4,9 @@ import { Express } from "express";
 import session from "express-session";
 import { storage, hashPin } from "./storage";
 import { User as SelectUser } from "@shared/schema";
+import { signToken } from "./jwt";
+
+const JWT_COOKIE_NAME = process.env.JWT_COOKIE_NAME || "bonded_jwt";
 
 export function setupAuth(app: Express) {
   const sessionSettings: session.SessionOptions = {
@@ -46,22 +49,37 @@ export function setupAuth(app: Express) {
     }
   });
 
-  // API Route for Login
+  // API Route for Login — still use passport to validate credentials, but issue a JWT for production
   app.post("/api/login", passport.authenticate("local"), (req, res) => {
-    res.status(200).json(req.user);
+    try {
+      const user = req.user as any;
+      const token = signToken(user.id);
+      // set HttpOnly cookie for browser to send automatically
+      res.cookie(JWT_COOKIE_NAME, token, {
+        httpOnly: true,
+        secure: app.get("env") === "production",
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+      });
+      res.status(200).json(user);
+    } catch (err) {
+      res.status(500).json({ message: "Failed to sign token" });
+    }
   });
 
   // API Route for Logout
   app.post("/api/logout", (req, res, next) => {
     req.logout((err) => {
       if (err) return next(err);
+      // clear JWT cookie as well
+      res.clearCookie(JWT_COOKIE_NAME);
       res.sendStatus(200);
     });
   });
 
   // Check current session
   app.get("/api/user", (req, res) => {
-    if (!req.isAuthenticated()) return res.sendStatus(401);
+    if (!(req as any).user) return res.sendStatus(401);
     res.json(req.user);
   });
 }
