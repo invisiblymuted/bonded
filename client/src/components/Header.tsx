@@ -72,7 +72,14 @@ export function Header() {
               </Link>
               {user && (
                 <Link href="/profile">
-                  <div onClick={closeMenu} className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full cursor-pointer shadow-sm">
+                  <div onClick={closeMenu} className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full cursor-pointer shadow-sm">
+                    {user.profileImageUrl ? (
+                      <img src={user.profileImageUrl} alt="avatar" className="h-7 w-7 rounded-full object-cover border-2 border-white shadow-sm" />
+                    ) : (
+                      <div className="h-7 w-7 rounded-full bg-white/10 flex items-center justify-center">
+                        <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                      </div>
+                    )}
                     <span className="text-[9px] md:text-[10px] font-black uppercase tracking-widest">{user.firstName}</span>
                   </div>
                 </Link>
