@@ -4,8 +4,9 @@ import { setupAuth } from "./auth"; // This connects your auth logic
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Allow larger request bodies to support base64 image uploads from the client
+app.use(express.json({ limit: "20mb" }));
+app.use(express.urlencoded({ extended: false, limit: "20mb" }));
 
 // Logging middleware to help us debug
 app.use((req, res, next) => {

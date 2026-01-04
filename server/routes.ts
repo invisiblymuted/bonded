@@ -118,5 +118,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json(relationships);
   });
 
+  // Update current user's profile
+  app.patch("/api/user", async (req, res) => {
+    if (!req.user) {
+      console.log('[PATCH /api/user] Unauthorized request - no req.user');
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    try {
+      // Debug logging to help diagnose client save failures
+      try {
+        const contentLength = req.headers['content-length'];
+        console.log(`[PATCH /api/user] headers content-length=${contentLength}`);
+        const bodyStr = JSON.stringify(req.body || {});
+        console.log(`[PATCH /api/user] body length=${bodyStr.length} preview=${bodyStr.slice(0,300)}`);
+      } catch (e) {
+        console.log('[PATCH /api/user] failed to stringify body for debug', e);
+      }
+
+      const { firstName, lastName, profileImageUrl, email, displayName } = req.body ?? {};
+      const user = req.user as any;
+
+      if (typeof firstName === "string") user.firstName = firstName;
+      if (typeof lastName === "string") user.lastName = lastName;
+      if (typeof profileImageUrl === "string") user.profileImageUrl = profileImageUrl;
+      if (typeof email === "string") user.email = email;
+      if (typeof displayName === "string") user.displayName = displayName;
+
+      user.updatedAt = new Date();
+
+      res.json(user);
+    } catch (err: any) {
+      console.error('[PATCH /api/user] update failed', err);
+      res.status(500).json({ message: err?.message || "Failed to update user" });
+    }
+  });
+
   return httpServer;
 }

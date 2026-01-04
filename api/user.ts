@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { parseCookies } from "./_cookie";
 import { getUserFromSession } from "./_authDb";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   const cookies = parseCookies(req.headers.cookie);
   const sid = cookies["bonded_session"];
   const user = await getUserFromSession(sid);
