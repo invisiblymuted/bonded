@@ -22,39 +22,37 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white selection:bg-slate-100">
       <main className="flex-1 flex flex-col pt-24">
-        {/* Logo Banner - Takes up most of the page */}
+        {/* Logo Banner - Centered with nav icons below logo within the banner */}
         <div className="w-full bg-white border-b border-slate-200 flex items-center justify-center px-4 sm:px-6 py-8">
-          <Logo />
-        </div>
-
-        {/* Navigation icons under the banner (no header) */}
-        <div className="w-full flex items-center justify-center py-6">
-          <div className="flex items-center gap-4 bg-white">
-            <Link href="/home">
-              <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
-                <Home className="h-6 w-6 text-[#2458a0]" />
-              </div>
-            </Link>
-            <Link href="/app">
-              <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
-                <LayoutGrid className="h-6 w-6 text-[#2458a0]" />
-              </div>
-            </Link>
-            <Link href="/research">
-              <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
-                <BookOpen className="h-6 w-6 text-[#2458a0]" />
-              </div>
-            </Link>
-            <Link href="/profile">
-              <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
-                <UserCircle className="h-6 w-6 text-[#2458a0]" />
-              </div>
-            </Link>
-            <Link href="/help">
-              <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
-                <HelpCircle className="h-6 w-6 text-[#2458a0]" />
-              </div>
-            </Link>
+          <div className="flex flex-col items-center gap-6">
+            <Logo />
+            <div className="flex items-center gap-4">
+              <Link href="/home">
+                <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
+                  <Home className="h-6 w-6 text-[#2458a0]" />
+                </div>
+              </Link>
+              <Link href="/app">
+                <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
+                  <LayoutGrid className="h-6 w-6 text-[#2458a0]" />
+                </div>
+              </Link>
+              <Link href="/research">
+                <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
+                  <BookOpen className="h-6 w-6 text-[#2458a0]" />
+                </div>
+              </Link>
+              <Link href="/profile">
+                <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
+                  <UserCircle className="h-6 w-6 text-[#2458a0]" />
+                </div>
+              </Link>
+              <Link href="/help">
+                <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
+                  <HelpCircle className="h-6 w-6 text-[#2458a0]" />
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </main>
