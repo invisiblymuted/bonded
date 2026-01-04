@@ -59,9 +59,7 @@ export default function Profile() {
             </div>
           </div>
         </main>
-        <div className="mt-auto">
-          <Footer />
-        </div>
+        
       </div>
     );
   }
@@ -281,9 +279,6 @@ export default function Profile() {
           </motion.div>
         </div>
       </main>
-      <div className="mt-auto">
-        <Footer />
-      </div>
     </div>
   );
 }
