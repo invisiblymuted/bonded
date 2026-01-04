@@ -21,12 +21,12 @@ const Logo = () => {
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white selection:bg-slate-100">
-      <main className="flex-1 flex flex-col pt-24">
-        {/* Logo Banner - centered horizontally; nav icons underneath; remove border line */}
-        <div className="w-full bg-white flex items-center justify-center px-4 sm:px-6 py-12">
-          <div className="flex flex-col items-center gap-6">
+      <main className="flex-1 flex items-center justify-center">
+        {/* Logo Banner - centered both vertically and horizontally; nav icons stacked underneath */}
+        <div className="w-full flex items-center justify-center px-4 sm:px-6 py-12">
+          <div className="flex flex-col items-center gap-6 text-center">
             <Logo />
-            <div className="flex items-center gap-4 mt-2">
+            <div className="flex items-center gap-4 mt-2 justify-center">
               <Link href="/home">
                 <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
                   <Home className="h-6 w-6 text-[#2458a0]" />
