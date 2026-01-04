@@ -2,20 +2,27 @@ import { Pool } from "pg";
 
 const connectionString = process.env.POSTGRES_URL || process.env.DATABASE_URL;
 
-if (!connectionString) {
-  throw new Error("POSTGRES_URL (or DATABASE_URL) is not set. Add it in Vercel envs.");
+function createMissingPool() {
+  return {
+    query: async () => {
+      throw new Error("POSTGRES_URL (or DATABASE_URL) is not set. Set the env var in your deployment.");
+    },
+    connect: async () => {
+      throw new Error("POSTGRES_URL (or DATABASE_URL) is not set. Set the env var in your deployment.");
+    }
+  } as any;
 }
 
-export const pool = new Pool({
-  connectionString,
-  ssl: { rejectUnauthorized: false },
-});
+export const pool = connectionString
+  ? new Pool({ connectionString, ssl: { rejectUnauthorized: false } })
+  : createMissingPool();
 
 let schemaReady: Promise<void> | null = null;
 
 export function ensureSchema(): Promise<void> {
   if (schemaReady) return schemaReady;
   schemaReady = (async () => {
+    // if no connection string, attempting to connect will throw a helpful error from pool
     const client = await pool.connect();
     try {
       await client.query(`
