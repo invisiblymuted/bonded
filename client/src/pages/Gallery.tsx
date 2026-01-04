@@ -297,10 +297,10 @@ export default function Gallery() {
               </div>
             </div>
           )}
-          </div>
-        </motion.div>
+        </DialogContent>
+      </Dialog>
       </main>
-      
+
       <Footer />
     </div>
   );

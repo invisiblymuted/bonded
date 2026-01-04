@@ -258,8 +258,8 @@ export default function Journal() {
               )}
             </motion.div>
           )}
-          </div>
         </motion.div>
+        </div>
       </main>
       
       <Footer />

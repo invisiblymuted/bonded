@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEvents, useCreateEvent, useDeleteEvent, useRelationships } from "@/hooks/use-relationships";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { GradientIcon } from "@/components/GradientIcon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -272,8 +273,8 @@ export default function Calendar() {
               )}
             </motion.div>
           )}
-          </div>
         </motion.div>
+        </div>
       </main>
       
       <Footer />

@@ -162,7 +162,8 @@ export default function Messages() {
               </Card>
             </motion.div>
           )}
-          </div>
+        </motion.div>
+        </div>
         </main>
       
       <Footer />
