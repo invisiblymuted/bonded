@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { useAuth } from "@/hooks/use-auth";
-import { Activity, UserCircle, LayoutGrid, Home, HelpCircle, Menu, X } from "lucide-react";
+import { BookOpen, UserCircle, LayoutGrid, Home, HelpCircle, Menu, X } from "lucide-react";
 
 export function Header() {
   const { user } = useAuth();
@@ -57,7 +57,7 @@ export function Header() {
               </Link>
               <Link href="/research">
                 <div onClick={closeMenu} className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Research">
-                  <Activity className="h-4 w-4" />
+                  <BookOpen className="h-4 w-4" />
                 </div>
               </Link>
               <Link href="/profile">
