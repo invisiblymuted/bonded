@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { 
   Users, BookOpen, Heart, 
   BarChart3, ExternalLink, Search, FileText,
@@ -93,6 +94,21 @@ export default function Research() {
     window.open(`https://www.google.com/search?q=${encodeURIComponent(fullQuery)}`, '_blank');
   };
 
+  const researchResources = [
+    {
+      title: "UN Sustainable Development Goals - Family & Children",
+      desc: "Research and statistics on global child welfare and family separation issues from the United Nations.",
+      url: "https://www.un.org/sustainabledevelopment/",
+      icon: BarChart3,
+    },
+    {
+      title: "World Health Organization - Family Separation Impact",
+      desc: "Scientific research on the psychological and health impacts of family separation.",
+      url: "https://www.who.int/",
+      icon: BarChart3,
+    },
+  ];
+
   const openScholar = (term: string) => {
     window.open(`https://scholar.google.com/scholar?q=${encodeURIComponent(term)}`, '_blank');
   };
@@ -166,6 +182,31 @@ export default function Research() {
                 </div>
                 <p className="text-[9px] sm:text-[10px] font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em] opacity-60">Digital Bond Utility</p>
               </Card>
+            </div>
+          </section>
+
+          {/* RESEARCH & STATISTICS (moved from Get Help) */}
+          <section className="mb-16 md:mb-20">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
+              Research & Statistics
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {researchResources.map((r, idx) => (
+                <Card key={idx} className="bg-white border-[#dcd7ca] p-6 sm:p-7 lg:p-8 rounded-3xl shadow-sm hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-[#f5f1e8]">
+                      <r.icon stroke="url(#brand-gradient)" className="h-6 w-6 text-[#2458a0]" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-black text-[#4a453e] mb-2">{r.title}</h3>
+                      <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-4">{r.desc}</p>
+                      <a href={r.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:opacity-90">
+                        Read More <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                  </div>
+                </Card>
+              ))}
             </div>
           </section>
 

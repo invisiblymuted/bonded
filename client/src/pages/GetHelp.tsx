@@ -157,6 +157,9 @@ export default function GetHelp() {
             const [categoryKey, categoryName] = entry;
             const categoryResources = groupedResources[categoryKey] || [];
 
+            // Skip the research category here — it's shown on the Research page
+            if (categoryKey === 'research') return null;
+
             if (categoryResources.length === 0) return null;
 
             return (

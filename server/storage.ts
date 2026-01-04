@@ -80,12 +80,14 @@ export class MemStorage {
       } as StoredUser);
       
       // Create relationship from user 1 to this user
-      this.relationships.set(relId++, { 
-        id: relId, 
-        userId: 1, 
-        targetId: parseInt(u.id), 
-        status: "connected" 
+      const idForRel = relId;
+      this.relationships.set(idForRel, {
+        id: idForRel,
+        userId: 1,
+        targetId: parseInt(u.id),
+        status: "connected",
       });
+      relId++;
     });
   }
 

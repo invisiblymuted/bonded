@@ -60,8 +60,8 @@ export function Header() {
                   <BookOpen className="h-4 w-4" />
                 </div>
               </Link>
-              <Link href="/profile">
-                <div onClick={closeMenu} className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Profile">
+              <Link href="/app">
+                <div onClick={closeMenu} className="p-1.5 sm:p-2 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer" title="Dashboard">
                   <UserCircle className="h-4 w-4" />
                 </div>
               </Link>
@@ -71,7 +71,7 @@ export function Header() {
                 </div>
               </Link>
               {user && (
-                <Link href="/profile">
+                <Link href="/app">
                   <div onClick={closeMenu} className="flex items-center gap-2 md:gap-3 px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full cursor-pointer shadow-sm">
                     {user.profileImageUrl ? (
                       <img src={user.profileImageUrl} alt="avatar" className="h-7 w-7 rounded-full object-cover border-2 border-white shadow-sm" />
