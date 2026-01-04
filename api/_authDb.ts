@@ -81,3 +81,9 @@ export async function getUserFromSession(sessionId: string): Promise<DbUser | nu
   const { rows: userRows } = await pool.query<DbUser>(`SELECT * FROM app_users WHERE id = $1`, [session.user_id]);
   return userRows[0] || null;
 }
+
+export async function getUserById(id: string): Promise<DbUser | null> {
+  await ensureSchema();
+  const { rows } = await pool.query<DbUser>(`SELECT * FROM app_users WHERE id = $1`, [id]);
+  return rows[0] || null;
+}
