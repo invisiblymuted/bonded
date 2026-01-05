@@ -62,7 +62,7 @@ export default function Home() {
         </section>
 
         {/* FEATURES GRID */}
-        <section className="py-3 md:py-5 px-4 bg-[#f0ede4] border-y border-[#dcd7ca]">
+        <section className="py-6 md:py-8 px-4 bg-[#f0ede4] border-y border-[#dcd7ca]">
           <div className="container mx-auto max-w-6xl">
             <h2 className="text-2xl sm:text-3xl font-black mb-6 md:mb-8 text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
               How it Works
@@ -104,7 +104,7 @@ export default function Home() {
         </section>
 
         {/* MISSION & REALITY */}
-        <section className="py-12 px-4">
+        <section className="py-6 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div className="space-y-6">
