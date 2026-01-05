@@ -24,7 +24,8 @@ export default function LandingPage() {
       <main className="flex-1 flex items-center justify-center">
         {/* Logo Banner - centered both vertically and horizontally; nav icons stacked underneath */}
         <div className="w-full flex items-center justify-center px-4 sm:px-6 py-12">
-          <div className="flex flex-col items-center gap-6 text-center">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex flex-col items-center gap-6 text-center">
             <Logo />
             <div className="flex items-center gap-4 mt-2 justify-center">
               <Link href="/home">
@@ -52,6 +53,7 @@ export default function LandingPage() {
                   <HelpCircle className="h-6 w-6 text-[#2458a0]" />
                 </div>
               </Link>
+            </div>
             </div>
           </div>
         </div>
