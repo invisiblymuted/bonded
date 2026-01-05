@@ -144,7 +144,7 @@ export default function GetHelp() {
             transition={{ delay: 0.1 }}
             className="mb-16 bg-gradient-to-br from-[#2458a0]/5 to-[#f26522]/5 border border-[#dcd7ca] rounded-3xl p-8"
           >
-            <h2 className="text-2xl font-black text-[#4a453e] uppercase tracking-tight mb-2 flex items-center gap-3">
+            <h2 className="text-3xl font-black mb-2 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent flex items-center gap-3">
               <Globe stroke="url(#brand-gradient)" className="h-6 w-6" /> Find Help Near You
             </h2>
             <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-6">
@@ -221,7 +221,7 @@ export default function GetHelp() {
             transition={{ delay: 0.3 }}
             className="mt-16 bg-gradient-to-r from-[#2458a0]/10 to-[#f26522]/10 border border-[#dcd7ca] rounded-3xl p-8 text-center"
           >
-            <h2 className="text-2xl font-black text-[#4a453e] mb-4">
+            <h2 className="text-3xl font-black mb-4 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
               Need Immediate Assistance?
             </h2>
             <p className="text-[#4a453e] font-bold mb-6">
