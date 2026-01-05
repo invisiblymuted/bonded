@@ -77,7 +77,7 @@ export default function Home() {
                       <t.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
                     </div>
                     <div className="space-y-2 text-left">
-                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#4a453e]">{t.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0]">{t.title}</h3>
                       <p className="text-sm text-[#4a453e] font-bold opacity-80 leading-relaxed">
                         {t.desc}
                       </p>
@@ -93,7 +93,7 @@ export default function Home() {
                   <Card className="bg-white border-[#dcd7ca] p-8 h-full cursor-pointer hover:border-[#f26522] transition-all group shadow-sm rounded-3xl">
                     <div className="flex items-center gap-4 mb-4">
                       <f.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
-                      <h3 className="font-black text-[#4a453e] uppercase tracking-tight text-lg">{f.title}</h3>
+                      <h3 className="font-black text-[#2458a0] uppercase tracking-tight text-lg">{f.title}</h3>
                     </div>
                     <p className="text-sm text-[#4a453e] font-bold opacity-80 leading-relaxed">{f.desc}</p>
                   </Card>
@@ -114,7 +114,7 @@ export default function Home() {
                 <div className="grid gap-6">
                   {families.map((f, i) => (
                     <Card key={i} className="bg-white border-[#dcd7ca] p-8 rounded-3xl shadow-sm">
-                      <h3 className="text-xl font-black text-[#4a453e] mb-2 uppercase tracking-tight">{f.title}</h3>
+                      <h3 className="text-xl font-black text-[#2458a0] mb-2 uppercase tracking-tight">{f.title}</h3>
                       <p className="text-sm text-[#4a453e] font-bold opacity-70 leading-relaxed uppercase tracking-tight">{f.desc}</p>
                     </Card>
                   ))}
