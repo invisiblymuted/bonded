@@ -22,7 +22,7 @@ export function Header() {
       </svg>
       
       <nav className="fixed top-0 w-full z-50 bg-[#ede8dc]/95 border-b border-[#dcd7ca] backdrop-blur-sm">
-          <div className="w-full px-3 sm:px-4 h-16 flex items-center justify-between">
+          <div className="container mx-auto max-w-6xl px-3 sm:px-4 h-16 flex items-center justify-between">
           <Link href="/landing">
             <div className="flex items-center cursor-pointer gap-1 md:gap-0">
               <div className="h-10 md:h-14 w-10 md:w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
