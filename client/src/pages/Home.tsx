@@ -69,7 +69,7 @@ export default function Home() {
             </h2>
 
             {/* Trust-first tiles, full width stacked */}
-            <div className="grid grid-cols-1 gap-4 md:gap-6 mb-6">
+            <div className="grid grid-cols-1 gap-6 md:gap-6 mb-6">
               {trustTiles.map((t) => (
                 <Card key={t.id} className="bg-white border-[#dcd7ca] p-6 sm:p-7 md:p-8 rounded-3xl shadow-sm">
                   <div className="flex items-start gap-4">
@@ -87,7 +87,7 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((f) => (
                 <Link key={f.id} href={`/tutorials/${f.id}`}>
                   <Card className="bg-white border-[#dcd7ca] p-8 h-full cursor-pointer hover:border-[#f26522] transition-all group shadow-sm rounded-3xl">
@@ -104,11 +104,11 @@ export default function Home() {
         </section>
 
         {/* MISSION & REALITY */}
-        <section className="py-24 px-4">
+        <section className="py-12 px-4">
           <div className="container mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <div className="space-y-8">
-                <h2 className="text-3xl font-black text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+              <div className="space-y-6">
+                <h2 className="text-3xl font-black mb-6 text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
                   Who It's For
                 </h2>
                 <div className="grid gap-6">
@@ -121,22 +121,22 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="lg:sticky lg:top-32 space-y-8 text-center">
-                <h2 className="text-3xl font-black uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+              <div className="space-y-6 text-center flex flex-col justify-center">
+                <h2 className="text-3xl font-black mb-6 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
                   The Need
                 </h2>
-                <div className="bg-[#ede8dc] p-12 rounded-[40px] border border-[#dcd7ca] space-y-12 shadow-inner">
-                  <div className="space-y-12">
+                <div className="bg-[#ede8dc] p-8 rounded-[32px] border border-[#dcd7ca] space-y-8 shadow-inner">
+                  <div className="space-y-8">
                     <div className="flex flex-col items-center">
-                      <span className="text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">13M+</span>
+                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">13M+</span>
                       <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Separated Children</p>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">400K</span>
+                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">400K</span>
                       <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Military Children</p>
                     </div>
                     <div className="flex flex-col items-center">
-                      <span className="text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">2.7M</span>
+                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">2.7M</span>
                       <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Incarcerated Parents</p>
                     </div>
                   </div>
