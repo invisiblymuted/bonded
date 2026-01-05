@@ -131,7 +131,7 @@ export default function GetHelp() {
             className="mb-12 text-center"
           >
             <Heart stroke="url(#brand-gradient)" className="h-12 w-12 mx-auto mb-4" />
-            <h1 className="text-4xl font-black text-[#4a453e] mb-4">Get Help</h1>
+            <h1 className="text-4xl font-black text-[#4a453e] mb-4">Get Help Now</h1>
             <p className="text-lg text-[#4a453e] opacity-70 font-bold max-w-2xl mx-auto">
               Resources, legal assistance, and support services for families affected by international child abduction and separation.
             </p>
