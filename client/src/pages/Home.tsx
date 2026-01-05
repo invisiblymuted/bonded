@@ -77,7 +77,7 @@ export default function Home() {
                       <t.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
                     </div>
                     <div className="space-y-2 text-left">
-                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0]">{t.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#4a453e]">{t.title}</h3>
                       <p className="text-sm text-[#4a453e] font-bold opacity-80 leading-relaxed">
                         {t.desc}
                       </p>
@@ -93,7 +93,7 @@ export default function Home() {
                   <Card className="bg-white border-[#dcd7ca] p-8 h-full cursor-pointer hover:border-[#f26522] transition-all group shadow-sm rounded-3xl">
                     <div className="flex items-center gap-4 mb-4">
                       <f.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
-                      <h3 className="font-black text-[#2458a0] uppercase tracking-tight text-lg">{f.title}</h3>
+                      <h3 className="font-black text-[#4a453e] uppercase tracking-tight text-lg">{f.title}</h3>
                     </div>
                     <p className="text-sm text-[#4a453e] font-bold opacity-80 leading-relaxed">{f.desc}</p>
                   </Card>
@@ -114,7 +114,7 @@ export default function Home() {
                 <div className="grid gap-6">
                   {families.map((f, i) => (
                     <Card key={i} className="bg-white border-[#dcd7ca] p-8 rounded-3xl shadow-sm">
-                      <h3 className="text-xl font-black text-[#2458a0] mb-2 uppercase tracking-tight">{f.title}</h3>
+                      <h3 className="text-xl font-black text-[#4a453e] mb-2 uppercase tracking-tight">{f.title}</h3>
                       <p className="text-sm text-[#4a453e] font-bold opacity-70 leading-relaxed uppercase tracking-tight">{f.desc}</p>
                     </Card>
                   ))}
@@ -125,53 +125,19 @@ export default function Home() {
                 <h2 className="text-3xl font-black mb-6 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
                   The Need
                 </h2>
-                <div className="bg-[#ede8dc] p-6 rounded-[24px] border border-[#dcd7ca] shadow-inner">
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    {/* Metric rows: each row shows Now vs Then */}
-                    <div className="grid grid-cols-2 gap-3 items-center">
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Separated / At-risk children</div>
-                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">13M+</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Now (estimate)</div>
-                      </div>
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Separated / At-risk children</div>
-                        <div className="text-2xl font-black mt-2">13M+</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Then (same underlying populations)</div>
-                      </div>
-
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Military children</div>
-                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">400K</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Now</div>
-                      </div>
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Military children</div>
-                        <div className="text-2xl font-black mt-2">400K</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Then</div>
-                      </div>
-
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Children with incarcerated parents</div>
-                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">2.7M</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Now</div>
-                      </div>
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Children with incarcerated parents</div>
-                        <div className="text-2xl font-black mt-2">2.7M</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Then</div>
-                      </div>
-
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Avg digital touchpoints / day</div>
-                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">15+</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Now (estimate)</div>
-                      </div>
-                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
-                        <div className="text-xs font-black text-[#4a453e] uppercase">Avg digital touchpoints / day</div>
-                        <div className="text-2xl font-black mt-2">~0–1</div>
-                        <div className="text-[11px] text-[#6b665d] mt-1">Then (phone/letters only; estimate)</div>
-                      </div>
+                <div className="bg-[#ede8dc] p-8 rounded-[32px] border border-[#dcd7ca] space-y-8 shadow-inner">
+                  <div className="space-y-8">
+                    <div className="flex flex-col items-center">
+                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">13M+</span>
+                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Separated Children</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">400K</span>
+                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Military Children</p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">2.7M</span>
+                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Incarcerated Parents</p>
                     </div>
                   </div>
                 </div>
