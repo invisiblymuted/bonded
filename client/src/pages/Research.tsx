@@ -166,7 +166,7 @@ export default function Research() {
                       <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center shrink-0 border border-[#dcd7ca]">
                         <cat.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
                       </div>
-                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0]">
                         {cat.title}
                       </h3>
                     </div>
