@@ -22,16 +22,57 @@ const COUNTRIES_AND_STATES: Record<string, { lat: number; lng: number; states?: 
     lat: 37.0902,
     lng: -95.7129,
     states: {
-      'California': { lat: 36.1163, lng: -119.6674 },
-      'Texas': { lat: 31.9686, lng: -99.9018 },
-      'New York': { lat: 42.1657, lng: -74.9481 },
-      'Florida': { lat: 27.6648, lng: -81.5158 },
-      'Illinois': { lat: 40.3495, lng: -88.9861 },
-      'Pennsylvania': { lat: 40.5908, lng: -77.2098 },
-      'Ohio': { lat: 40.3888, lng: -82.7649 },
-      'Georgia': { lat: 33.0406, lng: -83.6431 },
-      'Washington': { lat: 47.7511, lng: -120.7401 },
-      'Massachusetts': { lat: 42.2352, lng: -71.0275 },
+      'Alabama': { lat: 32.806671, lng: -86.791130 },
+      'Alaska': { lat: 61.370716, lng: -152.404419 },
+      'Arizona': { lat: 33.729759, lng: -111.431221 },
+      'Arkansas': { lat: 34.969704, lng: -92.373123 },
+      'California': { lat: 36.116203, lng: -119.681564 },
+      'Colorado': { lat: 39.059811, lng: -105.311104 },
+      'Connecticut': { lat: 41.597782, lng: -72.755371 },
+      'Delaware': { lat: 39.318523, lng: -75.507141 },
+      'Florida': { lat: 27.766279, lng: -81.686783 },
+      'Georgia': { lat: 33.040619, lng: -83.643074 },
+      'Hawaii': { lat: 21.094318, lng: -157.498337 },
+      'Idaho': { lat: 44.240459, lng: -114.478828 },
+      'Illinois': { lat: 40.349457, lng: -88.986137 },
+      'Indiana': { lat: 39.849426, lng: -86.258278 },
+      'Iowa': { lat: 42.011539, lng: -93.210526 },
+      'Kansas': { lat: 38.526600, lng: -96.726486 },
+      'Kentucky': { lat: 37.668140, lng: -84.670067 },
+      'Louisiana': { lat: 31.169546, lng: -91.867805 },
+      'Maine': { lat: 44.693947, lng: -69.381927 },
+      'Maryland': { lat: 39.063946, lng: -76.802101 },
+      'Massachusetts': { lat: 42.230171, lng: -71.530106 },
+      'Michigan': { lat: 43.326618, lng: -84.536095 },
+      'Minnesota': { lat: 45.694454, lng: -93.900192 },
+      'Mississippi': { lat: 32.741646, lng: -89.678696 },
+      'Missouri': { lat: 38.456085, lng: -92.288368 },
+      'Montana': { lat: 46.921925, lng: -110.454353 },
+      'Nebraska': { lat: 41.125370, lng: -98.268082 },
+      'Nevada': { lat: 38.313515, lng: -117.055374 },
+      'New Hampshire': { lat: 43.452492, lng: -71.563896 },
+      'New Jersey': { lat: 40.298904, lng: -74.521011 },
+      'New Mexico': { lat: 34.840515, lng: -106.248482 },
+      'New York': { lat: 42.165726, lng: -74.948051 },
+      'North Carolina': { lat: 35.630066, lng: -79.806419 },
+      'North Dakota': { lat: 47.528912, lng: -99.784012 },
+      'Ohio': { lat: 40.388783, lng: -82.764915 },
+      'Oklahoma': { lat: 35.565342, lng: -96.928917 },
+      'Oregon': { lat: 44.572021, lng: -122.070938 },
+      'Pennsylvania': { lat: 40.590752, lng: -77.209755 },
+      'Rhode Island': { lat: 41.680893, lng: -71.511780 },
+      'South Carolina': { lat: 33.856892, lng: -80.945007 },
+      'South Dakota': { lat: 44.299782, lng: -99.438828 },
+      'Tennessee': { lat: 35.747845, lng: -86.692345 },
+      'Texas': { lat: 31.054487, lng: -97.563461 },
+      'Utah': { lat: 40.150032, lng: -111.862434 },
+      'Vermont': { lat: 44.045876, lng: -72.710686 },
+      'Virginia': { lat: 37.769337, lng: -78.169968 },
+      'Washington': { lat: 47.400902, lng: -121.490494 },
+      'West Virginia': { lat: 38.491226, lng: -80.954456 },
+      'Wisconsin': { lat: 44.268543, lng: -89.616508 },
+      'Wyoming': { lat: 42.755966, lng: -107.302490 },
+      'District of Columbia': { lat: 38.9072, lng: -77.0369 }
     }
   },
   'United Kingdom': { lat: 55.3781, lng: -3.4360 },
@@ -185,7 +226,7 @@ export function InteractiveResourceMap() {
     setUserLocation(null);
     const countryData = COUNTRIES_AND_STATES[country];
     setMapCenter({ lat: countryData.lat, lng: countryData.lng });
-    setZoomLevel(4);
+    setZoomLevel(2.5);
   };
 
   const handleStateChange = (state: string) => {
@@ -195,7 +236,7 @@ export function InteractiveResourceMap() {
       const stateCoords = countryData.states[state];
       setUserLocation({ lat: stateCoords.lat, lng: stateCoords.lng });
       setMapCenter({ lat: stateCoords.lat, lng: stateCoords.lng });
-      setZoomLevel(5);
+      setZoomLevel(4);
     }
   };
 
@@ -212,7 +253,8 @@ export function InteractiveResourceMap() {
     }
   }, [userLocation]);
 
-  // Project coordinates to SVG
+  // Project coordinates to SVG using equirectangular (plate carrée) projection
+  // This matches the embedded world SVG which is an equirectangular image.
   const projectCoord = (lat: number, lng: number) => {
     const width = 1200;
     const height = 600;
@@ -291,78 +333,98 @@ export function InteractiveResourceMap() {
       {/* Interactive Map */}
       <div className="bg-white border-2 border-[#dcd7ca] rounded-3xl overflow-hidden mb-8 shadow-sm">
         <div className="relative w-full h-96 bg-blue-50">
-          <svg
-            className="absolute inset-0 w-full h-full"
-            viewBox="0 0 1200 600"
-            preserveAspectRatio="xMidYMid meet"
-            style={{ backgroundColor: '#b3d9ff' }}
-          >
-            {/* Simplified continents */}
-            <g fill="#90ee90" stroke="#2d5016" strokeWidth="1.5">
-              <ellipse cx="200" cy="180" rx="80" ry="110" />
-              <ellipse cx="250" cy="420" rx="45" ry="90" />
-              <ellipse cx="550" cy="140" rx="60" ry="50" />
-              <ellipse cx="600" cy="350" rx="80" ry="130" />
-              <ellipse cx="800" cy="200" rx="150" ry="100" />
-              <ellipse cx="950" cy="450" rx="55" ry="65" />
-              <ellipse cx="480" cy="80" rx="40" ry="60" />
-            </g>
-
-            {/* User location indicator */}
-            {userLocation && (
-              <g>
-                <circle
-                  cx={projectCoord(userLocation.lat, userLocation.lng).x}
-                  cy={projectCoord(userLocation.lat, userLocation.lng).y}
-                  r="12"
-                  fill="#ff6b35"
-                  stroke="white"
-                  strokeWidth="3"
-                />
-                <circle
-                  cx={projectCoord(userLocation.lat, userLocation.lng).x}
-                  cy={projectCoord(userLocation.lat, userLocation.lng).y}
-                  r="12"
-                  fill="none"
-                  stroke="#ff6b35"
-                  strokeWidth="2"
-                  opacity="0.4"
-                  style={{ animation: 'pulse 2s infinite' }}
-                />
-              </g>
-            )}
-
-            {/* Resource markers */}
-            {resourcesWithDistance.map((res) => {
-              const { x, y } = projectCoord(res.lat, res.lng);
-              const isSelected = selectedResource === res.id;
-              const markerColor = res.type === 'legal' ? '#2458a0' : res.type === 'international' ? '#8b5cf6' : '#f26522';
+          {
+            (() => {
+              const WIDTH = 1200;
+              const HEIGHT = 600;
+              const scale = Math.max(1, zoomLevel);
+              const center = projectCoord(mapCenter.lat, mapCenter.lng);
+              const viewW = WIDTH / scale;
+              const viewH = HEIGHT / scale;
+              let viewX = center.x - viewW / 2;
+              let viewY = center.y - viewH / 2;
+              // clamp
+              viewX = Math.max(0, Math.min(viewX, WIDTH - viewW));
+              viewY = Math.max(0, Math.min(viewY, HEIGHT - viewH));
+              const viewBox = `${viewX} ${viewY} ${viewW} ${viewH}`;
 
               return (
-                <g key={res.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedResource(isSelected ? null : res.id)}>
-                  {/* Glow ring */}
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={isSelected ? '16' : '12'}
-                    fill="none"
-                    stroke={markerColor}
-                    strokeWidth="2"
-                    opacity={isSelected ? '0.4' : '0.2'}
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox={viewBox}
+                  preserveAspectRatio="xMidYMid meet"
+                  style={{ backgroundColor: '#b3d9ff', transition: 'viewBox 400ms ease' }}
+                >
+                  {/* World map image (public domain SVG) - improves continent shapes */}
+                  <image
+                    href="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg"
+                    x="0"
+                    y="0"
+                    width="1200"
+                    height="600"
+                    preserveAspectRatio="xMidYMid meet"
+                    opacity="0.95"
                   />
-                  {/* Main marker */}
-                  <circle
-                    cx={x}
-                    cy={y}
-                    r={isSelected ? '9' : '6'}
-                    fill={markerColor}
-                    stroke="white"
-                    strokeWidth="2"
-                  />
-                </g>
+
+                  {/* User location indicator */}
+                  {userLocation && (
+                    <g>
+                      <circle
+                        cx={projectCoord(userLocation.lat, userLocation.lng).x}
+                        cy={projectCoord(userLocation.lat, userLocation.lng).y}
+                        r="12"
+                        fill="#ff6b35"
+                        stroke="white"
+                        strokeWidth="3"
+                      />
+                      <circle
+                        cx={projectCoord(userLocation.lat, userLocation.lng).x}
+                        cy={projectCoord(userLocation.lat, userLocation.lng).y}
+                        r="12"
+                        fill="none"
+                        stroke="#ff6b35"
+                        strokeWidth="2"
+                        opacity="0.4"
+                        style={{ animation: 'pulse 2s infinite' }}
+                      />
+                    </g>
+                  )}
+
+                  {/* Resource markers */}
+                  {resourcesWithDistance.map((res) => {
+                    const { x, y } = projectCoord(res.lat, res.lng);
+                    const isSelected = selectedResource === res.id;
+                    const markerColor = res.type === 'legal' ? '#2458a0' : res.type === 'international' ? '#8b5cf6' : '#f26522';
+
+                    return (
+                      <g key={res.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedResource(isSelected ? null : res.id)}>
+                        {/* Glow ring */}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={isSelected ? '16' : '12'}
+                          fill="none"
+                          stroke={markerColor}
+                          strokeWidth="2"
+                          opacity={isSelected ? '0.4' : '0.2'}
+                        />
+                        {/* Main marker */}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={isSelected ? '9' : '6'}
+                          fill={markerColor}
+                          stroke="white"
+                          strokeWidth="2"
+                        />
+                      </g>
+                    );
+                  })}
+                  {/* Debug overlay removed */}
+                </svg>
               );
-            })}
-          </svg>
+            })()
+          }
 
           {/* Pulse animation */}
           <style>{`
@@ -392,10 +454,7 @@ export function InteractiveResourceMap() {
               <div className="w-3 h-3 rounded-full bg-[#f26522]" />
               <span className="text-[#4a453e]">Support Service</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#ff6b35]" />
-              <span className="text-[#4a453e]">Your Location</span>
-            </div>
+            {/* 'Your Location' legend removed */}
           </div>
         </div>
       </div>
@@ -451,12 +510,33 @@ export function InteractiveResourceMap() {
           })()}
         </Card>
       ) : (
-        <div>
+          <div>
           <h3 className="text-xl font-black text-[#4a453e] uppercase mb-4">
-            {userLocation ? 'Resources Near You' : 'All Available Resources'}
+            {selectedState ? `Resources in ${selectedState}` : selectedCountry ? `Resources in ${selectedCountry}` : userLocation ? 'Resources Near You' : 'Available Resources'}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {resourcesWithDistance.slice(0, 8).map((res) => (
+            {(() => {
+              const lc = (s?: string) => (s || '').toLowerCase();
+              let displayed = resourcesWithDistance;
+              if (selectedState) {
+                const name = lc(selectedState);
+                displayed = resourcesWithDistance.filter(r => (r.state && lc(r.state) === name) || (r.location && lc(r.location).includes(name)) || (r.country && lc(r.country) === name));
+              } else if (selectedCountry) {
+                const name = lc(selectedCountry);
+                displayed = resourcesWithDistance.filter(r => (r.country && lc(r.country) === name) || (r.location && lc(r.location).includes(name)));
+              } else if (userLocation) {
+                displayed = resourcesWithDistance;
+              }
+
+              if (displayed.length === 0) {
+                return (
+                  <div className="col-span-1 md:col-span-2 p-6 bg-white border-[#dcd7ca] rounded-2xl text-sm text-[#4a453e] font-bold">
+                    No resources found for the selected location.
+                  </div>
+                );
+              }
+
+              return displayed.slice(0, 8).map((res) => (
               <Card
                 key={res.id}
                 onClick={() => setSelectedResource(res.id)}
@@ -481,7 +561,8 @@ export function InteractiveResourceMap() {
                   </div>
                 </div>
               </Card>
-            ))}
+              ));
+            })()}
           </div>
         </div>
       )}

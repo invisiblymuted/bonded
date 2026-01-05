@@ -114,17 +114,17 @@ export default function Research() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] text-[#2c2c2c]">
+    <div className="min-h-screen bg-[#f5f1e8] text-[#4a453e]">
       <IconGradient />
       
       <Header />
 
-      <main className="pt-24 md:pt-28 pb-16 md:pb-20 px-4">
+      <main className="pt-16 md:pt-20 pb-8 md:pb-10 px-4">
         <div className="container mx-auto max-w-6xl">
           
-          <header className="text-center mb-12 md:mb-16">
+          <header className="text-center mb-6 md:mb-6">
             <h1 className="text-[clamp(1.9rem,7vw,3rem)] sm:text-[clamp(2.2rem,6vw,3.6rem)] md:text-6xl lg:text-7xl font-black mb-4 md:mb-6 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-tight text-balance">
-              Research Hub
+              Bonded Research Hub
             </h1>
             <p className="text-[13px] sm:text-sm md:text-lg text-[#4a453e] max-w-3xl mx-auto font-bold uppercase tracking-wide opacity-90 text-balance">
               The data showing the need for closer bonds
@@ -132,7 +132,7 @@ export default function Research() {
           </header>
 
           {/* SEARCH ENGINE */}
-          <div className="max-w-2xl mx-auto mb-12 px-1 sm:px-0">
+          <div className="max-w-2xl mx-auto mb-6 px-1 sm:px-0">
             <form onSubmit={handleGoogleSearch} className="relative group">
               <label htmlFor="research-search" className="sr-only">Search for research topics</label>
               <input 
@@ -140,7 +140,7 @@ export default function Research() {
                 type="text" 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Further your own research..." 
+                placeholder="Further your research..." 
                 className="w-full h-14 sm:h-16 pl-12 sm:pl-14 pr-28 sm:pr-32 rounded-full border-2 border-[#dcd7ca] bg-white focus:border-[#2458a0] outline-none transition-all text-[#4a453e] font-bold shadow-sm text-sm sm:text-base"
               />
               <Search className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 h-5 w-5 sm:h-6 sm:w-6 text-[#2458a0]" />
@@ -153,12 +153,51 @@ export default function Research() {
             </form>
           </div>
 
+          {/* RESEARCH CATEGORIES SECTION (moved above metrics) */}
+          <section className="py-3 md:py-5 flex flex-col items-center">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 md:mb-8 text-center bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+              Research Categories
+            </h2>
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {categories.map((cat, i) => (
+                <Card key={i} className="bg-white border-[#dcd7ca] p-5 sm:p-6 lg:p-7 h-full flex flex-col justify-between shadow-sm rounded-3xl transition-all hover:border-[#f26522]/40 hover:shadow-md">
+                  <div>
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center shrink-0 border border-[#dcd7ca]">
+                        <cat.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
+                      </div>
+                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+                        {cat.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-[#4a453e] font-bold leading-relaxed mb-6 md:mb-8">
+                      {cat.desc}
+                    </p>
+                    <div className="space-y-4 pt-6 border-t border-[#f0ede4]">
+                      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-[#2458a0]">Featured Publications:</p>
+                      {cat.articles.map((art, idx) => (
+                        <div key={idx} onClick={() => openScholar(art)} className="flex items-center gap-3 py-1.5 group/item cursor-pointer">
+                          <FileText className="h-4 w-4 text-[#dcd7ca] group-hover/item:text-[#f26522] transition-colors" />
+                          <span className="text-sm font-black text-[#4a453e] group-hover/item:text-[#2458a0] transition-colors uppercase tracking-tight">
+                            {art}
+                          </span>
+                          <ExternalLink className="h-3 w-3 text-[#2458a0] transition-colors" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                </Card>
+              ))}
+            </div>
+          </section>
+
           {/* COUNTER UNDER SEARCH - KEY METRICS */}
-          <section className="mb-16 md:mb-20">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
+          <section className="py-3 md:py-5 flex flex-col items-center">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 md:mb-8 text-center bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
               Key Metrics
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
               <Card className="bg-white p-6 sm:p-7 lg:p-8 rounded-3xl border-[#dcd7ca] shadow-sm flex flex-col items-center text-center">
                 <Globe stroke="url(#brand-gradient)" className="h-6 w-6 mb-3" />
                 <div className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">
@@ -185,37 +224,12 @@ export default function Research() {
             </div>
           </section>
 
-          {/* RESEARCH & STATISTICS (moved from Get Help) */}
-          <section className="mb-16 md:mb-20">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
-              Research & Statistics
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {researchResources.map((r, idx) => (
-                <Card key={idx} className="bg-white border-[#dcd7ca] p-6 sm:p-7 lg:p-8 rounded-3xl shadow-sm hover:shadow-md">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-[#f5f1e8]">
-                      <r.icon stroke="url(#brand-gradient)" className="h-6 w-6 text-[#2458a0]" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-black text-[#4a453e] mb-2">{r.title}</h3>
-                      <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-4">{r.desc}</p>
-                      <a href={r.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:opacity-90">
-                        Read More <ExternalLink className="h-3 w-3" />
-                      </a>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </section>
-
           {/* INTERNATIONAL ISSUES SECTION */}
-          <section className="mb-16 md:mb-20">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
+          <section className="py-3 md:py-5 flex flex-col items-center">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 md:mb-8 text-center bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
               Global Challenges
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Parental Abduction */}
               <Card className="bg-white border-[#dcd7ca] p-6 sm:p-7 lg:p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
                 <div className="flex items-center gap-3 mb-4">
@@ -316,44 +330,32 @@ export default function Research() {
               </Card>
             </div>
           </section>
-          {/* RESEARCH CATEGORIES SECTION */}
-          <section className="mb-16 md:mb-20">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#4a453e] uppercase tracking-tight mb-6 md:mb-8 text-center">
-              Research Categories
+
+          {/* RESEARCH & STATISTICS (moved from Get Help) */}
+          <section className="py-3 md:py-5 flex flex-col items-center">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 md:mb-8 text-center bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+              Research & Statistics
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {categories.map((cat, i) => (
-                <Card key={i} className="bg-white border-[#dcd7ca] p-6 sm:p-7 lg:p-8 h-full flex flex-col justify-between shadow-sm rounded-3xl transition-all hover:border-[#f26522]/40 hover:shadow-md">
-                  <div>
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center shrink-0 border border-[#dcd7ca]">
-                        <cat.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
-                      </div>
-                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
-                        {cat.title}
-                      </h3>
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+              {researchResources.map((r, idx) => (
+                <Card key={idx} className="bg-white border-[#dcd7ca] p-6 sm:p-7 lg:p-8 rounded-3xl shadow-sm hover:shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-[#f5f1e8]">
+                      <r.icon stroke="url(#brand-gradient)" className="h-6 w-6 text-[#2458a0]" />
                     </div>
-                    <p className="text-sm text-[#4a453e] font-bold leading-relaxed mb-6 md:mb-8">
-                      {cat.desc}
-                    </p>
-                    <div className="space-y-4 pt-6 border-t border-[#f0ede4]">
-                      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] text-[#2458a0]">Featured Publications:</p>
-                      {cat.articles.map((art, idx) => (
-                        <div key={idx} onClick={() => openScholar(art)} className="flex items-center gap-3 py-1.5 group/item cursor-pointer">
-                          <FileText className="h-4 w-4 text-[#dcd7ca] group-hover/item:text-[#f26522] transition-colors" />
-                          <span className="text-sm font-black text-[#4a453e] group-hover/item:text-[#2458a0] transition-colors uppercase tracking-tight">
-                            {art}
-                          </span>
-                          <ExternalLink className="h-3 w-3 opacity-0 group-hover/item:opacity-100 text-[#f26522] transition-all" />
-                        </div>
-                      ))}
+                    <div className="flex-1">
+                      <h3 className="text-lg font-black text-[#4a453e] mb-2">{r.title}</h3>
+                      <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-4">{r.desc}</p>
+                      <a href={r.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:opacity-90">
+                        Read More <ExternalLink className="h-3 w-3 text-[#2458a0]" />
+                      </a>
                     </div>
                   </div>
-                  <div className="pt-6 md:pt-8 mt-6 border-t border-[#f0ede4]" />
                 </Card>
               ))}
             </div>
           </section>
+          
         </div>
       </main>
       
