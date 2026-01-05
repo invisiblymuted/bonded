@@ -236,7 +236,7 @@ export default function Research() {
                   <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center">
                     <Heart stroke="url(#brand-gradient)" className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-black text-[#4a453e] uppercase">Parental Abduction</h3>
+                  <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0]">Parental Abduction</h3>
                 </div>
                 <div className="mb-4">
                   <p className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
@@ -269,7 +269,7 @@ export default function Research() {
                   <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center">
                     <Activity stroke="url(#brand-gradient)" className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-black text-[#4a453e] uppercase">Military Separation</h3>
+                  <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0]">Military Separation</h3>
                 </div>
                 <div className="mb-4">
                   <p className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-blue-600 to-blue-500 bg-clip-text text-transparent">
@@ -302,7 +302,7 @@ export default function Research() {
                   <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center">
                     <BarChart3 stroke="url(#brand-gradient)" className="h-6 w-6" />
                   </div>
-                  <h3 className="text-base sm:text-lg font-black text-[#4a453e] uppercase">Parental Incarceration</h3>
+                  <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0]">Parental Incarceration</h3>
                 </div>
                 <div className="mb-4">
                   <p className="text-2xl sm:text-3xl font-black bg-gradient-to-r from-amber-600 to-amber-500 bg-clip-text text-transparent">
@@ -344,7 +344,7 @@ export default function Research() {
                       <r.icon stroke="url(#brand-gradient)" className="h-6 w-6 text-[#2458a0]" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-black text-[#4a453e] mb-2">{r.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-black uppercase tracking-tight text-[#2458a0] mb-2">{r.title}</h3>
                       <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-4">{r.desc}</p>
                       <a href={r.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:opacity-90">
                         Read More <ExternalLink className="h-3 w-3 text-[#2458a0]" />
