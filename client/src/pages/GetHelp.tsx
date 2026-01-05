@@ -28,7 +28,7 @@ const resources: Resource[] = [
     title: "Hague Convention on International Child Abduction",
     description: "Official treaty information and signatory countries for the 1980 Hague Convention - the primary legal framework for addressing international parental child abduction.",
     url: "https://www.hcch.net/en/instruments/conventions/specialised-sections/parental-responsibility-and-protection-of-children/hague-convention-on-international-child-abduction",
-    category: "legal",
+    category: "international",
     icon: FileText,
   },
   {
@@ -124,34 +124,41 @@ export default function GetHelp() {
       <Header />
 
       <main className="pt-28 pb-20 px-4 flex-1">
-        <div className="container mx-auto max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12 text-center"
-          >
-            <Heart stroke="url(#brand-gradient)" className="h-12 w-12 mx-auto mb-4" />
-            <h1 className="text-4xl font-black text-[#4a453e] mb-4">Get Help Now</h1>
-            <p className="text-lg text-[#4a453e] opacity-70 font-bold max-w-2xl mx-auto">
-              Resources, legal assistance, and support services for families affected by international child abduction and separation.
-            </p>
-          </motion.div>
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-6 md:mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block"
+            >
+              <Heart stroke="url(#brand-gradient)" className="h-12 w-12 mx-auto mb-4" />
+              <h1 className="text-4xl sm:text-5xl font-black mb-4 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">Get Help Now</h1>
+              <p className="text-lg text-[#4a453e] opacity-70 font-bold max-w-2xl mx-auto">
+                Resources, legal assistance, and support services for families affected by international child abduction and separation.
+              </p>
+            </motion.div>
+          </div>
 
           {/* INTERACTIVE RESOURCE MAP */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mb-16 bg-gradient-to-br from-[#2458a0]/5 to-[#f26522]/5 border border-[#dcd7ca] rounded-3xl p-8"
-          >
-            <h2 className="text-3xl font-black mb-2 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent flex items-center gap-3">
-              <Globe stroke="url(#brand-gradient)" className="h-6 w-6" /> Find Help Near You
-            </h2>
-            <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-6">
-              Allow access to your location to find support organizations and legal resources nearest to you worldwide.
-            </p>
-            <InteractiveResourceMap />
-          </motion.div>
+          <section className="py-3 md:py-5 flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="w-full bg-gradient-to-br from-[#2458a0]/5 to-[#f26522]/5 border border-[#dcd7ca] rounded-3xl p-8"
+            >
+              <h2 className="text-3xl font-black mb-2 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent flex items-center gap-3">
+                <Globe stroke="url(#brand-gradient)" className="h-6 w-6" /> Find Help Near You
+              </h2>
+              <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-6">
+                Allow access to your location to find support organizations and legal resources nearest to you worldwide.
+              </p>
+
+              <div className="mt-6">
+                <InteractiveResourceMap />
+              </div>
+            </motion.div>
+          </section>
 
           {Object.entries(categoryLabels).map((entry) => {
             const [categoryKey, categoryName] = entry;
@@ -163,87 +170,90 @@ export default function GetHelp() {
             if (categoryResources.length === 0) return null;
 
             return (
-              <motion.div
-                key={categoryKey}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-12"
-              >
-                <div className="mb-4">
-                  <Badge className={`${categoryColors[categoryKey]} text-sm font-black px-4 py-2`}>
-                    {categoryName}
-                  </Badge>
-                </div>
+              <section key={categoryKey} className="py-3 md:py-5 flex flex-col items-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="w-full"
+                >
+                  <div className="mb-6">
+                    <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tight mb-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+                      {categoryName}
+                    </h2>
+                  </div>
 
-                <div className="space-y-4">
-                  {categoryResources.map((resource: Resource, idx: number) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.1 }}
-                    >
-                      <Card className="bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all">
-                        <CardContent className="pt-6">
-                          <div className="flex gap-4">
-                            <div className="text-[#2458a0] flex-shrink-0">
-                              <resource.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
+                  <div className="space-y-4 w-full">
+                    {categoryResources.map((resource: Resource, idx: number) => (
+                      <motion.div
+                        key={idx}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.1 }}
+                      >
+                        <Card className="bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all">
+                          <CardContent className="pt-6">
+                            <div className="flex gap-4">
+                              <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-[#f5f1e8] flex items-center justify-center flex-shrink-0 border border-[#dcd7ca]">
+                                <resource.icon stroke="url(#brand-gradient)" className="h-6 w-6" />
+                              </div>
+                              <div className="flex-1">
+                                <h3 className="text-lg font-black text-[#4a453e] mb-2">
+                                  {resource.title}
+                                </h3>
+                                <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-4">
+                                  {resource.description}
+                                </p>
+                                <a
+                                  href={resource.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg transition-shadow"
+                                >
+                                  Visit Resource <ExternalLink stroke="url(#brand-gradient)" className="h-3 w-3" />
+                                </a>
+                              </div>
                             </div>
-                            <div className="flex-1">
-                              <h3 className="text-lg font-black text-[#4a453e] mb-2">
-                                {resource.title}
-                              </h3>
-                              <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-4">
-                                {resource.description}
-                              </p>
-                              <a
-                                href={resource.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-widest hover:shadow-lg transition-shadow"
-                              >
-                                Visit Resource <ExternalLink stroke="url(#brand-gradient)" className="h-3 w-3" />
-                              </a>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+                          </CardContent>
+                        </Card>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.div>
+              </section>
             );
           })}
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-16 bg-gradient-to-r from-[#2458a0]/10 to-[#f26522]/10 border border-[#dcd7ca] rounded-3xl p-8 text-center"
-          >
-            <h2 className="text-3xl font-black mb-4 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
-              Need Immediate Assistance?
-            </h2>
-            <p className="text-[#4a453e] font-bold mb-6">
-              If you or someone you know is facing an international child abduction situation, please reach out to these crisis services:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <a
-                href="tel:1-800-THE-LOST"
-                className="block p-4 bg-white border-2 border-[#2458a0] rounded-lg hover:bg-[#2458a0] hover:text-white transition-all font-black text-[#2458a0] hover:text-white"
-              >
-                📞 1-800-THE-LOST (US)
-              </a>
-              <a
-                href="https://www.icmec.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block p-4 bg-white border-2 border-[#f26522] rounded-lg hover:bg-[#f26522] hover:text-white transition-all font-black text-[#f26522] hover:text-white"
-              >
-                🌍 ICMEC International Hotline
-              </a>
-            </div>
-          </motion.div>
+          <section className="py-3 md:py-5 flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="w-full bg-gradient-to-r from-[#2458a0]/10 to-[#f26522]/10 border border-[#dcd7ca] rounded-3xl p-8 text-center"
+            >
+              <h2 className="text-3xl font-black mb-4 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+                Need Immediate Assistance?
+              </h2>
+              <p className="text-[#4a453e] font-bold mb-6">
+                If you or someone you know is facing an international child abduction situation, please reach out to these crisis services:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a
+                  href="tel:1-800-THE-LOST"
+                  className="block p-4 bg-white border-2 border-[#2458a0] rounded-lg hover:bg-[#2458a0] hover:text-white transition-all font-black text-[#2458a0] hover:text-white"
+                >
+                  📞 1-800-THE-LOST (US)
+                </a>
+                <a
+                  href="https://www.icmec.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block p-4 bg-white border-2 border-[#f26522] rounded-lg hover:bg-[#f26522] hover:text-white transition-all font-black text-[#f26522] hover:text-white"
+                >
+                  🌍 ICMEC International Hotline
+                </a>
+              </div>
+            </motion.div>
+          </section>
         </div>
       </main>
 
