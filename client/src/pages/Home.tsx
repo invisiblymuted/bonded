@@ -41,13 +41,13 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] text-[#2c2c2c]">
+    <div className="min-h-screen bg-[#f5f1e8] text-[#4a453e]">
       <IconGradient />
       <Header />
 
-      <main className="pt-24">
+      <main className="pt-16 md:pt-20 pb-8 md:pb-10 px-4">
         {/* HERO SECTION */}
-        <section className="pt-16 sm:pt-24 md:pt-48 pb-12 md:pb-24 px-4 text-center">
+        <section className="pt-8 sm:pt-12 md:pt-16 pb-6 md:pb-8 px-4 text-center">
           <div className="container mx-auto max-w-5xl">
             <h1 className="text-[clamp(1rem,6vw,1.9rem)] sm:text-[clamp(1.5rem,5vw,2.6rem)] md:text-5xl lg:text-7xl font-black mb-4 md:mb-8 tracking-tight flex flex-col items-center leading-tight uppercase">
               <span className="text-[#4a453e] text-balance">Stay Connected,</span>
@@ -55,21 +55,21 @@ export default function Home() {
                 No Matter the Distance
               </span>
             </h1>
-            <p className="text-[10px] sm:text-sm md:text-lg lg:text-xl text-[#4a453e] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-80 text-balance">
+            <p className="text-[13px] sm:text-sm md:text-lg lg:text-xl text-[#4a453e] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-90 text-balance">
               A safe place for you and your loved ones, without being defined by circumstance or geography.
             </p>
           </div>
         </section>
 
         {/* FEATURES GRID */}
-        <section className="py-20 px-4 bg-[#f0ede4] border-y border-[#dcd7ca]">
+        <section className="py-3 md:py-5 px-4 bg-[#f0ede4] border-y border-[#dcd7ca]">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-3xl font-black mb-12 text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+            <h2 className="text-2xl sm:text-3xl font-black mb-6 md:mb-8 text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
               How it Works
             </h2>
 
             {/* Trust-first tiles, full width stacked */}
-            <div className="grid grid-cols-1 gap-4 md:gap-6 mb-8">
+            <div className="grid grid-cols-1 gap-4 md:gap-6 mb-6">
               {trustTiles.map((t) => (
                 <Card key={t.id} className="bg-white border-[#dcd7ca] p-6 sm:p-7 md:p-8 rounded-3xl shadow-sm">
                   <div className="flex items-start gap-4">
@@ -106,7 +106,7 @@ export default function Home() {
         {/* MISSION & REALITY */}
         <section className="py-24 px-4">
           <div className="container mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div className="space-y-8">
                 <h2 className="text-3xl font-black text-center uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
                   Who It's For
@@ -133,7 +133,7 @@ export default function Home() {
                     </div>
                     <div className="flex flex-col items-center">
                       <span className="text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">400K</span>
-                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Military Kids</p>
+                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Military Children</p>
                     </div>
                     <div className="flex flex-col items-center">
                       <span className="text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">2.7M</span>
