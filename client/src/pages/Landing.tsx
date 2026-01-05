@@ -25,9 +25,9 @@ export default function LandingPage() {
         {/* Logo Banner - centered both vertically and horizontally; nav icons stacked underneath */}
         <div className="w-full flex items-center justify-center px-4 sm:px-6 py-12">
           <div className="container mx-auto max-w-6xl">
-            <div className="flex flex-col items-center gap-6 text-center">
-            <Logo />
-            <div className="flex items-center gap-4 mt-2 justify-center">
+            <div className="flex flex-col items-start md:items-center gap-6 text-left md:text-center">
+              <Logo />
+              <div className="flex items-center gap-4 mt-2 justify-start md:justify-center">
               <Link href="/home">
                 <div className="p-3 rounded-full border border-[#dcd7ca] bg-white hover:border-[#2458a0] cursor-pointer">
                   <Home className="h-6 w-6 text-[#2458a0]" />
