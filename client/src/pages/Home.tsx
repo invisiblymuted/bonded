@@ -125,75 +125,55 @@ export default function Home() {
                 <h2 className="text-3xl font-black mb-6 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
                   The Need
                 </h2>
-                <div className="bg-[#ede8dc] p-8 rounded-[32px] border border-[#dcd7ca] shadow-inner">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* NOW */}
-                    <div className="space-y-4 p-4">
-                      <h3 className="text-lg font-black text-[#2458a0] uppercase tracking-tight">Now (Today)</h3>
-                      <div className="grid grid-cols-1 gap-3 mt-4">
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Separated / At-risk children</div>
-                            <div className="text-xs text-[#6b665d]">Current estimate (aggregate)</div>
-                          </div>
-                          <div className="text-xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">13M+</div>
-                        </div>
+                <div className="bg-[#ede8dc] p-6 rounded-[24px] border border-[#dcd7ca] shadow-inner">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {/* Metric rows: each row shows Now vs Then */}
+                    <div className="grid grid-cols-2 gap-3 items-center">
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Separated / At-risk children</div>
+                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">13M+</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Now (estimate)</div>
+                      </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Separated / At-risk children</div>
+                        <div className="text-2xl font-black mt-2">13M+</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Then (same underlying populations)</div>
+                      </div>
 
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Military children</div>
-                            <div className="text-xs text-[#6b665d]">Active-duty family separations</div>
-                          </div>
-                          <div className="text-xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">400K</div>
-                        </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Military children</div>
+                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">400K</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Now</div>
+                      </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Military children</div>
+                        <div className="text-2xl font-black mt-2">400K</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Then</div>
+                      </div>
 
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Children with incarcerated parents</div>
-                            <div className="text-xs text-[#6b665d]">Families impacted by incarceration</div>
-                          </div>
-                          <div className="text-xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">2.7M</div>
-                        </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Children with incarcerated parents</div>
+                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">2.7M</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Now</div>
+                      </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Children with incarcerated parents</div>
+                        <div className="text-2xl font-black mt-2">2.7M</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Then</div>
+                      </div>
 
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Avg digital touchpoints / day</div>
-                            <div className="text-xs text-[#6b665d]">(estimate; will be sourced on Research page)</div>
-                          </div>
-                          <div className="text-xl font-black">15+</div>
-                        </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Avg digital touchpoints / day</div>
+                        <div className="text-2xl font-black mt-2 bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">15+</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Now (estimate)</div>
+                      </div>
+                      <div className="bg-white p-4 rounded-xl border border-[#dcd7ca] text-left">
+                        <div className="text-xs font-black text-[#4a453e] uppercase">Avg digital touchpoints / day</div>
+                        <div className="text-2xl font-black mt-2">~0–1</div>
+                        <div className="text-[11px] text-[#6b665d] mt-1">Then (phone/letters only; estimate)</div>
                       </div>
                     </div>
-
-                    {/* THEN */}
-                    <div className="space-y-4 p-4">
-                      <h3 className="text-lg font-black text-[#2458a0] uppercase tracking-tight">Then (Pre-iPhone / Pre-social media)</h3>
-                      <div className="grid grid-cols-1 gap-3 mt-4">
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Avg phone calls / week</div>
-                            <div className="text-xs text-[#6b665d]">(estimate for typical family)</div>
-                          </div>
-                          <div className="text-xl font-black">1–2</div>
-                        </div>
-
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Letters / month</div>
-                            <div className="text-xs text-[#6b665d]">(estimate)</div>
-                          </div>
-                          <div className="text-xl font-black">0.1–0.5</div>
-                        </div>
-
-                        <div className="flex items-center justify-between bg-white p-3 rounded-xl border border-[#dcd7ca]">
-                          <div className="text-left">
-                            <div className="text-sm font-black text-[#4a453e]">Avg in-person visits / month</div>
-                            <div className="text-xs text-[#6b665d]">(estimate; varied by circumstance)</div>
-                          </div>
-                          <div className="text-xl font-black">0.5–2</div>
-                        </div>
-                      </div>
-                    </div>
+                  </div>
                   </div>
                 </div>
               </div>
