@@ -61,6 +61,33 @@ export default function Home() {
           </div>
         </section>
 
+        {/* THE NEED (moved above How it Works) */}
+        <section className="py-6 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="space-y-6 text-center">
+              <h2 className="text-3xl font-black mb-6 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
+                The Need
+              </h2>
+              <div className="bg-[#ede8dc] p-8 rounded-[32px] border border-[#dcd7ca] space-y-8 shadow-inner mx-auto max-w-4xl">
+                <div className="space-y-8">
+                  <div className="flex flex-col items-center">
+                    <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">13M+</span>
+                    <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Separated Children</p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">400K</span>
+                    <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Military Children</p>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">2.7M</span>
+                    <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Incarcerated Parents</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FEATURES GRID */}
         <section className="py-6 md:py-8 px-4 bg-[#f0ede4] border-y border-[#dcd7ca]">
           <div className="container mx-auto max-w-6xl">
@@ -121,27 +148,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="space-y-6 text-center flex flex-col justify-center">
-                <h2 className="text-3xl font-black mb-6 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent">
-                  The Need
-                </h2>
-                <div className="bg-[#ede8dc] p-8 rounded-[32px] border border-[#dcd7ca] space-y-8 shadow-inner">
-                  <div className="space-y-8">
-                    <div className="flex flex-col items-center">
-                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">13M+</span>
-                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Separated Children</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">400K</span>
-                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Military Children</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-5xl sm:text-6xl font-black bg-gradient-to-r from-[#2458a0] to-[#f26522] bg-clip-text text-transparent leading-none">2.7M</span>
-                      <p className="text-xs font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em]">Incarcerated Parents</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* Right column removed — 'The Need' moved above How it Works */}
             </div>
           </div>
         </section>
