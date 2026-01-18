@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Users, BookOpen, Heart, 
   BarChart3, ExternalLink, Search, FileText,
-  Activity, TrendingUp, Globe, ExternalLink as ExternalLinkIcon
+  Activity, TrendingUp, Globe
 } from "lucide-react";
 
 // Removed resilience graph code
@@ -111,49 +111,49 @@ export default function Research() {
       title: "Bulnes, M. (2013)",
       desc: "Individualism and the metaphysics of actions. Philosophical Studies.",
       url: "http://www.jstor.org/stable/42920167",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "Luxton et al. (2012)",
       desc: "Social media and suicide: a public health perspective. American Journal of Public Health.",
       url: "https://ajph.aphapublications.org/doi/full/10.2105/AJPH.2011.300608",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "Computational personality recognition in social media",
       desc: "Research on automatic personality inference from social media signals.",
       url: "https://www.researchgate.net/publication/293194512_Computational_personality_recognition_in_social_media",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "ACM Paper (DOI: 10.1145/2666680)",
       desc: "Conference paper available via ACM Digital Library.",
       url: "https://dl.acm.org/doi/10.1145/2666680",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "Norrholm et al. (2016)",
       desc: "Baseline psychophysiological and cortisol reactivity predicting PTSD treatment outcome.",
       url: "https://doi.org/10.1016/j.brat.2016.05.002",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "Coursol, Lewis & Garrity (2001)",
       desc: "Career development of trauma survivors and expectations about counseling.",
       url: "https://www.researchgate.net/publication/234637509_Career_Development_of_Trauma_Survivors_Expectations_about_Counseling_and_Career_Maturity",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "Branthwaite & Patterson (2011)",
       desc: "The power of qualitative research in the era of social media.",
       url: "https://www.researchgate.net/publication/235318744_The_power_of_qualitative_research_in_the_era_of_social_media",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
     {
       title: "APA Record (2014)",
       desc: "Related psychology record available via APA PsycNet.",
       url: "https://psycnet.apa.org/record/2014-25568-006",
-      icon: ExternalLinkIcon,
+      icon: ExternalLink,
     },
   ];
 
