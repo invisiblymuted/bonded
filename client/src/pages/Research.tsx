@@ -260,6 +260,7 @@ export default function Research() {
                   <StatCounter end={4} suffix=".0" />
                 </div>
                 <p className="text-[9px] sm:text-[10px] font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em] opacity-60">Avg. ACE Score Risk</p>
+                <p className="text-[11px] sm:text-[12px] text-[#4a453e] opacity-80 mt-2 max-w-[18rem]">ACE = Adverse Childhood Experiences — higher scores indicate greater exposure to childhood trauma and associated long-term risk.</p>
               </Card>
 
               <Card className="bg-white p-6 sm:p-7 lg:p-8 rounded-3xl border-[#dcd7ca] shadow-sm flex flex-col items-center text-center">
@@ -268,6 +269,7 @@ export default function Research() {
                   <StatCounter end={72} suffix="%" />
                 </div>
                 <p className="text-[9px] sm:text-[10px] font-black text-[#4a453e] uppercase mt-3 tracking-[0.2em] opacity-60">Digital Bond Utility</p>
+                <p className="text-[11px] sm:text-[12px] text-[#4a453e] opacity-80 mt-2 max-w-[18rem]">Digital Bond Utility estimates how often digital tools meaningfully strengthen parent–child relationships (approximate, survey-derived metric).</p>
               </Card>
             </div>
           </section>
