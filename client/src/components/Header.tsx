@@ -33,14 +33,7 @@ export function Header() {
           </Link>
           
           <div className="flex items-center gap-2 md:gap-3">
-            <button
-              type="button"
-              className="md:hidden p-2 rounded-full icon-frame"
-              aria-label="Toggle navigation menu"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
-              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-            </button>
+            {/* Removed mobile menu toggle button as requested */}
 
             <div
               className={`${menuOpen ? "flex" : "hidden"} md:flex items-center gap-1.5 sm:gap-2 md:gap-3 flex-wrap justify-center md:flex-nowrap md:justify-end md:static absolute left-2 right-2 top-16 md:top-auto bg-white md:bg-transparent border md:border-0 border-[#dcd7ca] rounded-2xl px-3 py-3 md:p-0 shadow-xl md:shadow-none z-50`}

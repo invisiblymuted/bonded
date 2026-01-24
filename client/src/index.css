@@ -122,6 +122,11 @@
   filter: drop-shadow(0 4px 10px rgba(16,24,40,0.06));
 }
 
+/* hide only the very-left icon in the How It Works / trustTiles section */
+.hide-left-icon svg {
+  display: none !important;
+}
+
 /* Specific utility for pages that should use the cream "card" background instead
    of the default page background. Placed after base rules to take precedence. */
 .page-cream {

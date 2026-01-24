@@ -39,7 +39,7 @@ export default function Home() {
 
       <main className="bg-[#f0ede4] pt-12 md:pt-16 pb-6 md:pb-8 px-4">
         {/* HERO SECTION */}
-        <section id="home-hero" className="pt-6 sm:pt-8 md:pt-12 pb-4 md:pb-6 px-4 text-center">
+        <section id="home-hero" className="min-h-screen flex items-center justify-center pt-6 sm:pt-8 md:pt-12 pb-4 md:pb-6 px-4 text-center">
           <div className="container mx-auto max-w-5xl">
             <div className="flex flex-col items-center">
               <h1 className="text-[clamp(1rem,6vw,1.9rem)] sm:text-[clamp(1.5rem,5vw,2.6rem)] md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 tracking-tight leading-tight uppercase">
@@ -88,10 +88,10 @@ export default function Home() {
             </h2>
 
             <div className="grid grid-cols-1 gap-6 md:gap-6 mb-8">
-              {trustTiles.map((t) => (
+              {trustTiles.map((t, idx) => (
                 <Card key={t.id} className="bg-white border-[#dcd7ca] border-2 p-5 rounded-3xl shadow-sm">
                   <div className="flex items-start gap-4">
-                    <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-card icon-pop icon-frame flex items-center justify-center shrink-0 border">
+                    <div className={`h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-card icon-pop icon-frame flex items-center justify-center shrink-0 border ${idx === 0 ? 'hide-left-icon' : ''}`}>
                       <t.icon className="h-6 w-6" />
                     </div>
                     <div className="space-y-2 text-left">
