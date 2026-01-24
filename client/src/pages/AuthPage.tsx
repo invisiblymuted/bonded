@@ -133,17 +133,17 @@ export default function AuthPage() {
   const isLogin = mode === "login";
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f5f1e8] via-[#ede8dc] to-[#f5f1e8] flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-[#f0ede4] via-[#f0ede4] to-[#f0ede4] flex flex-col">
       <Header />
       <div className="flex items-center justify-center p-4 pt-24 flex-1">
-        <Card className="w-full max-w-lg bg-white/90 border-[#dcd7ca] shadow-lg">
+        <Card className="w-full max-w-lg bg-white/90 border-[#f0ede4] shadow-lg">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-2xl font-bold text-[#4a453e]">
+              <CardTitle className="text-2xl font-bold text-[#2458a0]">
                 {isLogin ? "Log In" : "Join Bonded"}
               </CardTitle>
               <Link href="/landing">
-                <Button variant="ghost" size="sm" className="text-xs font-semibold text-[#4a453e] hover:text-[#2458a0]">
+                <Button variant="ghost" size="sm" className="text-xs font-semibold text-[#2458a0] hover:text-[#14532d]">
                   ← Home
                 </Button>
               </Link>
@@ -154,9 +154,9 @@ export default function AuthPage() {
             <div className="space-y-4">
               {options.length > 0 && (
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-[#4a453e]">Choose your name</label>
+                  <label className="text-sm font-medium text-[#2458a0]">Choose your name</label>
                   <select
-                    className="w-full h-12 rounded-lg border border-slate-200 px-3 bg-white"
+                    className="w-full h-12 rounded-lg border border-[#f0ede4] px-3 bg-white"
                     value={selectedUser}
                     onChange={(e) => setSelectedUser(e.target.value)}
                   >
@@ -169,7 +169,7 @@ export default function AuthPage() {
               )}
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">Or type your username</label>
+                <label className="text-sm font-medium text-[#2458a0]">Or type your username</label>
                 <Input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -179,7 +179,7 @@ export default function AuthPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">PIN (min 4)</label>
+                <label className="text-sm font-medium text-[#2458a0]">PIN (min 4)</label>
                 <Input
                   type="password"
                   value={pin}
@@ -198,7 +198,7 @@ export default function AuthPage() {
           ) : (
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">Username</label>
+                <label className="text-sm font-medium text-[#2458a0]">Username</label>
                 <Input
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -208,7 +208,7 @@ export default function AuthPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">Name to show (display name)</label>
+                <label className="text-sm font-medium text-[#2458a0]">Name to show (display name)</label>
                 <Input
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
@@ -218,7 +218,7 @@ export default function AuthPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">Birthday (private)</label>
+                <label className="text-sm font-medium text-[#2458a0]">Birthday (private)</label>
                 <Input
                   type="date"
                   value={birthday}
@@ -228,7 +228,7 @@ export default function AuthPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">PIN (min 4)</label>
+                <label className="text-sm font-medium text-[#2458a0]">PIN (min 4)</label>
                 <Input
                   type="password"
                   value={pin}
@@ -239,7 +239,7 @@ export default function AuthPage() {
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-[#4a453e]">Confirm PIN</label>
+                <label className="text-sm font-medium text-[#2458a0]">Confirm PIN</label>
                 <Input
                   type="password"
                   value={confirmPin}

@@ -90,7 +90,7 @@ export default function Notifications() {
   const unreadCount = notifications?.filter((n) => !n.read).length || 0;
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8]">
+  <div className="min-h-screen page-cream">
       <Header />
       
       <main className="pt-28 pb-20 px-4">
@@ -102,11 +102,11 @@ export default function Notifications() {
           >
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h1 className="text-4xl font-black text-[#4a453e] mb-2">
+                <h1 className="text-4xl font-black mb-2 brand-gradient-text">
                   Notifications
                 </h1>
                 {unreadCount > 0 && (
-                  <p className="text-[#4a453e] opacity-60 font-bold">
+                  <p className="text-[#2458a0] opacity-60 font-bold">
                     {unreadCount} unread notification{unreadCount !== 1 ? "s" : ""}
                   </p>
                 )}
@@ -125,7 +125,7 @@ export default function Notifications() {
             </div>
 
             <div className="flex items-center gap-2 mb-6 overflow-x-auto">
-              <Filter className="h-4 w-4 text-[#4a453e] opacity-60 shrink-0" />
+              <Filter className="h-4 w-4 text-[#2458a0] opacity-60 shrink-0" />
               <Button
                 variant={filterType === null ? "default" : "outline"}
                 size="sm"
@@ -148,11 +148,11 @@ export default function Notifications() {
             </div>
           </motion.div>
 
-          <div className="space-y-3">
+            <div className="space-y-3">
             {filteredNotifications.length === 0 ? (
-              <Card className="bg-white border-[#dcd7ca] p-12 text-center">
-                <Bell className="h-12 w-12 text-[#4a453e] opacity-20 mx-auto mb-4" />
-                <p className="text-[#4a453e] opacity-60 font-bold">
+              <Card className="bg-white border-[#f0ede4] p-12 text-center">
+                <Bell className="h-12 w-12 text-[#2458a0] opacity-20 mx-auto mb-4" />
+                <p className="text-[#2458a0] opacity-60 font-bold">
                   {filterType
                     ? `No ${filterType} notifications`
                     : "No notifications yet"}
@@ -171,9 +171,7 @@ export default function Notifications() {
                     transition={{ delay: index * 0.05 }}
                   >
                     <Card
-                      className={`bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all cursor-pointer ${
-                        !notification.read ? "ring-2 ring-[#f26522]/20" : ""
-                      }`}
+                      className={`bg-white border-[#f0ede4] hover:border-[#2458a0] transition-all cursor-pointer ${!notification.read ? "ring-2 ring-[#6b7280]/20" : ""}`}
                       onClick={() => {
                         if (!notification.read) {
                           markAsReadMutation.mutate(notification.id);
@@ -187,19 +185,19 @@ export default function Notifications() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between gap-2 mb-1">
-                              <h3 className="font-black text-[#4a453e] text-sm">
+                              <h3 className="font-black text-[#2458a0] text-sm">
                                 {notification.title}
                               </h3>
                               {!notification.read && (
-                                <Badge className="bg-[#f26522] text-white shrink-0">
+                                <Badge className="bg-[#6b7280] text-white shrink-0">
                                   New
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-[#4a453e] opacity-70 font-bold mb-2">
+                            <p className="text-sm text-[#2458a0] opacity-70 font-bold mb-2">
                               {notification.message}
                             </p>
-                            <div className="flex items-center gap-3 text-xs text-[#4a453e] opacity-50">
+                            <div className="flex items-center gap-3 text-xs text-[#2458a0] opacity-50">
                               <span className="font-bold">
                                 {format(new Date(notification.timestamp), "MMM d, h:mm a")}
                               </span>

@@ -52,7 +52,7 @@ export default function Messages() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+    <div className="min-h-screen page-cream flex flex-col">
       <Header />
       
       <main className="pt-24 pb-20 px-4 flex-1">
@@ -60,9 +60,9 @@ export default function Messages() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-3 mb-2">
               <MessageSquare className="h-8 w-8 text-[#2458a0]" />
-              <h1 className="text-3xl font-bold text-[#4a453e]">Messages</h1>
+              <h1 className="text-3xl font-bold text-[#2458a0]">Messages</h1>
             </div>
-            <p className="text-[#4a453e] opacity-70 mb-6 font-bold">Send instant messages to stay connected</p>
+            <p className="text-[#2458a0] opacity-70 mb-6 font-bold">Send instant messages to stay connected</p>
 
             <TutorialPanel
               featureKey="messages"
@@ -154,7 +154,7 @@ export default function Messages() {
                       onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                       data-testid="input-message"
                     />
-                    <Button onClick={handleSendMessage} disabled={createMessage.isPending} className="bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white" data-testid="button-send">
+                    <Button onClick={handleSendMessage} disabled={createMessage.isPending} className="bg-gradient-to-r from-[#2458a0] to-[#6b7280] text-white" data-testid="button-send">
                       {createMessage.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </Button>
                   </div>

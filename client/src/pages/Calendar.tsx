@@ -83,7 +83,7 @@ export default function Calendar() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+    <div className="min-h-screen bg-[#f0ede4] flex flex-col">
       <Header />
       
       <main className="pt-24 pb-20 px-4 flex-1">
@@ -91,9 +91,9 @@ export default function Calendar() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-3 mb-2">
               <CalendarIcon className="h-8 w-8 text-[#2458a0]" />
-              <h1 className="text-3xl font-bold text-[#4a453e]">Shared Calendar</h1>
+              <h1 className="text-3xl font-bold text-[#2458a0]">Shared Calendar</h1>
             </div>
-            <p className="text-[#4a453e] opacity-70 mb-6 font-bold">Plan events and never miss important dates</p>
+            <p className="text-[#2458a0] opacity-70 mb-6 font-bold">Plan events and never miss important dates</p>
 
           <TutorialPanel
             featureKey="calendar"

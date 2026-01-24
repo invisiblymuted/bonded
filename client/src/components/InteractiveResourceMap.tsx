@@ -224,19 +224,24 @@ export function InteractiveResourceMap() {
     setSelectedCountry(country);
     setSelectedState(null);
     setUserLocation(null);
+    setSelectedResource(null);
     const countryData = COUNTRIES_AND_STATES[country];
+    if (!countryData) return;
     setMapCenter({ lat: countryData.lat, lng: countryData.lng });
-    setZoomLevel(2.5);
+    setZoomLevel(3);
   };
 
-  const handleStateChange = (state: string) => {
+  const handleStateChange = (state: string, country?: string) => {
     setSelectedState(state);
-    const countryData = COUNTRIES_AND_STATES[selectedCountry!];
-    if (countryData.states && countryData.states[state]) {
+    setSelectedResource(null);
+    const countryKey = country || selectedCountry;
+    if (!countryKey) return;
+    const countryData = COUNTRIES_AND_STATES[countryKey];
+    if (countryData?.states && countryData.states[state]) {
       const stateCoords = countryData.states[state];
       setUserLocation({ lat: stateCoords.lat, lng: stateCoords.lng });
       setMapCenter({ lat: stateCoords.lat, lng: stateCoords.lng });
-      setZoomLevel(4);
+      setZoomLevel(6);
     }
   };
 
@@ -266,36 +271,36 @@ export function InteractiveResourceMap() {
   return (
     <div className="w-full">
       {/* Location Control Buttons and Dropdowns */}
-      <div className="mb-6 space-y-4">
-        <div className="flex gap-4 flex-wrap items-center">
+      <div className="mb-6 space-y-4 text-center">
+        <div className="flex gap-4 flex-wrap items-center justify-center">
           <button
             onClick={getLocation}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white rounded-full font-black text-sm uppercase tracking-widest hover:shadow-lg transition-shadow"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2458a0] to-[#6b7280] text-white rounded-full font-black text-sm uppercase tracking-widest hover:shadow-lg transition-shadow"
           >
             <Navigation className="h-5 w-5" />
             Use My Location
           </button>
-          <div className="text-[#4a453e] font-bold text-sm">or select:</div>
-        </div>
-
-        <div className="flex gap-4 flex-wrap items-end">
-          <div className="relative">
-            <label className="block text-xs font-black text-[#4a453e] uppercase tracking-wide mb-2">Country</label>
+            <div className="flex items-center gap-3">
+            <div className="text-[#2458a0] font-bold text-sm">OR</div>
             <div className="relative">
+              <label htmlFor="country-select" className="sr-only">Country</label>
               <select
+                id="country-select"
                 value={selectedCountry || ''}
                 onChange={(e) => handleCountryChange(e.target.value)}
-                className="appearance-none px-4 py-3 pr-10 bg-white border-2 border-[#dcd7ca] rounded-lg font-bold text-[#4a453e] focus:border-[#2458a0] outline-none transition-all"
+                className="appearance-none px-4 py-3 pr-8 bg-white border-2 border-[#f0ede4] rounded-lg font-bold text-[#2458a0] focus:border-[#2458a0] outline-none transition-all"
               >
                 <option value="">Select a country...</option>
                 {Object.keys(COUNTRIES_AND_STATES).map((country) => (
                   <option key={country} value={country}>{country}</option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-[#2458a0] pointer-events-none" />
+              <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 text-[#2458a0] pointer-events-none" />
             </div>
           </div>
+        </div>
 
+        <div className="flex gap-4 flex-wrap items-end justify-center">
           {selectedCountry && COUNTRIES_AND_STATES[selectedCountry]?.states && (
             <div className="relative">
               <label className="block text-xs font-black text-[#4a453e] uppercase tracking-wide mb-2">State/Region</label>
@@ -318,7 +323,7 @@ export function InteractiveResourceMap() {
       </div>
 
       {(userLocation || selectedCountry) && (
-        <div className="mb-4 p-3 bg-[#f5f1e8] border-2 border-[#2458a0] rounded-lg font-black text-[#2458a0] text-sm">
+        <div className="mb-4 p-3 bg-[#f0ede4] border-2 border-[#2458a0] rounded-lg font-black text-[#2458a0] text-sm">
           📍 {userLocation ? `Located at ${userLocation.lat.toFixed(2)}°, ${userLocation.lng.toFixed(2)}°` : `Viewing resources near ${selectedState || selectedCountry}`}
         </div>
       )}
@@ -331,7 +336,7 @@ export function InteractiveResourceMap() {
       )}
 
       {/* Interactive Map */}
-      <div className="bg-white border-2 border-[#dcd7ca] rounded-3xl overflow-hidden mb-8 shadow-sm">
+      <div className="bg-white border-2 border-[#f0ede4] rounded-3xl overflow-hidden mb-8 shadow-sm">
         <div className="relative w-full h-96 bg-blue-50">
           {
             (() => {
@@ -394,7 +399,7 @@ export function InteractiveResourceMap() {
                   {resourcesWithDistance.map((res) => {
                     const { x, y } = projectCoord(res.lat, res.lng);
                     const isSelected = selectedResource === res.id;
-                    const markerColor = res.type === 'legal' ? '#2458a0' : res.type === 'international' ? '#8b5cf6' : '#f26522';
+                    const markerColor = res.type === 'legal' ? '#2458a0' : res.type === 'international' ? '#8b5cf6' : '#6b7280';
 
                     return (
                       <g key={res.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedResource(isSelected ? null : res.id)}>
@@ -442,18 +447,18 @@ export function InteractiveResourceMap() {
 
           {/* Legend */}
           <div className="absolute bottom-4 right-4 bg-white rounded-lg shadow-lg p-4 border border-[#dcd7ca] text-xs font-bold space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#2458a0]" />
-              <span className="text-[#4a453e]">Legal Authority</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#8b5cf6]" />
-              <span className="text-[#4a453e]">International Org</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#f26522]" />
-              <span className="text-[#4a453e]">Support Service</span>
-            </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-[#2458a0] inline-block" />
+                <span className="text-[#4a453e]">Legal Authority</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-[#8b5cf6] inline-block" />
+                <span className="text-[#4a453e]">International Org</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 rounded-full bg-[#6b7280] inline-block" />
+                <span className="text-[#4a453e]">Support Service</span>
+              </div>
             {/* 'Your Location' legend removed */}
           </div>
         </div>
@@ -472,7 +477,7 @@ export function InteractiveResourceMap() {
                     <h3 className="text-xl font-black text-[#4a453e] uppercase mb-1">{res.name}</h3>
                     <p className="text-sm text-[#2458a0] font-bold">{res.location}</p>
                     {res.distance && (
-                      <p className="text-xs text-[#f26522] font-black mt-1">
+                      <p className="text-xs text-[#14532d] font-black mt-1">
                         📍 {res.distance.toFixed(0)} miles away
                       </p>
                     )}
@@ -499,7 +504,7 @@ export function InteractiveResourceMap() {
                       href={res.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#f26522] text-white rounded-full font-black text-xs uppercase tracking-wide hover:shadow-lg transition-shadow"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-[#14532d] text-white rounded-full font-black text-xs uppercase tracking-wide hover:shadow-lg transition-shadow"
                     >
                       Visit Website
                     </a>
@@ -511,7 +516,7 @@ export function InteractiveResourceMap() {
         </Card>
       ) : (
           <div>
-          <h3 className="text-xl font-black text-[#4a453e] uppercase mb-4">
+            <h3 className="text-xl font-black uppercase mb-4 bg-gradient-to-r from-[#2458a0] to-[#14532d] bg-clip-text text-transparent">
             {selectedState ? `Resources in ${selectedState}` : selectedCountry ? `Resources in ${selectedCountry}` : userLocation ? 'Resources Near You' : 'Available Resources'}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -548,7 +553,7 @@ export function InteractiveResourceMap() {
                       className="w-4 h-4 rounded-full mt-1"
                       style={{
                         backgroundColor:
-                          res.type === 'legal' ? '#2458a0' : res.type === 'international' ? '#8b5cf6' : '#f26522'
+                          res.type === 'legal' ? '#2458a0' : res.type === 'international' ? '#8b5cf6' : '#14532d'
                       }}
                     />
                   </div>
@@ -556,7 +561,7 @@ export function InteractiveResourceMap() {
                     <h4 className="font-black text-[#4a453e] text-sm uppercase">{res.name}</h4>
                     <p className="text-xs text-[#2458a0] font-bold mt-1">{res.location}</p>
                     {res.distance && (
-                      <p className="text-xs text-[#f26522] font-black mt-1">📍 {res.distance.toFixed(0)} miles</p>
+                      <p className="text-xs text-[#14532d] font-black mt-1">📍 {res.distance.toFixed(0)} miles</p>
                     )}
                   </div>
                 </div>

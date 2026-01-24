@@ -166,7 +166,7 @@ export function MediaTest({ trigger }: MediaTestProps) {
                       <p className="text-xs text-muted-foreground">
                         Speak to test your microphone
                       </p>
-                      <div className="h-4 bg-gray-200 rounded-full overflow-hidden">
+                      <div className="h-4 page-cream-80 rounded-full overflow-hidden">
                         <div
                           className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-100"
                           style={{ width: `${audioLevel}%` }}

@@ -15,7 +15,6 @@ import {
 import { format } from "date-fns";
 
 interface Message {
-  id: string;
   senderId: string;
   content: string;
   timestamp: string;
@@ -125,18 +124,18 @@ export default function Dashboard() {
           count: msgs.length,
           badge: msgs.filter(m => !m.read).length > 0 ? `${msgs.filter(m => !m.read).length} new` : null,
           preview: recentMsgs.length > 0 ? (
-            <div className="space-y-2">
+                        <div className="space-y-2">
               {recentMsgs.map((msg) => (
-                <div key={msg.id} className="p-2 bg-[#f5f1e8] rounded-lg">
-                  <p className="text-sm font-bold text-[#4a453e] truncate">{msg.content}</p>
-                  <p className="text-[10px] text-[#4a453e] opacity-60 mt-1">
+                <div key={msg.id} className="p-2 bg-[#f0ede4] rounded-lg">
+                  <p className="text-sm font-bold text-[#2458a0] truncate">{msg.content}</p>
+                  <p className="text-[10px] text-[#2458a0] opacity-60 mt-1">
                     {format(new Date(msg.timestamp), "MMM d, h:mm a")}
                   </p>
                 </div>
               ))}
             </div>
-          ) : (
-            <p className="text-sm text-[#4a453e]">{selectedBond ? 'No messages with this bond' : 'No messages yet. Start a conversation!'}</p>
+            ) : (
+            <p className="text-sm text-[#2458a0]">{selectedBond ? 'No messages with this bond' : 'No messages yet. Start a conversation!'}</p>
           ),
         };
       }
@@ -148,18 +147,18 @@ export default function Dashboard() {
         return {
           count: jrnls.length,
           preview: recentJrnls.length > 0 ? (
-            <div className="space-y-2">
+                <div className="space-y-2">
               {recentJrnls.map((entry) => (
-                <div key={entry.id} className="p-2 bg-[#f5f1e8] rounded-lg">
-                  <p className="text-sm font-bold text-[#4a453e]">{entry.title}</p>
-                  <p className="text-[10px] text-[#4a453e] opacity-60 mt-1">
+                <div key={entry.id} className="p-2 bg-[#f0ede4] rounded-lg">
+                  <p className="text-sm font-bold text-[#2458a0]">{entry.title}</p>
+                  <p className="text-[10px] text-[#2458a0] opacity-60 mt-1">
                     {format(new Date(entry.createdAt), "MMM d, yyyy")}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-[#4a453e]">{selectedBond ? 'No journal entries with this bond' : 'Create your first journal entry'}</p>
+            <p className="text-sm text-[#2458a0]">{selectedBond ? 'No journal entries with this bond' : 'Create your first journal entry'}</p>
           ),
         };
       }
@@ -173,13 +172,13 @@ export default function Dashboard() {
           preview: recentMed.length > 0 ? (
             <div className="grid grid-cols-3 gap-2">
               {recentMed.map((item) => (
-                <div key={item.id} className="aspect-square bg-[#f5f1e8] rounded-lg overflow-hidden">
+                <div key={item.id} className="aspect-square bg-[#f0ede4] rounded-lg overflow-hidden">
                   <img src={item.thumbnail} alt="" className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-[#4a453e]">{selectedBond ? 'No media with this bond' : 'Upload photos and videos to share'}</p>
+            <p className="text-sm text-[#2458a0]">{selectedBond ? 'No media with this bond' : 'Upload photos and videos to share'}</p>
           ),
         };
       }
@@ -187,7 +186,7 @@ export default function Dashboard() {
         return {
           count: 1,
           preview: (
-            <p className="text-sm text-[#4a453e]">Join a private room</p>
+            <p className="text-sm text-[#2458a0]">Join a private room</p>
           ),
         };
       case "calendar": {
@@ -200,16 +199,16 @@ export default function Dashboard() {
           preview: upcomingEvts.length > 0 ? (
             <div className="space-y-2">
               {upcomingEvts.map((event) => (
-                <div key={event.id} className="p-2 bg-[#f5f1e8] rounded-lg">
-                  <p className="text-sm font-bold text-[#4a453e]">{event.title}</p>
-                  <p className="text-[10px] text-[#4a453e] opacity-60 mt-1">
+                <div key={event.id} className="p-2 bg-[#f0ede4] rounded-lg">
+                  <p className="text-sm font-bold text-[#2458a0]">{event.title}</p>
+                  <p className="text-[10px] text-[#2458a0] opacity-60 mt-1">
                     {format(new Date(event.date), "MMM d, h:mm a")}
                   </p>
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-sm text-[#4a453e]">{selectedBond ? 'No calendar events with this bond' : 'Schedule your next connection'}</p>
+            <p className="text-sm text-[#2458a0]">{selectedBond ? 'No calendar events with this bond' : 'Schedule your next connection'}</p>
           ),
         };
       }
@@ -297,7 +296,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8] flex flex-col">
+    <div className="min-h-screen bg-[#f0ede4] flex flex-col">
       <Header />
       
       <main className="pt-24 pb-20 px-4 flex-1">
@@ -308,15 +307,15 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-12"
           >
-            <Card className="bg-white border-[#dcd7ca]">
+            <Card className="bg-white border-[#f0ede4]">
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4 flex-1">
-                    <div className="h-16 w-16 rounded-full bg-gradient-to-r from-[#2458a0] to-[#f26522] flex items-center justify-center text-white text-2xl font-black">
+                    <div className="h-16 w-16 rounded-full bg-gradient-to-r from-[#2458a0] to-[#14532d] flex items-center justify-center text-white text-2xl font-black">
                       {user?.firstName?.[0] || 'U'}
                     </div>
                     <div className="flex-1">
-                      <h1 className="text-3xl font-black text-[#4a453e]">
+                      <h1 className="text-3xl font-black text-[#2458a0]">
                         {user?.firstName} {user?.lastName}
                       </h1>
                     </div>
@@ -335,7 +334,7 @@ export default function Dashboard() {
             >
               <Card className="bg-white border-[#dcd7ca]">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-black text-[#4a453e]">Your Bonds</CardTitle>
+                  <CardTitle className="text-2xl font-black text-[#2458a0]">Your Bonds</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -343,13 +342,13 @@ export default function Dashboard() {
                       const connectedUser = allUsers?.find((u: any) => String(u.id) === String(rel.targetId));
                       return (
                         <Link key={rel.id} href={`/connection/${rel.id}`}>
-                          <div className="p-4 rounded-xl border-2 transition-all bg-[#f5f1e8] border-[#dcd7ca] hover:border-[#2458a0] hover:shadow-lg cursor-pointer">
+                          <div className="p-4 rounded-xl border-2 transition-all bg-[#f0ede4] border-[#f0ede4] hover:border-[#2458a0] hover:shadow-lg cursor-pointer">
                             <div className="flex items-center gap-4">
-                              <div className="h-16 w-16 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white">
+                                <div className="h-16 w-16 rounded-full flex items-center justify-center font-black text-xl flex-shrink-0 bg-gradient-to-r from-[#2458a0] to-[#14532d] text-white">
                                 {connectedUser?.firstName?.[0] || 'U'}
                               </div>
                               <div className="flex-1">
-                                <h4 className="font-black text-lg text-[#4a453e]">
+                                <h4 className="font-black text-lg text-[#2c2c2c]">
                                   {connectedUser?.firstName}
                                 </h4>
                                 <p className="text-xs font-bold capitalize mt-1 text-[#2458a0]">
@@ -368,8 +367,8 @@ export default function Dashboard() {
           )}
 
           {/* Tiles Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            {sectionConfigs.map((config, index) => {
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+              {sectionConfigs.map((config, index) => {
               const Icon = config.icon;
               const isExpanded = expandedTile === config.id;
               const sectionData = getSectionPreview(config.id);
@@ -382,24 +381,24 @@ export default function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => setExpandedTile(isExpanded ? null : config.id)}
-                  className="relative p-6 rounded-3xl border-2 border-[#dcd7ca] bg-white hover:border-[#2458a0] hover:shadow-lg h-full flex flex-col cursor-pointer transition-all"
+                        className="relative p-6 rounded-3xl border-2 border-[#f0ede4] bg-white hover:border-[#14532d] hover:shadow-lg h-full flex flex-col cursor-pointer transition-all"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="p-3 rounded-xl bg-[#f5f1e8]">
-                        <Icon stroke="url(#brand-gradient)" className="h-6 w-6 text-[#2458a0]" />
+                      <div className="p-3 rounded-xl bg-card icon-frame">
+                        <Icon className="h-6 w-6" />
                       </div>
                       <div className="text-left">
-                        <p className="text-sm font-black uppercase tracking-tight text-[#4a453e]">
+                        <p className="text-sm font-black uppercase tracking-tight text-[#2c2c2c]">
                           {config.title}
                         </p>
-                        <p className="text-xs font-bold mt-1 text-[#4a453e] opacity-60">
+                          <p className="text-xs font-bold mt-1 text-[#2458a0] opacity-60">
                           {sectionData.count} items
                         </p>
                       </div>
                     </div>
                     {sectionData.badge && (
-                      <Badge className="bg-white text-[#f26522] text-[8px] font-black">
+                      <Badge className="bg-white text-[#14532d] text-[8px] font-black">
                         {sectionData.badge}
                       </Badge>
                     )}
@@ -407,7 +406,7 @@ export default function Dashboard() {
 
                   {/* Bond Selector - Only show when expanded */}
                   {isExpanded && relationships && relationships.length > 0 && (
-                    <div className="mb-4 pb-4 border-b border-[#dcd7ca]">
+                    <div className="mb-4 pb-4 border-b border-[#f0ede4]">
                       <div className="space-y-2">
                         {relationships.map((rel) => {
                           const connectedUser = allUsers?.find((u: any) => String(u.id) === String(rel.targetId));
@@ -419,10 +418,10 @@ export default function Dashboard() {
                                 setTileSelections({...tileSelections, [config.id]: rel.targetId});
                               }}
                               className={`w-full text-left px-3 py-2 rounded-lg text-xs font-bold transition-colors ${
-                                selectedBond === rel.targetId
-                                  ? 'bg-[#2458a0] text-white'
-                                  : 'bg-[#f5f1e8] text-[#4a453e] hover:bg-[#e8e1d0]'
-                              }`}
+                                  selectedBond === rel.targetId
+                                    ? 'bg-[#2458a0] text-white'
+                                    : 'bg-[#f0ede4] text-[#2458a0] hover:bg-[#e8e1d0]'
+                                }`}
                             >
                               {connectedUser?.firstName}
                             </button>
@@ -443,7 +442,7 @@ export default function Dashboard() {
                   {/* Preview Content */}
                   {sectionData.preview && (
                     <div className="flex-1 text-left">
-                      <div className="text-xs text-[#4a453e] opacity-70">
+                      <div className="text-xs text-[#2458a0] opacity-70">
                         {sectionData.preview}
                       </div>
                     </div>

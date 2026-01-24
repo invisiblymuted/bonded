@@ -191,16 +191,16 @@ export default function Tutorial() {
 
   if (!tutorial) {
     return (
-      <div className="min-h-screen bg-[#f5f1e8]">
+          <div className="min-h-screen page-cream">
         <Header />
         <main className="pt-28 pb-20 px-4">
           <div className="container mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-black text-[#4a453e] mb-4">Tutorial Not Found</h1>
-            <p className="text-[#4a453e] opacity-60 mb-8">
+            <h1 className="text-4xl font-black text-[#2458a0] mb-4">Tutorial Not Found</h1>
+            <p className="text-[#2458a0] opacity-60 mb-8">
               We couldn't find that tutorial. Check out our available guides below.
             </p>
-            <Link href="/app">
-              <Button className="bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white">
+              <Link href="/app">
+              <Button className="bg-gradient-to-r from-[#2458a0] to-[#14532d] text-white">
                 Back to Dashboard
               </Button>
             </Link>
@@ -214,7 +214,7 @@ export default function Tutorial() {
   const Icon = tutorial.icon;
 
   return (
-    <div className="min-h-screen bg-[#f5f1e8]">
+        <div className="min-h-screen page-cream">
       <Header />
       
       <main className="pt-28 pb-20 px-4">
@@ -229,8 +229,8 @@ export default function Tutorial() {
                 <Icon className="h-10 w-10 text-white" />
               </div>
             </div>
-            <h1 className="text-4xl font-black text-[#4a453e] mb-4">{tutorial.title}</h1>
-            <p className="text-[#4a453e] opacity-60 font-bold">
+            <h1 className="text-4xl font-black text-[#2458a0] mb-4">{tutorial.title}</h1>
+            <p className="text-[#2458a0] opacity-60 font-bold">
               Follow these steps to get started
             </p>
           </motion.div>
@@ -243,17 +243,17 @@ export default function Tutorial() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all">
+                <Card className="bg-white border-[#f0ede4] hover:border-[#2458a0] transition-all">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3">
                       <Badge className={`h-8 w-8 rounded-full flex items-center justify-center bg-gradient-to-r ${tutorial.color} text-white font-black`}>
                         {step.step}
                       </Badge>
-                      <span className="font-black text-[#4a453e]">{step.title}</span>
+                      <span className="font-black text-[#2458a0]">{step.title}</span>
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-[#4a453e] opacity-70 font-bold ml-11">
+                    <p className="text-[#2458a0] opacity-70 font-bold ml-11">
                       {step.description}
                     </p>
                   </CardContent>
@@ -286,14 +286,14 @@ export default function Tutorial() {
             {tutorial.id === "video" ? (
               <MediaTest
                 trigger={
-                  <Button className="bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white px-8 py-6 text-lg font-black">
+                  <Button className="bg-gradient-to-r from-[#2458a0] to-[#14532d] text-white px-8 py-6 text-lg font-black">
                     Try It Now <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 }
               />
             ) : (
               <Link href={tutorial.ctaLink}>
-                <Button className="bg-gradient-to-r from-[#2458a0] to-[#f26522] text-white px-8 py-6 text-lg font-black">
+                <Button className="bg-gradient-to-r from-[#2458a0] to-[#14532d] text-white px-8 py-6 text-lg font-black">
                   Try It Now <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>

@@ -62,12 +62,12 @@ export function RealWorldMap() {
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl overflow-hidden border border-[#dcd7ca] shadow-sm">
+    <div className="w-full bg-white rounded-3xl overflow-hidden border border-[#f0ede4] shadow-sm">
       {/* Map Background */}
       <div className="relative w-full h-96 bg-blue-50">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" style={{ backgroundColor: '#b3d9ff' }}>
           {/* Simplified continents */}
-          <g fill="#90ee90" stroke="#2d5016" strokeWidth="1.5">
+          <g fill="#f0ede4" stroke="#6b7280" strokeWidth="1.5">
             {/* North America */}
             <ellipse cx="150" cy="180" rx="60" ry="90" />
             
@@ -94,7 +94,7 @@ export function RealWorldMap() {
           {locations.map((loc) => {
             const { x, y } = projectCoord(loc.lat, loc.lng);
             const isSelected = selectedMarker === loc.id;
-            const markerColor = loc.type === 'legal' ? '#2458a0' : '#f26522';
+            const markerColor = loc.type === 'legal' ? '#2458a0' : '#6b7280';
             
             return (
               <g key={loc.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedMarker(isSelected ? null : loc.id)}>
@@ -143,15 +143,15 @@ export function RealWorldMap() {
                   <div>
                     <div className="flex justify-between items-start mb-3">
                       <div>
-                        <h4 className="font-black text-[#4a453e] text-lg uppercase">{loc?.name}</h4>
+                        <h4 className="font-black text-[#2458a0] text-lg uppercase">{loc?.name}</h4>
                         <p className="text-sm text-[#2458a0] font-bold">{loc?.location}</p>
                       </div>
-                      <button onClick={() => setSelectedMarker(null)} className="text-[#4a453e] hover:text-[#2458a0] transition-colors p-1">
+                      <button onClick={() => setSelectedMarker(null)} className="text-[#2458a0] hover:text-[#2458a0] transition-colors p-1">
                         <X className="h-4 w-4" />
                       </button>
                     </div>
-                    <p className="text-sm font-bold text-[#4a453e] mb-2">{loc?.description}</p>
-                    <p className="text-xs text-[#4a453e] opacity-70 leading-relaxed">{
+                    <p className="text-sm font-bold text-[#2458a0] mb-2">{loc?.description}</p>
+                    <p className="text-xs text-[#2458a0] opacity-70 leading-relaxed">{
                       loc?.type === 'legal' 
                         ? 'Primary legal authority for international child abduction cases under the Hague Convention.'
                         : 'Supporting organizations providing resources and assistance for family reunification.'
@@ -165,14 +165,14 @@ export function RealWorldMap() {
       </div>
 
       {/* Legend */}
-      <div className="bg-white px-6 py-4 border-t border-[#dcd7ca] flex gap-6">
+          <div className="bg-white px-6 py-4 border-t border-[#f0ede4] flex gap-6">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 rounded-full bg-[#2458a0]" />
-          <span className="text-xs font-bold text-[#4a453e]">Legal Authority</span>
+          <span className="text-xs font-bold text-[#2458a0]">Legal Authority</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-[#f26522]" />
-          <span className="text-xs font-bold text-[#4a453e]">Support Organization</span>
+          <div className="w-4 h-4 rounded-full bg-[#6b7280]" />
+          <span className="text-xs font-bold text-[#2458a0]">Support Organization</span>
         </div>
       </div>
     </div>

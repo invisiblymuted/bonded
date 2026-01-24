@@ -1,0 +1,9 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^lsof -nP -iTCP:5001 -sTCP:LISTEN \\|\\| true$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "npx vercel": true
+    }
+}

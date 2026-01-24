@@ -14,6 +14,10 @@ export default defineConfig({
         secure: false,
       },
     },
+    host: '127.0.0.1',
+    fs: {
+      allow: ['..'],
+    },
   },
   resolve: {
     alias: {

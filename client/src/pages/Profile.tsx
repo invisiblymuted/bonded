@@ -32,27 +32,27 @@ export default function Profile() {
 
   if (!currentUser) {
     return (
-      <div className="min-h-[100dvh] bg-[#f5f1e8] flex flex-col justify-between">
+      <div className="min-h-[100dvh] bg-[#f0ede4] flex flex-col justify-between">
         <Header />
         <main className="flex-1 flex flex-col pt-24 pb-20 px-4">
           <div className="container mx-auto max-w-4xl">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Link href="/signup" className="block">
-                <Card className="h-full bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all cursor-pointer">
+                <Card className="h-full bg-white border-[#f0ede4] hover:border-[#2458a0] transition-all cursor-pointer">
                   <CardContent className="h-full flex flex-col items-center justify-center py-12 gap-4">
                     <BondedLogo className="w-16 h-16" />
-                    <CardTitle className="text-2xl font-black text-[#4a453e]">Join</CardTitle>
-                    <CardDescription className="text-sm text-[#4a453e] opacity-70">Create your Bonded profile.</CardDescription>
+                    <CardTitle className="text-2xl font-black text-[#2458a0]">Join</CardTitle>
+                    <CardDescription className="text-sm text-[#2458a0] opacity-70">Create your Bonded profile.</CardDescription>
                   </CardContent>
                 </Card>
               </Link>
 
               <Link href="/login" className="block">
-                <Card className="h-full bg-white border-[#dcd7ca] hover:border-[#2458a0] transition-all cursor-pointer">
+                <Card className="h-full bg-white border-[#f0ede4] hover:border-[#2458a0] transition-all cursor-pointer">
                   <CardContent className="h-full flex flex-col items-center justify-center py-12 gap-4">
                     <BondedLogo className="w-16 h-16" />
-                    <CardTitle className="text-2xl font-black text-[#4a453e]">Already Bonded?</CardTitle>
-                    <CardDescription className="text-sm text-[#4a453e] opacity-70">Log in with your PIN.</CardDescription>
+                    <CardTitle className="text-2xl font-black text-[#2458a0]">Already Bonded?</CardTitle>
+                    <CardDescription className="text-sm text-[#2458a0] opacity-70">Log in with your PIN.</CardDescription>
                   </CardContent>
                 </Card>
               </Link>
@@ -205,11 +205,11 @@ export default function Profile() {
                       <input className="w-full p-2 border rounded mb-2" value={editImage} onChange={(e) => setEditImage(e.target.value)} />
                       <input type="file" accept="image/*" onChange={handleFileChange} className="w-full" />
                       {editImage && (
-                        <div className="mt-2 flex items-center gap-2">
-                          <img src={editImage} alt="preview" className="h-16 w-16 rounded-full object-cover border" />
-                          <span className="text-sm text-muted-foreground">Preview</span>
-                        </div>
-                      )}
+                              <div className="mt-2 flex items-center gap-2">
+                                <img src={editImage} alt="preview" className="h-16 w-16 rounded-full object-cover border" />
+                                <span className="text-sm text-[#2458a0] opacity-70">Preview</span>
+                              </div>
+                            )}
                     </div>
                     <div className="flex gap-2">
                       <Button className="btn-gradient" onClick={async () => {
@@ -236,10 +236,10 @@ export default function Profile() {
                   </div>
                 )}
                 <div className="space-y-4">
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
+                  <div className="flex items-center gap-3 p-3 bg-[#f0ede4] rounded-md">
                     <GradientIcon icon={<User className="h-5 w-5" />} />
                     <div className="flex-1">
-                      <p className="text-xs text-muted-foreground">Your User ID</p>
+                      <p className="text-xs text-[#2458a0] opacity-70">Your User ID</p>
                       <p className="font-mono text-sm" data-testid="text-profile-user-id">{currentUser.id}</p>
                     </div>
                     <Button variant="ghost" size="sm" onClick={copyUserId} className="gap-1" data-testid="button-copy-profile-id">
@@ -248,19 +248,19 @@ export default function Profile() {
                     </Button>
                   </div>
 
-                  <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
+                  <div className="flex items-center gap-3 p-3 bg-[#f0ede4] rounded-md">
                     <GradientIcon icon={<Mail className="h-5 w-5" />} />
                     <div className="flex-1">
-                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-xs text-[#2458a0] opacity-70">Email</p>
                       <p className="text-sm" data-testid="text-profile-email">{currentUser.email}</p>
                     </div>
                   </div>
 
                   {currentUser.createdAt && (
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-md">
+                    <div className="flex items-center gap-3 p-3 bg-[#f0ede4] rounded-md">
                       <GradientIcon icon={<Calendar className="h-5 w-5" />} />
                       <div className="flex-1">
-                        <p className="text-xs text-muted-foreground">Member Since</p>
+                        <p className="text-xs text-[#2458a0] opacity-70">Member Since</p>
                         <p className="text-sm" data-testid="text-profile-joined">
                           {format(new Date(currentUser.createdAt), "MMMM d, yyyy")}
                         </p>
@@ -270,7 +270,7 @@ export default function Profile() {
                 </div>
 
                 <div className="pt-4 border-t">
-                  <p className="text-sm text-muted-foreground text-center">
+                  <p className="text-sm text-[#2458a0] text-center opacity-80">
                     Share your User ID with family members so they can connect with you on Bonded.
                   </p>
                 </div>

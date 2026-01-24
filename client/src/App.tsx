@@ -34,7 +34,7 @@ function Router() {
       <Route path="/video" component={VideoCall} />
       {/* 404 Fallback */}
       <Route>
-        <div className="min-h-screen flex items-center justify-center bg-[#f5f1e8]">
+        <div className="min-h-screen flex items-center justify-center page-cream">
           <h1 className="text-2xl font-bold text-[#4a453e]">404 Page Not Found</h1>
         </div>
       </Route>

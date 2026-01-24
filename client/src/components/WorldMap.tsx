@@ -109,8 +109,8 @@ export function WorldMap() {
             onClick={() => setActiveFilter(filter)}
             className={`px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-all ${
               activeFilter === filter
-                ? 'bg-[#4a453e] text-white'
-                : 'bg-[#f5f1e8] text-[#4a453e] border border-[#dcd7ca] hover:border-[#2458a0]'
+                ? 'bg-[#2458a0] text-white'
+                : 'bg-[#f0ede4] text-[#2458a0] border border-[#f0ede4] hover:border-[#2458a0]'
             }`}
           >
             {filter === 'all' ? 'All Hotspots' : filter === 'legal' ? 'Legal' : filter === 'support' ? 'Support' : 'Cases'}
@@ -119,7 +119,7 @@ export function WorldMap() {
       </div>
 
       {/* Map Container */}
-      <div className="relative w-full bg-gradient-to-b from-blue-50 to-blue-100 rounded-3xl border border-[#dcd7ca] overflow-hidden h-64 shadow-sm">
+      <div className="relative w-full bg-gradient-to-b from-blue-50 to-blue-100 rounded-3xl border border-[#f0ede4] overflow-hidden h-64 shadow-sm">
         {/* SVG Background Map */}
         <svg
           className="absolute inset-0 w-full h-full opacity-20"
@@ -235,7 +235,7 @@ export function WorldMap() {
             className={`p-4 rounded-2xl border-2 text-left transition-all ${
               selectedHotspot?.id === hotspot.id
                 ? `${typeColors[hotspot.type].bg} border-current`
-                : 'bg-white border-[#dcd7ca] hover:border-[#2458a0]'
+                  : 'bg-white border-[#f0ede4] hover:border-[#2458a0]'
             }`}
           >
             <div className="flex items-start gap-3">

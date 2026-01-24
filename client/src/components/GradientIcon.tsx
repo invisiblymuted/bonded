@@ -13,8 +13,8 @@ export function GradientIcon({ icon, className = "" }: GradientIconProps) {
       <svg width="0" height="0" className="absolute">
         <defs>
           <linearGradient id={id} x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3B82F6" />
-            <stop offset="100%" stopColor="#FB923C" />
+            <stop offset="0%" stopColor="#2458a0" />
+            <stop offset="100%" stopColor="#6b7280" />
           </linearGradient>
         </defs>
       </svg>

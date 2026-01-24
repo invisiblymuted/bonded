@@ -20,43 +20,48 @@
 }
 
 :root {
-  /* Your Warm Peachy & Orange Palette */
-  --background: 35 100% 96%;
-  --foreground: 25 40% 20%;
-  --card: 0 0% 100%;
-  --primary: 25 95% 58%;
-  --secondary: 30 70% 70%;
-  --muted: 35 40% 88%;
-  --accent: 15 85% 55%;
-  --border: 30 50% 88%;
+  /* Cream page background and matching tile/card color */
+  --background: 40 20% 94%; /* page background: warm cream */
+  --foreground: 0 0% 12%;
+  --card: 40 20% 94%; /* tiles: cream */
+  /* Cream for icon strokes */
+  --cream: 40 20% 94%;
+  /* Make Tailwind's built-in `bg-white` use the neutral `--card` color */
+  --color-white: hsl(var(--card) / 1);
+  --primary: 220 90% 56%;
+  --secondary: 220 15% 80%;
+  --muted: 40 20% 88%;
+  --accent: 220 90% 56%;
+  --border: 40 20% 86%;
   --radius: 0.75rem;
 }
 
 .dark {
-  --background: 25 30% 16%;
-  --foreground: 35 80% 92%;
-  --card: 25 30% 22%;
-  --primary: 25 95% 60%;
-  --border: 25 30% 30%;
+  /* Neutral Gray Palette (dark mode) */
+  --background: 0 0% 12%;
+  --foreground: 0 0% 96%;
+  --card: 0 0% 14%;
+  --color-white: hsl(var(--card) / 1);
+  --primary: 220 90% 60%;
+  --border: 0 0% 24%;
 }
 
 @layer base {
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground antialiased;
-    font-family: var(--font-sans);
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-display);
-    @apply font-semibold tracking-tight;
-  }
-}
-
-@layer utilities {
-  .glass-card {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  :root {
+    /* Cream page background and matching tile/card color (base layer) */
+    --background: 40 20% 94%;
+    --foreground: 0 0% 12%;
+    --card: 40 20% 94%;
+    --color-white: hsl(var(--card) / 1);
+    --primary: 220 90% 56%;
+    --secondary: 220 15% 80%;
+    --muted: 40 20% 88%;
+    --accent: 220 90% 56%;
+    --border: 40 20% 86%;
+    --radius: 0.75rem;
   }
   .dark .glass-card {
     @apply bg-black/40 backdrop-blur-md border border-white/10 shadow-xl;
@@ -65,4 +70,65 @@
     background: linear-gradient(135deg, #3B82F6 0%, #FB923C 100%);
     @apply text-white border-none transition-all;
   }
+
+  /* Force arbitrary/background hex classes and light utility backgrounds to use the neutral card */
+  [class*="bg-\["] {
+    background-color: hsl(var(--card) / 1) !important;
+  }
+
+  /* Common utility backgrounds to map to card */
+  .bg-blue-50, .bg-\[\#b3d9ff\], .bg-\[\#eaf6ff\] {
+    background-color: hsl(var(--card) / 1) !important;
+  }
+
+  /* Transparent white variants and `bg-white/*` should use the card color with opacity preserved */
+  .bg-white, .bg-white\/90, .bg-white\/70, .bg-white\/10, .bg-white\/30, .bg-white\/20 {
+    background-color: hsl(var(--card) / var(--tw-bg-opacity, 1)) !important;
+  }
+
+  /* Ensure full-page containers use the medium page background */
+  body, .min-h-screen, .bg-background {
+    background-color: hsl(var(--background) / 1) !important;
+  }
+}
+
+/* Tile/icon pop styling: subtle gradient, lift, and shadow to make small icons stand out */
+.icon-pop {
+  background: linear-gradient(135deg, hsl(var(--card) / 1), hsl(var(--card) / 0.95));
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+  transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+}
+.icon-pop svg {
+  filter: drop-shadow(0 4px 12px rgba(16,24,40,0.08));
+}
+.icon-pop:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 30px rgba(16,24,40,0.10);
+}
+
+/* A simple framed icon utility for consistent small icon tiles */
+.icon-frame {
+  background: hsl(var(--cream) / 1);
+  border-radius: 0.65rem;
+  padding: 0.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid hsl(var(--border) / 1);
+  box-shadow: 0 8px 20px rgba(16,24,40,0.04);
+}
+.icon-frame svg {
+  filter: drop-shadow(0 4px 10px rgba(16,24,40,0.06));
+}
+
+/* Specific utility for pages that should use the cream "card" background instead
+   of the default page background. Placed after base rules to take precedence. */
+.page-cream {
+  background-color: hsl(var(--card) / 1) !important;
+}
+
+/* Semi-transparent variant for controls placed over the page background */
+.page-cream-80 {
+  background-color: hsl(var(--card) / 0.8) !important;
 }
