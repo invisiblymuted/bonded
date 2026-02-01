@@ -39,7 +39,7 @@ export default function Home() {
 
       <main className="bg-[#f0ede4] pt-12 md:pt-16 pb-6 md:pb-8 px-4">
         {/* HERO SECTION */}
-        <section id="home-hero" className="min-h-screen flex items-center justify-center pt-6 sm:pt-8 md:pt-12 pb-4 md:pb-6 px-4 text-center">
+        <section id="home-hero" className="flex items-center justify-center pt-2 sm:pt-4 md:pt-8 pb-4 md:pb-6 px-4 text-center">
           <div className="container mx-auto max-w-5xl">
             <div className="flex flex-col items-center">
               <h1 className="text-[clamp(1rem,6vw,1.9rem)] sm:text-[clamp(1.5rem,5vw,2.6rem)] md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 tracking-tight leading-tight uppercase">
@@ -56,8 +56,30 @@ export default function Home() {
           </div>
         </section>
 
+        {/* WHO IT'S FOR */}
+        <section className="pt-6 pb-8 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <h2 className="text-xl font-black uppercase tracking-tight pt-0 pb-4 mb-4 brand-gradient-text text-center">
+              Who It's For
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {families.map((f, i) => (
+                <Card key={i} className="bg-[#f0ede4] border-[#dcd7ca] border-2 p-6 rounded-3xl shadow-sm">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="icon-frame h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center border">
+                      <f.icon className="h-5 w-5" />
+                    </div>
+                    <h3 className="text-xl font-black text-[#2c2c2c] uppercase tracking-tight">{f.title}</h3>
+                  </div>
+                  <p className="text-sm text-[#2c2c2c] font-bold opacity-70 leading-relaxed uppercase tracking-tight">{f.desc}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* THE NEED STATS */}
-        <section className="pt-0 -mt-4 pb-4 px-4">
+        <section className="pt-8 pb-6 px-4">
           <div className="container mx-auto max-w-6xl">
             <div className="space-y-6 text-center">
               <div className="bg-[#f0ede4] p-6 rounded-[28px] border border-[#dcd7ca] space-y-6 shadow-inner mx-auto max-w-4xl">
@@ -107,7 +129,7 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {features.map((f) => (
-                <Link key={f.id} href={`/features/${f.id}`}>
+                <Link key={f.id} href={`/tutorials/${f.id}`}>
                   <Card className="bg-white border-[#dcd7ca] border-2 p-6 h-full cursor-pointer hover:shadow-md transition-all group rounded-3xl">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="icon-frame h-9 w-9 rounded-xl flex items-center justify-center border">
@@ -123,27 +145,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* WHO IT'S FOR */}
-        <section className="py-12 px-4">
-          <div className="container mx-auto max-w-6xl">
-            <h2 className="text-xl font-black uppercase tracking-tight pt-0 pb-8 mb-4 brand-gradient-text text-center">
-              Who It's For
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {families.map((f, i) => (
-                <Card key={i} className="bg-[#f0ede4] border-[#dcd7ca] border-2 p-8 rounded-3xl shadow-sm">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="icon-frame h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center border">
-                      <f.icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="text-xl font-black text-[#2c2c2c] uppercase tracking-tight">{f.title}</h3>
-                  </div>
-                  <p className="text-sm text-[#2c2c2c] font-bold opacity-70 leading-relaxed uppercase tracking-tight">{f.desc}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
+        
       </main>
 
       <Footer />

@@ -13,6 +13,7 @@ import Tutorial from "./pages/Tutorial";
 import Notifications from "./pages/Notifications";
 import VideoCall from "./pages/VideoCall";
 import GetHelp from "./pages/GetHelp";
+import Preview from "./pages/Preview";
 
 // The Router handles the URL paths
 function Router() {
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/research" component={Research} />
       <Route path="/help" component={GetHelp} />
       <Route path="/notifications" component={Notifications} />
+      <Route path="/preview" component={Preview} />
       <Route path="/tutorials/:id" component={Tutorial} />
       <Route path="/video" component={VideoCall} />
       {/* 404 Fallback */}
