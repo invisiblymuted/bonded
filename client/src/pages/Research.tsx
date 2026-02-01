@@ -172,7 +172,7 @@ export default function Research() {
           </header>
 
           <div className="flex justify-center mb-6">
-            <nav className="inline-flex gap-2 bg-transparent rounded-full p-1">
+            <nav className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-3 gap-2 bg-transparent rounded-2xl p-1">
               {[
                 { id: 'categories', label: 'Research Categories' },
                 { id: 'metrics', label: 'Key Metrics' },
@@ -182,7 +182,7 @@ export default function Research() {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className="px-3 py-2 text-sm font-black rounded-full bg-white/0 hover:bg-white/20 transition-colors"
+                  className="block w-full px-2.5 py-2 text-[11px] sm:text-xs md:text-sm font-black leading-tight text-center rounded-full bg-white/0 hover:bg-white/20 transition-colors"
                 >
                   {item.label}
                 </a>

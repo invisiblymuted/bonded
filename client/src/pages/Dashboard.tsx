@@ -125,8 +125,8 @@ export default function Dashboard() {
           badge: msgs.filter(m => !m.read).length > 0 ? `${msgs.filter(m => !m.read).length} new` : null,
           preview: recentMsgs.length > 0 ? (
                         <div className="space-y-2">
-              {recentMsgs.map((msg) => (
-                <div key={msg.id} className="p-2 bg-[#f0ede4] rounded-lg">
+              {recentMsgs.map((msg, idx) => (
+                <div key={`${msg.senderId}-${idx}`} className="p-2 bg-[#f0ede4] rounded-lg">
                   <p className="text-sm font-bold text-[#2458a0] truncate">{msg.content}</p>
                   <p className="text-[10px] text-[#2458a0] opacity-60 mt-1">
                     {format(new Date(msg.timestamp), "MMM d, h:mm a")}
