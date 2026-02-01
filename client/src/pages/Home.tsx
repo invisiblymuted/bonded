@@ -43,8 +43,8 @@ export default function Home() {
           <div className="container mx-auto max-w-5xl">
             <div className="flex flex-col items-center">
               <h1 className="text-[clamp(1rem,6vw,1.9rem)] sm:text-[clamp(1.5rem,5vw,2.6rem)] md:text-5xl lg:text-7xl font-black mb-4 md:mb-6 tracking-tight leading-tight uppercase">
-               <span className="block brand-gradient-text text-balance">Stay Connected</span>
-               <span className="block brand-gradient-text mt-2 text-balance">No Matter the Distance</span>
+               <span className="block text-[#3E2723] text-balance">Stay Connected</span>
+               <span className="block text-[#3E2723] mt-2 text-balance">No Matter the Distance</span>
               </h1>
             </div>
               <p className="text-[13px] sm:text-sm md:text-lg lg:text-xl text-[#2458a0] font-bold max-w-2xl mx-auto uppercase tracking-wide opacity-90 text-balance mb-4 md:mb-8">
@@ -81,7 +81,7 @@ export default function Home() {
         </section>
 
         {/* HOW IT WORKS / FEATURES */}
-        <section className="py-8 md:py-12 px-4 border-y border-[#dcd7ca] how-it-works">
+        <section className="py-8 md:py-12 px-4 how-it-works">
           <div className="container mx-auto max-w-6xl">
             <h2 className="text-xl font-black uppercase tracking-tight pt-0 pb-6 mb-4 brand-gradient-text text-center">
               How it Works
@@ -91,7 +91,7 @@ export default function Home() {
               {trustTiles.map((t, idx) => (
                 <Card key={t.id} className="bg-white border-[#dcd7ca] border-2 p-5 rounded-3xl shadow-sm">
                   <div className="flex items-start gap-4">
-                    <div className={`h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-card icon-pop icon-frame flex items-center justify-center shrink-0 border ${idx === 0 ? 'hide-left-icon' : ''}`}>
+                    <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-2xl bg-card icon-pop icon-frame flex items-center justify-center shrink-0 border">
                       <t.icon className="h-6 w-6" />
                     </div>
                     <div className="space-y-2 text-left">

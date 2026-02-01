@@ -10,7 +10,7 @@ const Logo = () => {
       <div className="inline-flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center max-w-full">
           <BondedLogo className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40" />
-          <span className="font-black tracking-tight text-[clamp(1.9rem,10vw,4.2rem)] brand-gradient-text leading-[0.95] text-center sm:text-left">
+          <span className="font-black tracking-tight text-[clamp(1.9rem,10vw,4.2rem)] text-[#3E2723] leading-[0.95] text-center sm:text-left">
             Bonded
           </span>
         </div>

@@ -28,12 +28,20 @@ export function Header() {
               <div className="h-10 md:h-14 w-10 md:w-14 flex items-center justify-center [&_svg]:fill-[#2458a0]">
                 <BondedLogo />
               </div>
-              <span className="hidden md:block font-black text-3xl brand-gradient-text tracking-tight -ml-2">Bonded</span>
+              <span className="hidden md:block font-black text-3xl text-[#3E2723] tracking-tight -ml-2">Bonded</span>
             </div>
           </Link>
           
           <div className="flex items-center gap-2 md:gap-3">
-            {/* Removed mobile menu toggle button as requested */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="md:hidden p-2 rounded-full icon-frame cursor-pointer"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
 
             <div
               className={`${menuOpen ? "flex" : "hidden"} md:flex items-center gap-1.5 sm:gap-2 md:gap-3 flex-wrap justify-center md:flex-nowrap md:justify-end md:static absolute left-2 right-2 top-16 md:top-auto bg-white md:bg-transparent border md:border-0 border-[#dcd7ca] rounded-2xl px-3 py-3 md:p-0 shadow-xl md:shadow-none z-50`}
