@@ -84,7 +84,7 @@ const resources: Resource[] = [
 
 const categoryColors: Record<string, string> = {
   legal: "bg-[#e7eef8] text-[#2458a0]",
-  research: "bg-[#e6f7ed] text-[#6b7280]",
+  research: "bg-[#fff3e6] text-[#FB923C]",
   support: "bg-[#f0ede4] text-[#2458a0]",
   international: "bg-[#e9f3fb] text-[#2458a0]",
 };
@@ -152,9 +152,9 @@ export default function GetHelp() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="w-full bg-gradient-to-r from-[#2458a0]/10 to-[#6b7280]/10 border border-[#f0ede4] rounded-3xl py-8 px-0"
+              className="w-full bg-linear-to-r from-[#2458a0]/10 to-[#FB923C]/10 border border-[#f0ede4] rounded-3xl py-8 px-0"
             >
-              <h2 className="text-xl font-black py-4 mb-0 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#6b7280] bg-clip-text text-transparent text-left pl-8">
+              <h2 className="text-xl font-black py-4 mb-0 uppercase tracking-tight bg-linear-to-r from-[#2458a0] to-[#FB923C] bg-clip-text text-transparent text-left pl-8">
                 Need Immediate Assistance?
               </h2>
               <div className="px-8">
@@ -165,7 +165,7 @@ export default function GetHelp() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <a
                     href="tel:1-800-THE-LOST"
-                    className="block p-3 sm:p-4 bg-white border-2 border-[#2458a0] rounded-lg hover:bg-[#2458a0] hover:text-white transition-all font-black text-[#2458a0] hover:text-white"
+                    className="block p-3 sm:p-4 bg-white border-2 border-[#2458a0] rounded-lg hover:bg-[#2458a0] hover:text-white transition-all font-black text-[#2458a0]"
                   >
                     📞 1-800-THE-LOST (US)
                   </a>
@@ -173,7 +173,7 @@ export default function GetHelp() {
                     href="https://www.icmec.org/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block p-3 sm:p-4 bg-white border-2 border-[#6b7280] rounded-lg hover:bg-[#6b7280] hover:text-white transition-all font-black text-[#6b7280] hover:text-white"
+                    className="block p-3 sm:p-4 bg-white border-2 border-[#FB923C] rounded-lg hover:bg-[#FB923C] hover:text-white transition-all font-black text-[#FB923C]"
                   >
                     🌍 ICMEC International Hotline
                   </a>
@@ -195,7 +195,7 @@ export default function GetHelp() {
                     className="w-full"
                 >
                   <div className="mb-6">
-                    <h2 className="text-xl font-black py-4 mb-0 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#6b7280] bg-clip-text text-transparent text-left pl-8">
+                    <h2 className="text-xl font-black py-4 mb-0 uppercase tracking-tight bg-linear-to-r from-[#2458a0] to-[#FB923C] bg-clip-text text-transparent text-left pl-8">
                       {categoryLabels[catKey]}
                     </h2>
                   </div>
@@ -219,13 +219,13 @@ export default function GetHelp() {
                                   {resource.description}
                                 </p>
                               </div>
-                              <div className="flex-shrink-0 ml-4">
+                              <div className="shrink-0 ml-4">
                                 <a
                                   href={resource.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   aria-label={`Open ${resource.title}`}
-                                  className="inline-flex items-center justify-center p-2 bg-gradient-to-r from-[#2458a0] to-[#6b7280] rounded-full hover:opacity-90"
+                                  className="inline-flex items-center justify-center p-2 bg-linear-to-r from-[#2458a0] to-[#FB923C] rounded-full hover:opacity-90"
                                 >
                                   <span className="sr-only">Open {resource.title}</span>
                                   <ExternalLink className="h-4 w-4 text-white" />
@@ -249,11 +249,14 @@ export default function GetHelp() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="w-full bg-gradient-to-br from-[#2458a0]/5 to-[#6b7280]/5 border border-[#f0ede4] rounded-3xl p-8"
+              className="w-full bg-linear-to-br from-[#2458a0]/5 to-[#FB923C]/5 border border-[#f0ede4] rounded-3xl p-8"
             >
-              <h2 className="text-xl font-black py-4 mb-0 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#6b7280] bg-clip-text text-transparent text-left">
-                Find Help Near You
+              <h2 className="text-xl font-black py-4 mb-1 uppercase tracking-tight bg-linear-to-r from-[#2458a0] to-[#FB923C] bg-clip-text text-transparent text-left">
+                Available Resources
               </h2>
+              <p className="text-xs sm:text-sm font-black uppercase tracking-wide text-[#FB923C] mb-2">
+                Find Help Near You
+              </p>
               <p className="text-sm text-[#2458a0] opacity-70 font-bold mb-6">
                 Allow access to your location to find support organizations and legal resources nearest to you worldwide.
               </p>
@@ -281,7 +284,7 @@ export default function GetHelp() {
                   className="w-full"
                 >
                   <div className="mb-6">
-                    <h2 className="text-xl font-black py-4 uppercase tracking-tight bg-gradient-to-r from-[#2458a0] to-[#6b7280] bg-clip-text text-transparent text-left pl-8">
+                    <h2 className="text-xl font-black py-4 uppercase tracking-tight bg-linear-to-r from-[#2458a0] to-[#FB923C] bg-clip-text text-transparent text-left pl-8">
                       {categoryName}
                     </h2>
                   </div>
@@ -305,13 +308,13 @@ export default function GetHelp() {
                                   {resource.description}
                                 </p>
                               </div>
-                              <div className="flex-shrink-0 ml-4">
+                              <div className="shrink-0 ml-4">
                                 <a
                                   href={resource.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   aria-label={`Open ${resource.title}`}
-                                  className="inline-flex items-center justify-center p-2 bg-gradient-to-r from-[#2458a0] to-[#6b7280] rounded-full hover:opacity-90"
+                                  className="inline-flex items-center justify-center p-2 bg-linear-to-r from-[#2458a0] to-[#FB923C] rounded-full hover:opacity-90"
                                 >
                                   <span className="sr-only">Open {resource.title}</span>
                                   <ExternalLink className="h-4 w-4 text-white" />
