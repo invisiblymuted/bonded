@@ -21,9 +21,9 @@ const Logo = () => {
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col min-h-screen page-cream selection:bg-white">
+    <div className="flex flex-col min-h-[100dvh] page-cream selection:bg-white">
       <IconGradient />
-      <main className="flex-1 flex items-center justify-center -mt-8 md:-mt-12">
+      <main className="flex-1 flex items-center justify-center">
         {/* Logo Banner - centered both vertically and horizontally; nav icons stacked underneath */}
           <div className="w-full flex items-center justify-center px-4 sm:px-6 py-12">
           <div className="container mx-auto max-w-6xl flex items-center justify-center">
