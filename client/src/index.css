@@ -176,3 +176,14 @@
 .page-cream-80 {
   background-color: hsl(var(--card) / 0.8) !important;
 }
+
+/* Development override: neutralize focus-lock/block-interactivity classes
+   Some UI primitives add runtime classes like `block-interactivity-<id>` which
+   set `pointer-events: none` and can make the page appear locked. During
+   development we override those so you can interact with the preview. */
+[class^="block-interactivity-"], [class*=" block-interactivity-"] {
+  pointer-events: auto !important;
+}
+[class^="allow-interactivity-"], [class*=" allow-interactivity-"] {
+  pointer-events: auto !important;
+}
