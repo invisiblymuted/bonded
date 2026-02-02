@@ -231,3 +231,38 @@
 .icon-duotone::after {
   opacity: 0.18;
 }
+
+/* Extend blended overlay & outline treatment to common tile/button containers */
+.p-2.rounded-full, .inline-flex, .btn-gradient, .shadcn-card, .shadcn-card .pt-6 {
+  position: relative;
+}
+.p-2.rounded-full::after, .inline-flex::after, .btn-gradient::after, .shadcn-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(36,88,160,0.9), rgba(251,146,60,0.9));
+  mix-blend-mode: overlay;
+  opacity: 0.08;
+}
+
+/* Ensure svgs inside these containers are outlined and inherit the blended tint */
+.p-2.rounded-full svg,
+.inline-flex svg,
+.btn-gradient svg,
+.shadcn-card svg {
+  stroke: var(--brand-blue) !important;
+  fill: none !important;
+  stroke-width: 1.6px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  color: var(--brand-blue) !important;
+  filter: drop-shadow(0 2px 6px rgba(16,24,40,0.06));
+}
+
+/* Utility to force a stronger orange accent on specific icons */
+.icon-strong-orange svg {
+  stroke: var(--brand-orange) !important;
+  color: var(--brand-orange) !important;
+}
