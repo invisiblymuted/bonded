@@ -36,6 +36,12 @@
   --radius: 0.75rem;
 }
 
+/* Brand colors for icon theming */
+:root {
+  --brand-blue: #2458a0;
+  --brand-orange: #FB923C;
+}
+
 .dark {
   /* Neutral Gray Palette (dark mode) */
   --background: 0 0% 12%;
@@ -120,6 +126,39 @@
 }
 .icon-frame svg {
   filter: drop-shadow(0 4px 10px rgba(16,24,40,0.06));
+}
+
+/* Targeted blended overlay for tile icons only (no global offsets) */
+/* Apply only to icon containers that appear in tiles/cards (use .bg-card and .shadcn-card) */
+.bg-card.icon-frame, .shadcn-card .icon-frame, .shadcn-card .icon-pop, .bg-card.icon-pop {
+  position: relative;
+}
+.bg-card.icon-frame::after, .shadcn-card .icon-frame::after, .shadcn-card .icon-pop::after, .bg-card.icon-pop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(36,88,160,0.95), rgba(251,146,60,0.95));
+  mix-blend-mode: overlay;
+  opacity: 0.10;
+}
+
+/* Ensure SVGs in these tile containers are outlined and inherit blended tint */
+.bg-card.icon-frame svg, .shadcn-card .icon-frame svg, .shadcn-card .icon-pop svg, .bg-card.icon-pop svg {
+  stroke: var(--brand-blue) !important;
+  fill: none !important;
+  stroke-width: 1.6px !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  color: var(--brand-blue) !important;
+  filter: drop-shadow(0 2px 6px rgba(16,24,40,0.06));
+}
+
+/* Utility for forcing stronger orange on select icons inside tiles */
+.bg-card .icon-strong-orange svg, .shadcn-card .icon-strong-orange svg {
+  stroke: var(--brand-orange) !important;
+  color: var(--brand-orange) !important;
 }
 
 /* hide only the very-left icon in the How It Works / trustTiles section */
