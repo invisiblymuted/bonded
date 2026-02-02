@@ -181,10 +181,10 @@
   transition: transform .12s ease, filter .12s ease, color .12s ease;
 }
 
-/* If an inline SVG contains filled shapes, color them orange for contrast */
+/* Ensure any filled shapes are removed so icons remain outlined only */
 .icon-frame svg [fill]:not([fill="none"]),
 .icon-pop svg [fill]:not([fill="none"]) {
-  fill: var(--brand-orange) !important;
+  fill: none !important;
 }
 
 /* Add an orange offset/shadow to create a two-tone look without changing SVGs */
