@@ -209,25 +209,3 @@
   background: linear-gradient(135deg, rgba(36,88,160,0.04), rgba(251,146,60,0.06));
   pointer-events: none;
 }
-
-/* Blend overlay: apply a subtle blue->orange gradient overlay to icon containers
-   using `mix-blend-mode` so strokes remain crisp but receive an orange tint
-   without offset shadows (prevents double-vision). */
-.icon-frame, .icon-pop {
-  position: relative;
-}
-.icon-frame::after, .icon-pop::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(135deg, rgba(36,88,160,0.9), rgba(251,146,60,0.9));
-  mix-blend-mode: overlay;
-  opacity: 0.12;
-}
-
-/* Slightly stronger overlay when `.icon-duotone` is used */
-.icon-duotone::after {
-  opacity: 0.18;
-}
