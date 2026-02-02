@@ -189,7 +189,8 @@
 
 /* Add an orange offset/shadow to create a two-tone look without changing SVGs */
 .icon-frame svg, .icon-pop svg {
-  filter: drop-shadow(2px 1px 0 var(--brand-orange)) drop-shadow(0 2px 6px rgba(16,24,40,0.06));
+  /* remove offset orange shadow to avoid double-vision effect; keep subtle neutral shadow */
+  filter: drop-shadow(0 2px 6px rgba(16,24,40,0.06));
 }
 
 /* Stronger duotone utility when you want a more pronounced orange presence */
