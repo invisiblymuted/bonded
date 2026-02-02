@@ -137,3 +137,29 @@
 .page-cream-80 {
   background-color: hsl(var(--card) / 0.8) !important;
 }
+
+/* Icon palette: ensure tile icons use only brand blue or brand orange */
+:root {
+  --brand-blue: #2458a0;
+  --brand-orange: #FB923C;
+}
+
+/* Default tiles (.icon-frame, .icon-pop) use brand blue. Use .icon-orange to force orange. */
+.icon-frame, .icon-pop {
+  color: var(--brand-blue) !important;
+}
+
+.icon-frame svg,
+.icon-pop svg {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+  color: inherit !important;
+}
+
+.icon-orange {
+  color: var(--brand-orange) !important;
+}
+
+.icon-blue {
+  color: var(--brand-blue) !important;
+}
