@@ -137,27 +137,3 @@
 .page-cream-80 {
   background-color: hsl(var(--card) / 0.8) !important;
 }
-
-/* Brand palette variables (blue & orange) used for icon theming */
-:root {
-  --brand-blue: #2458a0;
-  --brand-orange: #FB923C;
-}
-
-/* Global icon color rules: make SVG icons use the brand blue by default
-   and honor the `icon-orange` / `text-accent-orange` utilities when needed. */
-svg {
-  color: var(--brand-blue) !important;
-  stroke: currentColor;
-  fill: currentColor;
-}
-
-/* Utility to force icon color to brand orange */
-.icon-orange, .text-accent-orange {
-  color: var(--brand-orange) !important;
-}
-
-/* Ensure framed/pop icons inherit themed color */
-.icon-frame svg, .icon-pop svg {
-  color: inherit !important;
-}
