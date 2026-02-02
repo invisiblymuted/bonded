@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { BondedLogo } from "@/components/BondedLogo";
 import { useAuth } from "@/hooks/use-auth";
-import { BookOpen, UserCircle, LayoutGrid, Home, Search, Menu, X } from "lucide-react";
+import { BookOpen, UserCircle, LayoutGrid, Home, HelpCircle, Menu, X } from "lucide-react";
 
 export function Header() {
   const { user } = useAuth();
@@ -58,7 +58,7 @@ export function Header() {
               </Link>
               <Link href="/help">
                 <div onClick={closeMenu} className="p-1.5 sm:p-2 rounded-full icon-frame cursor-pointer" title="Get Help">
-                  <Search className="h-4 w-4" />
+                  <HelpCircle className="h-4 w-4" />
                 </div>
               </Link>
               {/* Dashboard icon removed from main nav to avoid duplicate/unreachable item */}
