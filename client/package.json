@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "postinstall": "npm install zod"
+    "postinstall": "cd .. && npm install zod"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
